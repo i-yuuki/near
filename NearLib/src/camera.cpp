@@ -13,6 +13,22 @@ void Camera::setFOV(float degrees){
   fov = degrees;
 }
 
+float Camera::getNear(){
+  return nearPlane;
+}
+
+void Camera::setNear(float nearPlane){
+  this->nearPlane = nearPlane;
+}
+
+float Camera::getFar(){
+  return farPlane;
+}
+
+void Camera::setFar(float farPlane){
+  this->farPlane = farPlane;
+}
+
 void Camera::draw(){
   auto* r = renderer();
   r->setViewTransform(createViewTransform());

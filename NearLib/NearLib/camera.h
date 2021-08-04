@@ -9,6 +9,10 @@ class Camera : public virtual GameObject{
 public:
   float getFOV();
   void setFOV(float degrees);
+  float getNear();
+  void setNear(float nearPlane);
+  float getFar();
+  void setFar(float farPlane);
   virtual void draw() override;
   Math::Matrix createViewTransform();
   Math::Matrix createProjectionTransform();
