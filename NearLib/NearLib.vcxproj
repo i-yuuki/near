@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\buffer.cpp" />
+    <ClCompile Include="src\camera.cpp" />
+    <ClCompile Include="src\collision-3d.cpp" />
+    <ClCompile Include="src\debug-camera.cpp" />
+    <ClCompile Include="src\debug-grid.cpp" />
+    <ClCompile Include="src\dialog.cpp" />
+    <ClCompile Include="src\fbx-model.cpp" />
+    <ClCompile Include="src\fps-counter.cpp" />
+    <ClCompile Include="src\game-object.cpp" />
+    <ClCompile Include="src\input.cpp" />
+    <ClCompile Include="src\layer.cpp" />
+    <ClCompile Include="src\model-object.cpp" />
+    <ClCompile Include="src\near.cpp" />
+    <ClCompile Include="src\renderer.cpp" />
+    <ClCompile Include="src\scene.cpp" />
+    <ClCompile Include="src\shader.cpp" />
+    <ClCompile Include="src\texture.cpp" />
+    <ClCompile Include="src\transform.cpp" />
+    <ClCompile Include="src\utils.cpp" />
+    <ClCompile Include="src\pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="NearLib\buffer.h" />
+    <ClInclude Include="NearLib\camera.h" />
+    <ClInclude Include="NearLib\collision-3d.h" />
+    <ClInclude Include="NearLib\debug-camera.h" />
+    <ClInclude Include="NearLib\debug-grid.h" />
+    <ClInclude Include="NearLib\dialog.h" />
+    <ClInclude Include="NearLib\DirectXTK\Audio.h" />
+    <ClInclude Include="NearLib\DirectXTK\BufferHelpers.h" />
+    <ClInclude Include="NearLib\DirectXTK\CommonStates.h" />
+    <ClInclude Include="NearLib\DirectXTK\DDSTextureLoader.h" />
+    <ClInclude Include="NearLib\DirectXTK\DirectXHelpers.h" />
+    <ClInclude Include="NearLib\DirectXTK\Effects.h" />
+    <ClInclude Include="NearLib\DirectXTK\GamePad.h" />
+    <ClInclude Include="NearLib\DirectXTK\GeometricPrimitive.h" />
+    <ClInclude Include="NearLib\DirectXTK\GraphicsMemory.h" />
+    <ClInclude Include="NearLib\DirectXTK\Keyboard.h" />
+    <ClInclude Include="NearLib\DirectXTK\Model.h" />
+    <ClInclude Include="NearLib\DirectXTK\Mouse.h" />
+    <ClInclude Include="NearLib\DirectXTK\PostProcess.h" />
+    <ClInclude Include="NearLib\DirectXTK\PrimitiveBatch.h" />
+    <ClInclude Include="NearLib\DirectXTK\ScreenGrab.h" />
+    <ClInclude Include="NearLib\DirectXTK\SimpleMath.h" />
+    <ClInclude Include="NearLib\DirectXTK\SpriteBatch.h" />
+    <ClInclude Include="NearLib\DirectXTK\SpriteFont.h" />
+    <ClInclude Include="NearLib\DirectXTK\VertexTypes.h" />
+    <ClInclude Include="NearLib\DirectXTK\WICTextureLoader.h" />
+    <ClInclude Include="NearLib\DirectXTK\XboxDDSTextureLoader.h" />
+    <ClInclude Include="NearLib\fbx-model.h" />
+    <ClInclude Include="NearLib\input.h" />
+    <ClInclude Include="NearLib\model-object.h" />
+    <ClInclude Include="NearLib\near.h" />
+    <ClInclude Include="NearLib\asset.h" />
+    <ClInclude Include="NearLib\assets.h" />
+    <ClInclude Include="NearLib\fps-counter.h" />
+    <ClInclude Include="NearLib\game-object.h" />
+    <ClInclude Include="NearLib\layer.h" />
+    <ClInclude Include="NearLib\vertex.h" />
+    <ClInclude Include="src\pch.h" />
+    <ClInclude Include="NearLib\renderer.h" />
+    <ClInclude Include="NearLib\scene.h" />
+    <ClInclude Include="NearLib\shader.h" />
+    <ClInclude Include="NearLib\texture.h" />
+    <ClInclude Include="NearLib\transform.h" />
+    <ClInclude Include="NearLib\utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="NearLib\DirectXTK\SimpleMath.inl" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{F09CFC78-C047-4009-A138-3DC9E1236062}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>NearLib</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <LibraryPath>$(SolutionDir)lib\x86;C:\Program Files\Autodesk\FBX\FBX SDK\2020.1.1\lib\vs2017\x86\debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(IncludePath);$(ProjectDir)NearLib;C:\Program Files\Autodesk\FBX\FBX SDK\2020.1.1\include</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(IncludePath);$(ProjectDir)NearLib;C:\Program Files\Autodesk\FBX\FBX SDK\2020.1.1\include</IncludePath>
+    <LibraryPath>$(SolutionDir)lib\x64;C:\Program Files\Autodesk\FBX\FBX SDK\2020.1.1\lib\vs2017\x64\debug;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <LibraryPath>$(SolutionDir)lib\x86;C:\Program Files\Autodesk\FBX\FBX SDK\2020.1.1\lib\vs2017\x86\release;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(IncludePath);$(ProjectDir)NearLib;C:\Program Files\Autodesk\FBX\FBX SDK\2020.1.1\include</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(IncludePath);$(ProjectDir)NearLib;C:\Program Files\Autodesk\FBX\FBX SDK\2020.1.1\include</IncludePath>
+    <LibraryPath>$(SolutionDir)lib\x64;C:\Program Files\Autodesk\FBX\FBX SDK\2020.1.1\lib\vs2017\x64\release;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalOptions>/source-charset:utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <UndefinePreprocessorDefinitions>%(UndefinePreprocessorDefinitions)</UndefinePreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>DirectXTKd.lib;comctl32.lib;dxgi.lib;d3d11.lib;d3dcompiler.lib;d2d1.lib;dwrite.lib;libxml2-mt.lib;zlib-mt.lib;libfbxsdk-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalOptions>/source-charset:utf-8 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>DirectXTKd.lib;comctl32.lib;dxgi.lib;d3d11.lib;d3dcompiler.lib;d2d1.lib;dwrite.lib;libxml2-mt.lib;zlib-mt.lib;libfbxsdk-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalOptions>/source-charset:utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <UndefinePreprocessorDefinitions>%(UndefinePreprocessorDefinitions)</UndefinePreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>DirectXTK.lib;comctl32.lib;dxgi.lib;d3d11.lib;d3dcompiler.lib;d2d1.lib;dwrite.lib;libxml2-mt.lib;zlib-mt.lib;libfbxsdk-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalOptions>/source-charset:utf-8 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>DirectXTK.lib;comctl32.lib;dxgi.lib;d3d11.lib;d3dcompiler.lib;d2d1.lib;dwrite.lib;libxml2-mt.lib;zlib-mt.lib;libfbxsdk-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
