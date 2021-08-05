@@ -1,13 +1,14 @@
 Near Map v1
-b     0 -8 0 640 16 640 0 0 0 0 0 0 0 1 0
-b 10000 -8 0 640 16 640 0 0 0 0 0 0 0 2 0
+
+block { position     0 -8 0 size 640 16 640 faces 0 0 0 0 1 0 }
+block { position 10000 -8 0 size 640 16 640 faces 0 0 0 0 2 0 }
 
 # Gate
-b -80  64 256  32 128 32 0 0 0 4 4 4 4 4 0
-b  80  64 256  32 128 32 0 0 0 4 4 4 4 4 0
-b   0 144 256 192  32 32 0 0 0 4 4 4 4 4 4
+block { position -80  64 256 size  32 128 32 faces 4 4 4 4 4 0 }
+block { position  80  64 256 size  32 128 32 faces 4 4 4 4 4 0 }
+block { position   0 144 256 size 192  32 32 faces 4 4 4 4 4 4 }
 
 # Gate
-b  9920  64 256  32 128 32 0 0 0 4 4 4 4 4 0
-b 10080  64 256  32 128 32 0 0 0 4 4 4 4 4 0
-b 10000 144 256 192  32 32 0 0 0 4 4 4 4 4 4
+block { position  9920  64 256 size  32 128 32 faces 4 4 4 4 4 0 }
+block { position 10080  64 256 size  32 128 32 faces 4 4 4 4 4 0 }
+block { position 10000 144 256 size 192  32 32 faces 4 4 4 4 4 4 }

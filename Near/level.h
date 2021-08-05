@@ -17,8 +17,8 @@ public:
   const std::vector<LevelBlock>& getBlocks() const;
 private:
   std::vector<LevelBlock> blocks;
-  void loadLine(const std::string& line);
-  std::string readWord(std::istream& is);
+  void loadObject(std::istream& is);
+  std::string readToken(std::istream& is);
   int readInt(std::istream& is);
   float readFloat(std::istream& is);
 };
