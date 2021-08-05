@@ -51,8 +51,8 @@ int APIENTRY WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int cmdShow){
     auto level = scene.getLayer(Near::Scene::LAYER_OBJECTS)->createGameObject<LevelObject>("testlevel.txt");
     auto player = scene.getLayer(Near::Scene::LAYER_OBJECTS)->createGameObject<Player>();
     auto camera = scene.getLayer(Near::Scene::LAYER_MANAGERS)->createGameObject<PlayerCamera>(player);
-    auto portalA = scene.getLayer(Near::Scene::LAYER_TRANSPARENT_OBJECTS)->createGameObject<Portal>(Near::Math::Color(0.129f, 0.588f, 0.953f, 1.0f));
-    auto portalB = scene.getLayer(Near::Scene::LAYER_TRANSPARENT_OBJECTS)->createGameObject<Portal>(Near::Math::Color(1.000f, 0.341f, 0.133f, 1.0f));
+    auto portalA = scene.getLayer(Near::Scene::LAYER_TRANSPARENT_OBJECTS)->createGameObject<Portal>(Near::Math::Vector2(64, 64), Near::Math::Color(0.129f, 0.588f, 0.953f, 1.0f));
+    auto portalB = scene.getLayer(Near::Scene::LAYER_TRANSPARENT_OBJECTS)->createGameObject<Portal>(Near::Math::Vector2(64, 64), Near::Math::Color(1.000f, 0.341f, 0.133f, 1.0f));
     
     camera->setFar(8000);
 

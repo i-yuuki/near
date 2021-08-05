@@ -4,7 +4,7 @@
 #include <NearLib/scene.h>
 #include "portal-traveler.h"
 
-Portal::Portal(Near::Math::Color color) : color(color){
+Portal::Portal(Near::Math::Vector2 extents, Near::Math::Color color) : extents(extents), color(color){
 }
 
 void Portal::init(Near::Layer* layer){
@@ -12,10 +12,10 @@ void Portal::init(Near::Layer* layer){
   texture.load(u8"assets/textures/portal.png");
   // texture1.load(u8"assets/textures/throw.png");
   Near::Vertex3D vertices[4] = {
-    {Near::Math::Vector3(-64,  64, 0), Near::Math::Vector3(0, 0, 1), color, Near::Math::Vector2(0, 0)},
-    {Near::Math::Vector3( 64,  64, 0), Near::Math::Vector3(0, 0, 1), color, Near::Math::Vector2(1, 0)},
-    {Near::Math::Vector3(-64, -64, 0), Near::Math::Vector3(0, 0, 1), color, Near::Math::Vector2(0, 1)},
-    {Near::Math::Vector3( 64, -64, 0), Near::Math::Vector3(0, 0, 1), color, Near::Math::Vector2(1, 1)},
+    {Near::Math::Vector3(-extents.x,  extents.y, 0), Near::Math::Vector3(0, 0, 1), color, Near::Math::Vector2(0, 0)},
+    {Near::Math::Vector3( extents.x,  extents.y, 0), Near::Math::Vector3(0, 0, 1), color, Near::Math::Vector2(1, 0)},
+    {Near::Math::Vector3(-extents.x, -extents.y, 0), Near::Math::Vector3(0, 0, 1), color, Near::Math::Vector2(0, 1)},
+    {Near::Math::Vector3( extents.x, -extents.y, 0), Near::Math::Vector3(0, 0, 1), color, Near::Math::Vector2(1, 1)},
   };
   vertexBuffer.init(false, 4, vertices);
   vertexShader = layer->getScene()->vertexShaders->getOrLoad("assets/nearlib/shaders/vs.hlsl");
@@ -31,8 +31,8 @@ void Portal::update(float deltaTime){
   getLayer()->getScene()->findObjectsOfType<PortalTraveler>(travelers);
 
   Near::Math::Vector3 forward = transform.getForward() * 1.001f;
-  Near::Math::Vector3 right   = transform.getRight() * 64;
-  Near::Math::Vector3 up      = transform.getUp() * 64;
+  Near::Math::Vector3 right   = transform.getRight() * extents.x;
+  Near::Math::Vector3 up      = transform.getUp() * extents.y;
   Near::Math::Vector3 p0 = transform.position - right + up;
   Near::Math::Vector3 p1 = transform.position + right + up;
   Near::Math::Vector3 p2 = transform.position - right - up;

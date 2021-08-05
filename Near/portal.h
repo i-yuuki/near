@@ -7,12 +7,13 @@
 class Portal : public Near::GameObject{
 public:
   std::weak_ptr<Portal> otherPortal;
-  Portal(Near::Math::Color color = Near::Math::Color(1, 1, 1, 1));
+  Portal(Near::Math::Vector2 extents, Near::Math::Color color = Near::Math::Color(1, 1, 1, 1));
   virtual void init(Near::Layer* layer) override;
   virtual void update(float deltaTime) override;
   virtual void draw() override;
   // void drawMask();
 protected:
+  Near::Math::Vector2 extents;
   Near::Math::Color color;
   Near::Texture texture;
   Near::Texture texture1;
