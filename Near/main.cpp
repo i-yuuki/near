@@ -59,7 +59,7 @@ int APIENTRY WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int cmdShow){
     // level->transform.position = Near::Math::Vector3(-136.16f, -0.17f, -81.07f);
     // level->transform.scale = Near::Math::Vector3(1 / 6400.0f);
 
-    player->transform.position = Near::Math::Vector3(0, 2, 0);
+    player->transform.position = Near::Math::Vector3(0, 500, 0);
 
     portalA->transform.position = Near::Math::Vector3(0, 64, 256);
     portalA->transform.rotation = Near::Math::Quaternion::CreateFromYawPitchRoll(0, 0, 0);

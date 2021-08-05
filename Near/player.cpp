@@ -97,7 +97,7 @@ const Near::Math::Vector3& Player::getSize() const{
 
 void Player::move(Near::Math::Vector3 vel, Level* level){
   if(vel == Near::Math::Vector3::Zero) return;
-  Near::Collision::BoundingBox3D pBox(transform.position + Near::Math::Vector3(0, size.y / 2, 0), size / 2);
+  Near::Collision::BoundingBox3D pBox(transform.position, size / 2);
   for(auto& block : level->getBlocks()){
     auto blockBox = Near::Collision::BoundingBox3D(block.position, block.size / 2);
     Near::Math::Vector3 hitDir;
