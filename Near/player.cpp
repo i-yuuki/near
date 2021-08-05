@@ -104,8 +104,6 @@ void Player::move(Near::Math::Vector3 vel, Level* level){
     float hitNear;
     if(pBox.collides(vel, blockBox, nullptr, &hitDir, &hitNear)){
       // DirectXTKになくてもabsやっちゃうぞ～～
-      DirectX::XMVECTOR slide = DirectX::XMLoadFloat3(&vel);
-      DirectX::XMVectorAbs(DirectX::XMLoadFloat3(&vel));
       vel += hitDir * Near::Math::Vector3(DirectX::XMVectorAbs(DirectX::XMLoadFloat3(&vel))) * (1 - hitNear);
       if(hitDir.y >= 0.5f){
         onGround = true;
