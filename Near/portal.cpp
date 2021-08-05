@@ -30,14 +30,12 @@ void Portal::update(float deltaTime){
   std::vector<std::shared_ptr<PortalTraveler>> travelers;
   getLayer()->getScene()->findObjectsOfType<PortalTraveler>(travelers);
 
-  Near::Math::Vector3 forward = transform.getForward() * 1.001f;
   Near::Math::Vector3 right   = transform.getRight() * extents.x;
   Near::Math::Vector3 up      = transform.getUp() * extents.y;
   Near::Math::Vector3 p0 = transform.position - right + up;
   Near::Math::Vector3 p1 = transform.position + right + up;
   Near::Math::Vector3 p2 = transform.position - right - up;
   Near::Math::Vector3 p3 = transform.position + right - up;
-  Near::Math::Plane plane(transform.position, forward);
   for(auto& traveler : travelers){
     if(traveler->transform.position == traveler->lastPosition) continue;
     Near::Math::Vector3 ray = traveler->transform.position - traveler->lastPosition;
