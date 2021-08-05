@@ -10,7 +10,7 @@
 
 void Player::init(Near::Layer* layer){
   Near::GameObject::init(layer);
-  size = Near::Math::Vector3(0.5f, 1.6f, 0.5f);
+  size = Near::Math::Vector3(32, 72, 32);
   onGround = false;
   keyListener = Near::input()->addKeyListener(this);
   model = new Near::FBXModel();
@@ -57,10 +57,10 @@ void Player::update(float deltaTime){
 
   onGround = false;
 
-  constexpr float walkSpeed = 1.333f; // 1.333 unit/s, 1 unit = 1m なら 80m/min (4.8km/h)
+  constexpr float walkSpeed = 150; // units per second
   move((movement.x * right + movement.y * forward) * walkSpeed * deltaTime * 0.001f, level);
 
-  constexpr float gravity = -9.81f;
+  constexpr float gravity = -500;
   velocity.y += gravity * (deltaTime * 0.001f);
   move(velocity * deltaTime * 0.001f, level);
 
@@ -87,7 +87,7 @@ void Player::uninit(){
 void Player::onKeyDown(int vkey, bool isRepeat){
   printf_s("Player received keyDown: %d\n", vkey);
   if(vkey == VK_SPACE && !isRepeat){
-    velocity.y = 3;
+    velocity.y = 200;
   }
 }
 

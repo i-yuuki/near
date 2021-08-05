@@ -12,10 +12,10 @@ void Portal::init(Near::Layer* layer){
   texture.load(u8"assets/textures/portal.png");
   // texture1.load(u8"assets/textures/throw.png");
   Near::Vertex3D vertices[4] = {
-    {Near::Math::Vector3(-1,  1, 0), Near::Math::Vector3(0, 0, 1), color, Near::Math::Vector2(0, 0)},
-    {Near::Math::Vector3( 1,  1, 0), Near::Math::Vector3(0, 0, 1), color, Near::Math::Vector2(1, 0)},
-    {Near::Math::Vector3(-1, -1, 0), Near::Math::Vector3(0, 0, 1), color, Near::Math::Vector2(0, 1)},
-    {Near::Math::Vector3( 1, -1, 0), Near::Math::Vector3(0, 0, 1), color, Near::Math::Vector2(1, 1)},
+    {Near::Math::Vector3(-64,  64, 0), Near::Math::Vector3(0, 0, 1), color, Near::Math::Vector2(0, 0)},
+    {Near::Math::Vector3( 64,  64, 0), Near::Math::Vector3(0, 0, 1), color, Near::Math::Vector2(1, 0)},
+    {Near::Math::Vector3(-64, -64, 0), Near::Math::Vector3(0, 0, 1), color, Near::Math::Vector2(0, 1)},
+    {Near::Math::Vector3( 64, -64, 0), Near::Math::Vector3(0, 0, 1), color, Near::Math::Vector2(1, 1)},
   };
   vertexBuffer.init(false, 4, vertices);
   vertexShader = layer->getScene()->vertexShaders->getOrLoad("assets/nearlib/shaders/vs.hlsl");
@@ -31,8 +31,8 @@ void Portal::update(float deltaTime){
   getLayer()->getScene()->findObjectsOfType<PortalTraveler>(travelers);
 
   Near::Math::Vector3 forward = transform.getForward() * 1.001f;
-  Near::Math::Vector3 right   = transform.getRight() * 1.001f;
-  Near::Math::Vector3 up      = transform.getUp() * 1.001f;
+  Near::Math::Vector3 right   = transform.getRight() * 64;
+  Near::Math::Vector3 up      = transform.getUp() * 64;
   Near::Math::Vector3 p0 = transform.position - right + up;
   Near::Math::Vector3 p1 = transform.position + right + up;
   Near::Math::Vector3 p2 = transform.position - right - up;

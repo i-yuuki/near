@@ -16,7 +16,7 @@ void PlayerCamera::afterUpdate(float deltaTime){
     // transform.position += offset.x * p->transform.getRight() * offset.y * p->transform.getUp() * offset.z * p->transform.getForward();
     transform.position.y += p->getSize().y - 0.1f;
     if(isThirdPerson){
-      transform.position -= p->transform.getForward() * 3;
+      transform.position -= p->transform.getForward() * 150;
     }
   }else{
     markRemove();

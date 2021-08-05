@@ -54,19 +54,18 @@ int APIENTRY WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int cmdShow){
     auto portalA = scene.getLayer(Near::Scene::LAYER_TRANSPARENT_OBJECTS)->createGameObject<Portal>(Near::Math::Color(0.129f, 0.588f, 0.953f, 1.0f));
     auto portalB = scene.getLayer(Near::Scene::LAYER_TRANSPARENT_OBJECTS)->createGameObject<Portal>(Near::Math::Color(1.000f, 0.341f, 0.133f, 1.0f));
     
-    camera->transform.position = Near::Math::Vector3(0, 0.1f, 0);
-    camera->transform.rotation = Near::Math::Quaternion::CreateFromYawPitchRoll(0, 0, 0);
+    camera->setFar(8000);
 
     // level->transform.position = Near::Math::Vector3(-136.16f, -0.17f, -81.07f);
     // level->transform.scale = Near::Math::Vector3(1 / 6400.0f);
 
     player->transform.position = Near::Math::Vector3(0, 2, 0);
 
-    portalA->transform.position = Near::Math::Vector3(0, 1, 2.5f);
+    portalA->transform.position = Near::Math::Vector3(0, 64, 256);
     portalA->transform.rotation = Near::Math::Quaternion::CreateFromYawPitchRoll(0, 0, 0);
     portalA->otherPortal = portalB;
 
-    portalB->transform.position = Near::Math::Vector3(220, 1, 2.5f);
+    portalB->transform.position = Near::Math::Vector3(10000, 64, 256);
     portalB->transform.rotation = Near::Math::Quaternion::CreateFromYawPitchRoll(DirectX::XM_PI, 0, 0);
     portalB->otherPortal = portalA;
 
