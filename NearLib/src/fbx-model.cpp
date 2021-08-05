@@ -78,9 +78,9 @@ void FBXModel::load(const char* file, FBXLoadOptions options){
   // 三角ポリゴンだけにする
   fbxsdk::FbxGeometryConverter converter(internal->manager);
   // legacy = true: 穴があいたジオメトリに対応しない
-  if(!converter.Triangulate(internal->scene, true, false)) throw std::exception("Scene triangulation failed");
+  if(options._triangulate && !converter.Triangulate(internal->scene, true, false)) throw std::exception("Scene triangulation failed");
   
-  if(!converter.SplitMeshesPerMaterial(internal->scene, true)) throw std::exception("Mesh split per material failed");
+  if(options._splitMeshesPerMaterial && !converter.SplitMeshesPerMaterial(internal->scene, true)) throw std::exception("Mesh split per material failed");
   
   // シーンの単位をmにする (?)
   fbxsdk::FbxSystemUnit unit = internal->scene->GetGlobalSettings().GetSystemUnit();

@@ -37,12 +37,24 @@ class FBXLoadOptions{
 public:
   bool _flipV = true;
   bool _correctGamma = true;
+  bool _triangulate = false;
+  bool _splitMeshesPerMaterial = false;
   // UVのVを反転 (1→0, 0.2→0.8) します。
   // デフォルト: true
   inline FBXLoadOptions& flipV(bool v){ _flipV = v; return *this; }
   // 全マテリアルの色 (ambient・diffuseなど) にsRGBガンマ補正 (γ=1/2.2くらい) をかけて明るくします。
   // デフォルト: true
   inline FBXLoadOptions& correctGamma(bool v){ _correctGamma = v; return *this; }
+  // ポリゴンを三角形にします。三角形以外のポリゴンを含む可能性のあるモデルでぜひ。
+  // 1秒でも読み込みを速くするため、事前に三角形化したモデルを使うことも検討してください。
+  // デフォルト: false
+  inline FBXLoadOptions& triangulate(bool v){ _triangulate = v; return *this; }
+  // メッシュをマテリアルごとに分割します。
+  // FBXModelはメッシュごとに最初のマテリアルを使うため、一つのメッシュが複数のマテリアルを
+  // 持つモデルでこのオプションをオフにすると表示が乱れます。
+  // 1秒でも読み込みを速くするため、事前にメッシュを分割したモデルを使うことも検討してください。
+  // デフォルト: false
+  inline FBXLoadOptions& splitMeshesPerMaterial(bool v){ _splitMeshesPerMaterial = v; return *this; }
 };
 
 class FBXModel{
