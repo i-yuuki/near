@@ -82,11 +82,9 @@ void FBXModel::load(const char* file, FBXLoadOptions options){
   
   if(!converter.SplitMeshesPerMaterial(internal->scene, true)) throw std::exception("Mesh split per material failed");
   
-  // シーンの単位をcmにする (?)
+  // シーンの単位をmにする (?)
   fbxsdk::FbxSystemUnit unit = internal->scene->GetGlobalSettings().GetSystemUnit();
-  if(unit.GetScaleFactor() != 1.0f){
-    fbxsdk::FbxSystemUnit::cm.ConvertScene(internal->scene);
-  }
+  fbxsdk::FbxSystemUnit::m.ConvertScene(internal->scene);
   
   int materialCount = internal->scene->GetMaterialCount();
   materials.resize(materialCount);
