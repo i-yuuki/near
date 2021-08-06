@@ -139,10 +139,8 @@ void FBXModel::load(const char* file, FBXLoadOptions options){
       if(textureCount > 0){
         fbxsdk::FbxFileTexture* texture = fbxDiffuseProp.GetSrcObject<fbxsdk::FbxFileTexture>(0);
         if(!texture) continue;
-        // モデルフォルダのテクスチャファイルパスを作る
-        // (assets/models/hoge.fbx + ~/Desktop/sushi.png = assets/models/sushi.png)
-        fbxsdk::FbxString texturePath = fbxsdk::FbxPathUtils::GetFolderName(file) + "/" + fbxsdk::FbxPathUtils::ChangeExtension(fbxsdk::FbxPathUtils::GetFileName(texture->GetFileName()), ".png");
-        // fbxsdk::FbxString texturePath = fbxsdk::FbxPathUtils::GetFolderName(file) + "/" + fbxsdk::FbxPathUtils::GetRelativeFilePath(file, texture->GetFileName());
+        // モデルファイルが作られた場所からの相対パス
+        fbxsdk::FbxString texturePath = fbxsdk::FbxPathUtils::GetFolderName(file) + "/" + texture->GetRelativeFileName();
         printf_s(u8"    │ ├ #1: %s\n", texturePath.Buffer());
         material->texture.load(texturePath.Buffer());
       }
