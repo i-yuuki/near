@@ -75,7 +75,9 @@ void Player::draw(){
   if(thirdPerson){ // "ポータルの向こうを描いてるとき"に変えるといい感じに～～？
     r->setVertexShader(vertexShader.get());
     r->setPixelShader(pixelShader.get());
-    Near::Math::Matrix t = Near::Math::Matrix::CreateFromYawPitchRoll(DirectX::XMConvertToRadians(yaw), 0, 0) * Near::Math::Matrix::CreateTranslation(transform.position);
+    auto pos = transform.position;
+    pos.y -= size.y / 2;
+    Near::Math::Matrix t = Near::Math::Matrix::CreateFromYawPitchRoll(DirectX::XMConvertToRadians(yaw), 0, 0) * Near::Math::Matrix::CreateTranslation(pos);
     model->draw(&t);
   }
 }
