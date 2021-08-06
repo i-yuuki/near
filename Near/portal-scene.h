@@ -11,6 +11,7 @@ public:
   virtual void init() override;
   virtual void uninit() override;
   virtual void draw() override;
+  int getPortalLevel() const;
 private:
   std::vector<std::shared_ptr<Portal>> portals;
   std::shared_ptr<Near::Camera> camera;
@@ -20,6 +21,7 @@ private:
   ID3D11DepthStencilState* stencilStateDecr;
   ID3D11DepthStencilState* stencilStateClearDepth;
   Near::VertexBuffer fullscreenQuad;
+  int portalLevel;
   void drawRecurse(int level);
   void drawFullscreenQuad();
 };

@@ -81,11 +81,16 @@ void PortalScene::draw(){
   layers[LAYER_OVERLAY].draw();
 }
 
+int PortalScene::getPortalLevel() const{
+  return portalLevel;
+}
+
 void PortalScene::drawRecurse(int level){
   Near::Math::Vector3 tmpVector;
   Near::Math::Quaternion tmpQuaternion;
   auto* renderer = Near::renderer();
   // 1. 不透明オブジェクトを表示
+  portalLevel = level;
   renderer->setBlendMode(Near::BlendMode::NONE);
   layers[LAYER_OBJECTS].draw();
   if(level < 1){
@@ -133,6 +138,7 @@ void PortalScene::drawRecurse(int level){
     }
   }
   // 5. 透明オブジェクトを表示
+  portalLevel = level;
   renderer->setBlendMode(Near::BlendMode::ALPHA);
   layers[LAYER_TRANSPARENT_OBJECTS].draw();
 }
