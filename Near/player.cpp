@@ -6,6 +6,7 @@
 #include <NearLib/scene.h>
 #include <NearLib/utils.h>
 
+#include "portal-scene.h"
 #include "level-object.h"
 
 void Player::init(Near::Layer* layer){
@@ -72,7 +73,7 @@ void Player::update(float deltaTime){
 
 void Player::draw(){
   auto* r = Near::renderer();
-  if(thirdPerson){ // "ポータルの向こうを描いてるとき"に変えるといい感じに～～？
+  if(thirdPerson || static_cast<PortalScene*>(getLayer()->getScene())->getPortalLevel() > 0){
     r->setVertexShader(vertexShader.get());
     r->setPixelShader(pixelShader.get());
     auto pos = transform.position;
