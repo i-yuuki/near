@@ -20,17 +20,6 @@ NearLib (にあーりぶ) は Windows ゲーム開発のスタートダッシュ
 - Visual Studio 2017 以降
 - C++17
 
-## TODO
-
-- [ ] 入力
-  - キーは Raw Input
-  - マウスは Raw Input (相対/移動量) & WM_MOUSEXXX (絶対位置)
-  - イベント風にしたいなぁ
-    - [参考](https://github.com/TheWisp/signals)
-- [ ] 音
-- [ ] 文字続き＆GUI
-  - `IDWriteFont::GetMetrics()`
-
 ## 使用イメージ
 
 ```cpp
