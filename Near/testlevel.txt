@@ -7,8 +7,10 @@ block { position 10000 -8 0 size 640 16 640 faces 0 0 0 0 2 0 }
 block { position -80  64 256 size  32 128 32 faces 4 4 4 4 4 0 }
 block { position  80  64 256 size  32 128 32 faces 4 4 4 4 4 0 }
 block { position   0 144 256 size 192  32 32 faces 4 4 4 4 4 4 }
+portal { name portal_a partner portal_b position 0 64 256 size 128 128 }
 
 # Gate
 block { position  9920  64 256 size  32 128 32 faces 4 4 4 4 4 0 }
 block { position 10080  64 256 size  32 128 32 faces 4 4 4 4 4 0 }
 block { position 10000 144 256 size 192  32 32 faces 4 4 4 4 4 4 }
+portal { name portal_b partner portal_a position 10000 64 256 size 128 128 }

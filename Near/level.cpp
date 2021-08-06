@@ -22,6 +22,7 @@ void Level::load(const std::string& path){
     }
   }
   blocks.shrink_to_fit();
+  portals.shrink_to_fit();
 }
 
 const std::vector<LevelBlock>& Level::getBlocks() const{
@@ -56,7 +57,38 @@ void Level::loadObject(std::istream& is){
         }
       }
     }
+  }else if(token == u8"portal"){
+    LevelPortal& portal = portals.emplace_back();
+    while((token = readToken(is)) != u8"}"){
+      if(loadEntityToken(is, token, portal)) continue;
+      if(token == u8"partner"){
+        portal.partner = readToken(is);
+      }else if(token == u8"size"){
+        portal.size.x = readFloat(is);
+        portal.size.y = readFloat(is);
+      }
+    }
+  }else{
+    printf_s("Skipping unknown map object %s\n", token.c_str());
+    while((token = readToken(is)) != u8"}"){}
   }
+}
+
+bool Level::loadEntityToken(std::istream& is, const std::string& token, LevelEntity& ent){
+  if(token == u8"position"){
+    ent.position.x = readFloat(is);
+    ent.position.y = readFloat(is);
+    ent.position.z = readFloat(is);
+  }else if(token == u8"rotation"){
+    ent.rotation.x = readFloat(is);
+    ent.rotation.y = readFloat(is);
+    ent.rotation.z = readFloat(is);
+  }else if(token == u8"name"){
+    ent.name = readToken(is);
+  }else{
+    return false;
+  }
+  return true;
 }
 
 std::string Level::readToken(std::istream& is){
