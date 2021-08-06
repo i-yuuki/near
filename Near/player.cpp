@@ -12,6 +12,7 @@ void Player::init(Near::Layer* layer){
   Near::GameObject::init(layer);
   size = Near::Math::Vector3(32, 72, 32);
   onGround = false;
+  thirdPerson = false;
   keyListener = Near::input()->addKeyListener(this);
   model = new Near::FBXModel();
   model->load("assets/models/player.fbx");
@@ -88,11 +89,17 @@ void Player::onKeyDown(int vkey, bool isRepeat){
   printf_s("Player received keyDown: %d\n", vkey);
   if(vkey == VK_SPACE && !isRepeat){
     velocity.y = 200;
+  }else if(vkey == 'F'){
+    thirdPerson = !thirdPerson;
   }
 }
 
 const Near::Math::Vector3& Player::getSize() const{
   return size;
+}
+
+bool Player::isThirdPerson() const{
+  return thirdPerson;
 }
 
 void Player::move(Near::Math::Vector3 vel, Level* level){

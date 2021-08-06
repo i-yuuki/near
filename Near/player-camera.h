@@ -10,5 +10,4 @@ public:
   virtual void afterUpdate(float deltaTime) override;
 private:
   std::weak_ptr<Player> player;
-  bool isThirdPerson = false;
 };
