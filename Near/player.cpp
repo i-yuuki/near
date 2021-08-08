@@ -92,8 +92,10 @@ void Player::uninit(){
 
 void Player::onKeyDown(int vkey, bool isRepeat){
   printf_s("Player received keyDown: %d\n", vkey);
-  if(vkey == VK_SPACE && !isRepeat){
-    velocity.y = 200;
+  if(vkey == VK_SPACE){
+    if(!isRepeat && onGround){
+      velocity.y = 200;
+    }
   }else if(vkey == 'F'){
     thirdPerson = !thirdPerson;
   }
