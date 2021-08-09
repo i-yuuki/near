@@ -24,59 +24,6 @@ void Portal::init(Near::Layer* layer){
 
 void Portal::update(float deltaTime){
   super::update(deltaTime);
-  std::shared_ptr<Portal> other = otherPortal.lock();
-  if(!other) return;
-
-  std::vector<std::shared_ptr<PortalTraveler>> travelers;
-  getLayer()->getScene()->findObjectsOfType<PortalTraveler>(travelers);
-
-  Near::Math::Vector3 right   = transform.getRight() * extents.x;
-  Near::Math::Vector3 up      = transform.getUp() * extents.y;
-  Near::Math::Vector3 p0 = transform.position - right + up;
-  Near::Math::Vector3 p1 = transform.position + right + up;
-  Near::Math::Vector3 p2 = transform.position - right - up;
-  Near::Math::Vector3 p3 = transform.position + right - up;
-  for(auto& traveler : travelers){
-    if(traveler->transform.position == traveler->lastPosition) continue;
-    Near::Math::Vector3 ray = traveler->transform.position - traveler->lastPosition;
-    Near::Math::Vector3 rayN;
-    ray.Normalize(rayN);
-    float t; // のちのち使うはず
-    bool intersects = DirectX::TriangleTests::Intersects(
-      traveler->lastPosition,
-      rayN,
-      p0,
-      p1,
-      p2,
-      t
-    );
-    bool teleport = intersects && t < ray.Length();
-    if(!teleport){
-      intersects = DirectX::TriangleTests::Intersects(
-        traveler->lastPosition,
-        rayN,
-        p2,
-        p1,
-        p3,
-        t
-      );
-      teleport = intersects && t < ray.Length();
-    }
-    if(teleport){
-      printf_s("t: %.3f\n", t);
-      // portal-scene.cpp 参照
-      Near::Math::Quaternion portalInv;
-      transform.rotation.Inverse(portalInv);
-      Near::Math::Quaternion otherPortalInvOpposite = Near::Math::Quaternion::CreateFromYawPitchRoll(DirectX::XM_PI, 0, 0) * other->transform.rotation;
-      Near::Math::Quaternion rot = otherPortalInvOpposite * portalInv;
-
-      traveler->transform.position -= transform.position;
-      traveler->transform.position = Near::Math::Vector3::Transform(traveler->transform.position, rot);
-      traveler->transform.rotation *= rot;
-      traveler->transform.position += other->transform.position;
-      continue;
-    }
-  }
 }
 
 void Portal::draw(){
@@ -91,4 +38,8 @@ void Portal::draw(){
   // renderer->applyWorldTransform(Near::Math::Matrix::CreateTranslation(0.5f, 0.5f, 0) * Near::Math::Matrix::CreateScale(0.5f, 0.5f * (550.0f / 800.0f), 1));
   // vertexBuffer.draw(sizeof(Near::Vertex3D), 0, 4, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
   renderer->popWorldTransform();
+}
+
+const Near::Math::Vector2& Portal::getExtents() const{
+  return extents;
 }

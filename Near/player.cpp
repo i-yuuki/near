@@ -25,8 +25,6 @@ void Player::update(float deltaTime){
   PortalTraveler::update(deltaTime);
 
   auto* input = Near::input();
-  auto levelObj = getLayer()->getScene()->findObjectOfExactType<LevelObject>();
-  auto* level = levelObj ? levelObj->getLevel() : nullptr;
 
   constexpr float sensitivity = 3.5f;
   yaw -= input->getMouseMovementX() * 0.022f * sensitivity;
@@ -60,11 +58,11 @@ void Player::update(float deltaTime){
   onGround = false;
 
   constexpr float walkSpeed = 150; // units per second
-  move((movement.x * right + movement.y * forward) * walkSpeed * deltaTime * 0.001f, level);
+  move((movement.x * right + movement.y * forward) * walkSpeed * deltaTime * 0.001f);
 
   constexpr float gravity = -500;
   velocity.y += gravity * (deltaTime * 0.001f);
-  move(velocity * deltaTime * 0.001f, level);
+  move(velocity * deltaTime * 0.001f);
 
   if(onGround){
     velocity.y = 0;
@@ -101,28 +99,6 @@ void Player::onKeyDown(int vkey, bool isRepeat){
   }
 }
 
-const Near::Math::Vector3& Player::getSize() const{
-  return size;
-}
-
 bool Player::isThirdPerson() const{
   return thirdPerson;
-}
-
-void Player::move(Near::Math::Vector3 vel, Level* level){
-  if(vel == Near::Math::Vector3::Zero) return;
-  Near::Collision::BoundingBox3D pBox(transform.position, size / 2);
-  for(auto& block : level->getBlocks()){
-    auto blockBox = Near::Collision::BoundingBox3D(block.position, block.size / 2);
-    Near::Math::Vector3 hitDir;
-    float hitNear;
-    if(pBox.collides(vel, blockBox, nullptr, &hitDir, &hitNear)){
-      // DirectXTKになくてもabsやっちゃうぞ～～
-      vel += hitDir * Near::Math::Vector3(DirectX::XMVectorAbs(DirectX::XMLoadFloat3(&vel))) * (1 - hitNear);
-      if(hitDir.y >= 0.5f){
-        onGround = true;
-      }
-    }
-  }
-  transform.position += vel;
 }

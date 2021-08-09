@@ -11,6 +11,7 @@ public:
   virtual void init(Near::Layer* layer) override;
   virtual void update(float deltaTime) override;
   virtual void draw() override;
+  const Near::Math::Vector2& getExtents() const;
   // void drawMask();
 protected:
   Near::Math::Vector2 extents;
