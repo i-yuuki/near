@@ -54,7 +54,7 @@ void Renderer::init(HWND window, int width, int height){
           printf_s(u8"*Error*");
           continue;
         }
-        printf_s(u8"%s | %s | Video Memory: %zu\n", narrow(desc.Description).c_str(), desc.Flags & DXGI_ADAPTER_FLAG_SOFTWARE ? u8"Software" : u8"Hardware", desc.DedicatedVideoMemory);
+        printf_s(u8"%s | %s | Video Memory: %zu\\n", narrow(desc.Description).c_str(), desc.Flags & DXGI_ADAPTER_FLAG_SOFTWARE ? u8"Software" : u8"Hardware", desc.DedicatedVideoMemory);
         if(desc.Flags & DXGI_ADAPTER_FLAG_SOFTWARE){
           continue;
         }
@@ -229,11 +229,29 @@ void Renderer::init(HWND window, int width, int height){
 
   d2dDeviceContext->CreateSolidColorBrush({1, 1, 1, 1}, &d2dBrush);
 
-  DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory), reinterpret_cast<IUnknown**>(&dwFactory));
-  dwFactory->CreateTextFormat(L"Noto Serif CJK JP", nullptr, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, 20, L"ja-JP", &dwFormat);
+  DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory2), reinterpret_cast<IUnknown**>(&dwFactory));
+  dwFactory->CreateTextFormat(L"Inter", nullptr, DWRITE_FONT_WEIGHT_SEMI_LIGHT, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, 20, L"ja-JP", reinterpret_cast<IDWriteTextFormat**>(&dwFormat));
+
+  dwFactory->CreateTypography(&dwTypography);
+  dwTypography->AddFontFeature({static_cast<DWRITE_FONT_FEATURE_TAG>(DWRITE_MAKE_OPENTYPE_TAG('c', 'v', '0', '3')), 1});
+  dwTypography->AddFontFeature({static_cast<DWRITE_FONT_FEATURE_TAG>(DWRITE_MAKE_OPENTYPE_TAG('c', 'v', '0', '4')), 1});
+  dwTypography->AddFontFeature({DWRITE_FONT_FEATURE_TAG_TABULAR_FIGURES, 1});
+
+  IDWriteFontFallbackBuilder* fallbackBuilder;
+  IDWriteFontFallback* fallback;
+  DWRITE_UNICODE_RANGE range = {0, 0xffffffff};
+  auto family = L"Noto Sans CJK JP";
+  dwFactory->CreateFontFallbackBuilder(&fallbackBuilder);
+  fallbackBuilder->AddMapping(&range, 1, &family, 1, nullptr, L"ja-jp");
+  fallbackBuilder->CreateFontFallback(&fallback);
+  dwFormat->SetFontFallback(fallback);
+  
+  fallback->Release();
+  fallbackBuilder->Release();
 }
 
 void Renderer::uninit(){
+  safeRelease(dwTypography);
   safeRelease(dwFormat);
   safeRelease(dwFactory);
   safeRelease(d2dBrush);
@@ -266,7 +284,11 @@ void Renderer::present(){
 void Renderer::drawText(std::string_view str, Math::Vector2 topleft){
   // std::wstring text = L"エラー(アクティブ) E0065 ';' が必要です NearLib renderer.cpp 219";
   std::wstring text = widen(str);
-  d2dDeviceContext->DrawTextW(text.c_str(), text.size(), dwFormat, {topleft.x, topleft.y, 1000000, 1000000}, d2dBrush);
+  IDWriteTextLayout* layout;
+  dwFactory->CreateTextLayout(text.c_str(), text.size(), dwFormat, std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), &layout);
+  layout->SetTypography(dwTypography, {0, 0xffffffff});
+  d2dDeviceContext->DrawTextLayout({topleft.x, topleft.y}, layout, d2dBrush);
+  layout->Release();
 }
 
 void Renderer::setCulling(bool cull){

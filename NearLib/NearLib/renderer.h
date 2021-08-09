@@ -1,7 +1,7 @@
 #pragma once
 
 #include <d2d1_1.h>
-#include <dwrite.h>
+#include <dwrite_2.h>
 
 #include "DirectXTK/SimpleMath.h"
 #include "shader.h"
@@ -76,8 +76,9 @@ private:
   ID2D1DeviceContext* d2dDeviceContext = nullptr;
   ID2D1Bitmap1* d2dBitmap = nullptr;
   ID2D1SolidColorBrush* d2dBrush = nullptr;
-  IDWriteFactory* dwFactory = nullptr;
-  IDWriteTextFormat* dwFormat = nullptr;
+  IDWriteFactory2* dwFactory = nullptr;
+  IDWriteTextFormat1* dwFormat = nullptr;
+  IDWriteTypography* dwTypography = nullptr;
 };
 
 }
