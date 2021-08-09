@@ -1,6 +1,7 @@
 #include "level-object.h"
 
 #include <NearLib/scene.h>
+#include <NearLib/utils.h>
 
 static int g_faceCornerIndices[6][4] = {
   {1, 5, 2, 6},
@@ -37,6 +38,7 @@ void LevelObject::init(Near::Layer* layer){
 
   std::vector<Near::Vertex3D> vertices;
   std::vector<uint32_t> indices;
+  std::vector<uint32_t> indicesWireframe;
   uint32_t index = 0;
   DirectX::XMFLOAT3 blockCorners[8];
   for(auto& block : level->getBlocks()){
@@ -53,14 +55,24 @@ void LevelObject::init(Near::Layer* layer){
       indices.push_back(index + 2);
       indices.push_back(index + 1);
       indices.push_back(index + 3);
+      indicesWireframe.push_back(index);
+      indicesWireframe.push_back(index + 1);
+      indicesWireframe.push_back(index + 1);
+      indicesWireframe.push_back(index + 3);
+      indicesWireframe.push_back(index + 3);
+      indicesWireframe.push_back(index + 2);
+      indicesWireframe.push_back(index + 2);
+      indicesWireframe.push_back(index);
       index += 4;
     }
   }
   vertexBuffer.init(false, vertices.size(), vertices.data());
   indexBuffer.init(false, indices.size(), indices.data());
+  indexBufferWireframe.init(false, indicesWireframe.size(), indicesWireframe.data());
   
   vertexShader = layer->getScene()->vertexShaders->getOrLoad("assets/nearlib/shaders/vs.hlsl");
   pixelShader = layer->getScene()->pixelShaders->getOrLoad("assets/shaders/ps-notex.hlsl");
+  pixelShaderWireframe = layer->getScene()->pixelShaders->getOrLoad("assets/shaders/ps-wireframe.hlsl");
 }
 
 void LevelObject::draw(){
@@ -68,11 +80,14 @@ void LevelObject::draw(){
   r->setVertexShader(vertexShader.get());
   r->setPixelShader(pixelShader.get());
   vertexBuffer.draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST, indexBuffer);
+  Near::renderer()->setPixelShader(pixelShaderWireframe.get());
+  vertexBuffer.draw(D3D11_PRIMITIVE_TOPOLOGY_LINELIST, indexBufferWireframe);
 }
 
 void LevelObject::uninit(){
   vertexBuffer.uninit();
   indexBuffer.uninit();
+  indexBufferWireframe.uninit();
 }
 
 Level* LevelObject::getLevel(){

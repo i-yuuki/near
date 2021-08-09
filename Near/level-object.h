@@ -18,6 +18,8 @@ private:
   std::unique_ptr<Level> level;
   Near::StandardVertexBuffer vertexBuffer;
   Near::IndexBuffer indexBuffer;
+  Near::IndexBuffer indexBufferWireframe;
   std::shared_ptr<Near::VertexShader> vertexShader;
   std::shared_ptr<Near::PixelShader> pixelShader;
+  std::shared_ptr<Near::PixelShader> pixelShaderWireframe;
 };
