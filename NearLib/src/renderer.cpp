@@ -365,7 +365,7 @@ void Renderer::compileVertexShader(ID3D11VertexShader** shader, ID3D11InputLayou
 
   ID3DBlob* code;
   ID3DBlob* errorMessages;
-  HRESULT res = D3DCompile(fileContent.c_str(), fileContent.size(), path, nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", "vs_4_0_level_9_3", 0, 0, &code, &errorMessages);
+  HRESULT res = D3DCompile(fileContent.c_str(), fileContent.size(), path, nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", "vs_4_0", 0, 0, &code, &errorMessages);
   if(FAILED(res)){
     // char* a = (char*)errorMessages->GetBufferPointer();
     safeRelease(code);
@@ -411,7 +411,7 @@ void Renderer::compilePixelShader(ID3D11PixelShader** shader, const char* path){
 
   ID3DBlob* code;
   ID3DBlob* errorMessages;
-  HRESULT res = D3DCompile(fileContent.c_str(), fileContent.size(), path, nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", "ps_4_0_level_9_3", 0, 0, &code, &errorMessages);
+  HRESULT res = D3DCompile(fileContent.c_str(), fileContent.size(), path, nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", "ps_4_0", 0, 0, &code, &errorMessages);
   if(FAILED(res)){
     char* a = (char*)errorMessages->GetBufferPointer();
     safeRelease(code);
