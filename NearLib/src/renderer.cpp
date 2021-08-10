@@ -267,6 +267,11 @@ void Renderer::uninit(){
   safeRelease(worldBuffer);
   safeRelease(samplerStateClamp);
   safeRelease(samplerStateWrap);
+  safeRelease(blendStateNoBlend);
+  safeRelease(blendStateAlphaBlend);
+  safeRelease(rasterizerStateNoCulling);
+  safeRelease(rasterizerState);
+  safeRelease(depthState);
   safeRelease(depthStencilView);
   safeRelease(renderTargetView);
   safeRelease(swapChain);
