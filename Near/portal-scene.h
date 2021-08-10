@@ -20,6 +20,14 @@ private:
   ID3D11DepthStencilState* stencilStateIncr;
   ID3D11DepthStencilState* stencilStateDecr;
   ID3D11DepthStencilState* stencilStateClearDepth;
+  ID3D11ShaderResourceView* renderTexture;
+  ID3D11ShaderResourceView* renderTextureDepth;
+  ID3D11ShaderResourceView* renderTextureNormal;
+  ID3D11RenderTargetView* renderView;
+  ID3D11RenderTargetView* renderViewNormal;
+  ID3D11DepthStencilView* renderViewDepth;
+  std::shared_ptr<Near::VertexShader> vertexShader;
+  std::shared_ptr<Near::PixelShader> pixelShader;
   Near::VertexBuffer fullscreenQuad;
   int portalLevel;
   void drawRecurse(int level);

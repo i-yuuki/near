@@ -45,16 +45,68 @@ void PortalScene::init(){
   if(FAILED(res)) Near::throwResult("CreateDepthStencilState failed", res);
 
   Near::Vertex3D vertices[] = {
-    {Near::Math::Vector3(-1, -1, 1), Near::Math::Vector3(0, 0, 1), Near::Math::Color(1, 1, 1, 1), Near::Math::Vector2(0, 0)},
-    {Near::Math::Vector3( 1, -1, 1), Near::Math::Vector3(0, 0, 1), Near::Math::Color(1, 1, 1, 1), Near::Math::Vector2(1, 0)},
-    {Near::Math::Vector3(-1,  1, 1), Near::Math::Vector3(0, 0, 1), Near::Math::Color(1, 1, 1, 1), Near::Math::Vector2(0, 1)},
-    {Near::Math::Vector3( 1,  1, 1), Near::Math::Vector3(0, 0, 1), Near::Math::Color(1, 1, 1, 1), Near::Math::Vector2(1, 1)},
+    {Near::Math::Vector3(-1, -1, 1), Near::Math::Vector3(0, 0, 1), Near::Math::Color(1, 1, 1, 1), Near::Math::Vector2(0, 1)},
+    {Near::Math::Vector3( 1, -1, 1), Near::Math::Vector3(0, 0, 1), Near::Math::Color(1, 1, 1, 1), Near::Math::Vector2(1, 1)},
+    {Near::Math::Vector3(-1,  1, 1), Near::Math::Vector3(0, 0, 1), Near::Math::Color(1, 1, 1, 1), Near::Math::Vector2(0, 0)},
+    {Near::Math::Vector3( 1,  1, 1), Near::Math::Vector3(0, 0, 1), Near::Math::Color(1, 1, 1, 1), Near::Math::Vector2(1, 0)},
   };
   fullscreenQuad.init(false, sizeof(vertices), vertices);
+
+  // Render Texture (いろ)
+  CD3D11_TEXTURE2D_DESC texDesc(DXGI_FORMAT_R8G8B8A8_UNORM, renderer->getWidth(), renderer->getHeight(), 1, 1, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
+  ID3D11Texture2D* texture;
+  res = renderer->getDevice()->CreateTexture2D(&texDesc, nullptr, &texture);
+  if(FAILED(res)) Near::throwResult("CreateTexture2D failed", res);
+  res = renderer->getDevice()->CreateShaderResourceView(texture, nullptr, &renderTexture);
+  if(FAILED(res)) Near::throwResult("CreateShaderResourceView failed", res);
+
+  res = renderer->getDevice()->CreateRenderTargetView(texture, nullptr, &renderView);
+  if(FAILED(res)) Near::throwResult("CreateRenderTargetView failed", res);
+  texture->Release();
+
+  // Render Texture (ほうせん)
+  texDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+  res = renderer->getDevice()->CreateTexture2D(&texDesc, nullptr, &texture);
+  if(FAILED(res)) Near::throwResult("CreateTexture2D failed", res);
+  res = renderer->getDevice()->CreateShaderResourceView(texture, nullptr, &renderTextureNormal);
+  if(FAILED(res)) Near::throwResult("CreateShaderResourceView failed", res);
+
+  res = renderer->getDevice()->CreateRenderTargetView(texture, nullptr, &renderViewNormal);
+  if(FAILED(res)) Near::throwResult("CreateRenderTargetView failed", res);
+  texture->Release();
+
+  // Render Texture (しんど)
+  texDesc.Format = DXGI_FORMAT_R24G8_TYPELESS;
+  texDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
+  res = renderer->getDevice()->CreateTexture2D(&texDesc, nullptr, &texture);
+  if(FAILED(res)) Near::throwResult("CreateTexture2D failed", res);
+
+  D3D11_DEPTH_STENCIL_VIEW_DESC depthDesc{};
+  depthDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+  depthDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+  res = renderer->getDevice()->CreateDepthStencilView(texture, &depthDesc, &renderViewDepth);
+  if(FAILED(res)) Near::throwResult("CreateDepthStencilView failed", res);
+
+  CD3D11_SHADER_RESOURCE_VIEW_DESC rtDesc(texture, D3D_SRV_DIMENSION_TEXTURE2D, DXGI_FORMAT_R24_UNORM_X8_TYPELESS);
+  res = renderer->getDevice()->CreateShaderResourceView(texture, &rtDesc, &renderTextureDepth);
+  if(FAILED(res)) Near::throwResult("CreateShaderResourceView failed", res);
+
+  texture->Release();
+
+  vertexShader = vertexShaders->getOrLoad("assets/nearlib/shaders/vs.hlsl");
+  pixelShader = pixelShaders->getOrLoad("assets/shaders/ps-level-postprocess.hlsl");
 }
 
 void PortalScene::uninit(){
   fullscreenQuad.uninit();
+  vertexShader.reset();
+  pixelShader.reset();
+  Near::safeRelease(renderView);
+  Near::safeRelease(renderViewNormal);
+  Near::safeRelease(renderViewDepth);
+  Near::safeRelease(renderTexture);
+  Near::safeRelease(renderTextureNormal);
+  Near::safeRelease(renderTextureDepth);
   Near::safeRelease(stencilStateClearDepth);
   Near::safeRelease(stencilStateDecr);
   Near::safeRelease(stencilStateIncr);
@@ -75,8 +127,38 @@ void PortalScene::draw(){
   ID3D11DepthStencilState* prevState;
   UINT prevRef;
   renderer->getDeviceContext()->OMGetDepthStencilState(&prevState, &prevRef);
+
+  ID3D11RenderTargetView* views[] = {
+    renderView,
+    renderViewNormal,
+  };
+  renderer->getDeviceContext()->OMSetRenderTargets(2, views, renderViewDepth);
+  {
+    float clearColor[4] = {0.973f, 0.898f, 0.808f, 1};
+    renderer->getDeviceContext()->ClearRenderTargetView(renderView, clearColor);
+  }
+  {
+    float clearColor[4] = {0, 0, 0, 0};
+    renderer->getDeviceContext()->ClearRenderTargetView(renderViewNormal, clearColor);
+  }
+  renderer->getDeviceContext()->ClearDepthStencilView(renderViewDepth, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
+
   drawRecurse(0);
+  renderer->resetRenderTarget();
   renderer->getDeviceContext()->OMSetDepthStencilState(prevState, prevRef);
+
+  renderer->setVertexShader(vertexShader.get());
+  renderer->setPixelShader(pixelShader.get());
+  ID3D11ShaderResourceView* textures[] = {renderTexture, renderTextureNormal, renderTextureDepth};
+  renderer->getDeviceContext()->PSSetShaderResources(0, 3, textures);
+  Near::TextureAddressing addr = renderer->getTextureAddressing();
+  renderer->setTextureAddressing(Near::TextureAddressing::CLAMP);
+  drawFullscreenQuad();
+  renderer->setTextureAddressing(addr);
+  textures[0] = nullptr;
+  textures[1] = nullptr;
+  textures[2] = nullptr;
+  renderer->getDeviceContext()->PSSetShaderResources(0, 3, textures);
 
   layers[LAYER_OVERLAY].draw();
 }

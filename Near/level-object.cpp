@@ -71,7 +71,7 @@ void LevelObject::init(Near::Layer* layer){
   indexBufferWireframe.init(false, indicesWireframe.size(), indicesWireframe.data());
   
   vertexShader = layer->getScene()->vertexShaders->getOrLoad("assets/nearlib/shaders/vs.hlsl");
-  pixelShader = layer->getScene()->pixelShaders->getOrLoad("assets/shaders/ps-notex.hlsl");
+  pixelShader = layer->getScene()->pixelShaders->getOrLoad("assets/shaders/ps-level.hlsl");
   pixelShaderWireframe = layer->getScene()->pixelShaders->getOrLoad("assets/shaders/ps-wireframe.hlsl");
 }
 
@@ -80,8 +80,6 @@ void LevelObject::draw(){
   r->setVertexShader(vertexShader.get());
   r->setPixelShader(pixelShader.get());
   vertexBuffer.draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST, indexBuffer);
-  Near::renderer()->setPixelShader(pixelShaderWireframe.get());
-  vertexBuffer.draw(D3D11_PRIMITIVE_TOPOLOGY_LINELIST, indexBufferWireframe);
 }
 
 void LevelObject::uninit(){
