@@ -14,6 +14,11 @@ enum class BlendMode{
   ALPHA,
 };
 
+enum class TextureAddressing{
+  WRAP,
+  CLAMP,
+};
+
 class Renderer{
 public:
   Renderer();
@@ -26,6 +31,8 @@ public:
   void setCulling(bool cull);
   BlendMode getBlendMode();
   void setBlendMode(BlendMode blend);
+  TextureAddressing getTextureAddressing();
+  void setTextureAddressing(TextureAddressing addressing);
   DirectX::SimpleMath::Matrix getWorldTransform();
   DirectX::SimpleMath::Matrix getViewTransform();
   DirectX::SimpleMath::Matrix getProjectionTransform();
@@ -63,8 +70,11 @@ private:
   ID3D11RasterizerState* rasterizerState = nullptr;
   ID3D11RasterizerState* rasterizerStateNoCulling = nullptr;
   BlendMode blend;
+  TextureAddressing addressing;
   ID3D11BlendState* blendStateAlphaBlend = nullptr;
   ID3D11BlendState* blendStateNoBlend = nullptr;
+  ID3D11SamplerState* samplerStateWrap = nullptr;
+  ID3D11SamplerState* samplerStateClamp = nullptr;
   ID3D11Buffer* worldBuffer = nullptr;
   ID3D11Buffer* viewBuffer = nullptr;
   ID3D11Buffer* projectionBuffer = nullptr;

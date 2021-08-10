@@ -171,12 +171,16 @@ void Renderer::init(HWND window, int width, int height){
   samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
   samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
   samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-
-  ID3D11SamplerState* samplerState = nullptr;
-  device->CreateSamplerState(&samplerDesc, &samplerState);
+  device->CreateSamplerState(&samplerDesc, &samplerStateWrap);
   if(FAILED(res)) throwResult("CreateSamplerState failed", res);
 
-  deviceContext->PSSetSamplers(0, 1, &samplerState);
+  samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+  samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+  samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+  device->CreateSamplerState(&samplerDesc, &samplerStateClamp);
+  if(FAILED(res)) throwResult("CreateSamplerState failed", res);
+
+  setTextureAddressing(TextureAddressing::WRAP);
 
   // 座標変換をシェーダーに送る枠を作る
 
@@ -261,6 +265,8 @@ void Renderer::uninit(){
   safeRelease(projectionBuffer);
   safeRelease(viewBuffer);
   safeRelease(worldBuffer);
+  safeRelease(samplerStateClamp);
+  safeRelease(samplerStateWrap);
   safeRelease(depthStencilView);
   safeRelease(renderTargetView);
   safeRelease(swapChain);
@@ -304,6 +310,19 @@ void Renderer::setBlendMode(BlendMode blend){
   switch(blend){
     case BlendMode::ALPHA: deviceContext->OMSetBlendState(blendStateAlphaBlend, blendFactor, 0xffffffff); break;
     default:               deviceContext->OMSetBlendState(blendStateNoBlend, blendFactor, 0xffffffff); break;
+  }
+}
+
+TextureAddressing Renderer::getTextureAddressing(){
+  return addressing;
+}
+
+void Renderer::setTextureAddressing(TextureAddressing addressing){
+  this->addressing = addressing;
+  switch(addressing){
+    case TextureAddressing::WRAP:  deviceContext->PSSetSamplers(0, 1, &samplerStateWrap); break;
+    case TextureAddressing::CLAMP: deviceContext->PSSetSamplers(0, 1, &samplerStateClamp); break;
+    default: break;
   }
 }
 
