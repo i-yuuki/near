@@ -31,8 +31,7 @@ void Renderer::init(HWND window, int width, int height){
   swapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
   swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
   swapChainDesc.OutputWindow = window;
-  swapChainDesc.SampleDesc.Count = 4;
-  swapChainDesc.SampleDesc.Quality = 0;
+  swapChainDesc.SampleDesc = createSampleDesc();
   swapChainDesc.Windowed = true;
 
   UINT createDeviceFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
@@ -95,7 +94,7 @@ void Renderer::init(HWND window, int width, int height){
   textureDesc.MipLevels = 1;
   textureDesc.ArraySize = 1;
   textureDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-  textureDesc.SampleDesc = swapChainDesc.SampleDesc;
+  textureDesc.SampleDesc = createSampleDesc();
   textureDesc.Usage = D3D11_USAGE_DEFAULT;
   textureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
   textureDesc.CPUAccessFlags = 0;
@@ -521,6 +520,10 @@ ID3D11Device* Renderer::getDevice(){
 
 ID3D11DeviceContext* Renderer::getDeviceContext(){
   return deviceContext;
+}
+
+DXGI_SAMPLE_DESC Renderer::createSampleDesc(){
+  return {4, 0};
 }
 
 }

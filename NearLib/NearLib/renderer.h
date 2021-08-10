@@ -47,6 +47,7 @@ public:
   HWND getWindow();
   ID3D11Device* getDevice();
   ID3D11DeviceContext* getDeviceContext();
+  DXGI_SAMPLE_DESC createSampleDesc();
 private:
   HWND window = NULL;
   int width = 0;
