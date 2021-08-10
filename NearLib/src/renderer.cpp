@@ -526,4 +526,8 @@ DXGI_SAMPLE_DESC Renderer::createSampleDesc(){
   return {4, 0};
 }
 
+void Renderer::resetRenderTarget(){
+  deviceContext->OMSetRenderTargets(1, &renderTargetView, depthStencilView);
+}
+
 }
