@@ -28,8 +28,9 @@ private:
   ID3D11DepthStencilView* renderViewDepth;
   std::shared_ptr<Near::VertexShader> vertexShader;
   std::shared_ptr<Near::PixelShader> pixelShader;
-  Near::VertexBuffer fullscreenQuad;
+  std::shared_ptr<Near::PixelShader> pixelShaderNoTex;
+  Near::StandardVertexBuffer fullscreenQuads;
   int portalLevel;
   void drawRecurse(int level);
-  void drawFullscreenQuad();
+  void drawFullscreenQuad(bool isBackground);
 };

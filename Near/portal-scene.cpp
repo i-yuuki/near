@@ -3,6 +3,8 @@
 #include <NearLib/vertex.h>
 #include <NearLib/utils.h>
 
+#include "main.h"
+
 PortalScene::PortalScene(){
 }
 
@@ -45,12 +47,12 @@ void PortalScene::init(){
   if(FAILED(res)) Near::throwResult("CreateDepthStencilState failed", res);
 
   Near::Vertex3D vertices[] = {
-    {Near::Math::Vector3(-1, -1, 1), Near::Math::Vector3(0, 0, 1), Near::Math::Color(1, 1, 1, 1), Near::Math::Vector2(0, 1)},
-    {Near::Math::Vector3( 1, -1, 1), Near::Math::Vector3(0, 0, 1), Near::Math::Color(1, 1, 1, 1), Near::Math::Vector2(1, 1)},
-    {Near::Math::Vector3(-1,  1, 1), Near::Math::Vector3(0, 0, 1), Near::Math::Color(1, 1, 1, 1), Near::Math::Vector2(0, 0)},
-    {Near::Math::Vector3( 1,  1, 1), Near::Math::Vector3(0, 0, 1), Near::Math::Color(1, 1, 1, 1), Near::Math::Vector2(1, 0)},
+    {Near::Math::Vector3(-1, -1, 1), Near::Math::Vector3(0, 0, 1), NearGame::BACKGROUND_COLOR,    Near::Math::Vector2(0, 1)},
+    {Near::Math::Vector3( 1, -1, 1), Near::Math::Vector3(0, 0, 1), NearGame::BACKGROUND_COLOR,    Near::Math::Vector2(1, 1)},
+    {Near::Math::Vector3(-1,  1, 1), Near::Math::Vector3(0, 0, 1), NearGame::BACKGROUND_COLOR,    Near::Math::Vector2(0, 0)},
+    {Near::Math::Vector3( 1,  1, 1), Near::Math::Vector3(0, 0, 1), NearGame::BACKGROUND_COLOR,    Near::Math::Vector2(1, 0)},
   };
-  fullscreenQuad.init(false, sizeof(vertices), vertices);
+  fullscreenQuads.init(false, 4, vertices);
 
   // Render Texture (いろ)
   CD3D11_TEXTURE2D_DESC texDesc(DXGI_FORMAT_R8G8B8A8_UNORM, renderer->getWidth(), renderer->getHeight(), 1, 1, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
@@ -95,12 +97,14 @@ void PortalScene::init(){
 
   vertexShader = vertexShaders->getOrLoad("assets/nearlib/shaders/vs.hlsl");
   pixelShader = pixelShaders->getOrLoad("assets/shaders/ps-level-postprocess.hlsl");
+  pixelShaderNoTex = pixelShaders->getOrLoad("assets/shaders/ps-notex.hlsl");
 }
 
 void PortalScene::uninit(){
-  fullscreenQuad.uninit();
+  fullscreenQuads.uninit();
   vertexShader.reset();
   pixelShader.reset();
+  pixelShaderNoTex.reset();
   Near::safeRelease(renderView);
   Near::safeRelease(renderViewNormal);
   Near::safeRelease(renderViewDepth);
@@ -133,14 +137,8 @@ void PortalScene::draw(){
     renderViewNormal,
   };
   renderer->getDeviceContext()->OMSetRenderTargets(2, views, renderViewDepth);
-  {
-    float clearColor[4] = {0.973f, 0.898f, 0.808f, 1};
-    renderer->getDeviceContext()->ClearRenderTargetView(renderView, clearColor);
-  }
-  {
-    float clearColor[4] = {0, 0, 0, 0};
-    renderer->getDeviceContext()->ClearRenderTargetView(renderViewNormal, clearColor);
-  }
+  renderer->getDeviceContext()->ClearRenderTargetView(renderView, NearGame::BACKGROUND_COLOR);
+  renderer->getDeviceContext()->ClearRenderTargetView(renderViewNormal, Near::Math::Color(0, 0, 0, 0));
   renderer->getDeviceContext()->ClearDepthStencilView(renderViewDepth, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
 
   drawRecurse(0);
@@ -153,7 +151,7 @@ void PortalScene::draw(){
   renderer->getDeviceContext()->PSSetShaderResources(0, 3, textures);
   Near::TextureAddressing addr = renderer->getTextureAddressing();
   renderer->setTextureAddressing(Near::TextureAddressing::CLAMP);
-  drawFullscreenQuad();
+  drawFullscreenQuad(false);
   renderer->setTextureAddressing(addr);
   textures[0] = nullptr;
   textures[1] = nullptr;
@@ -185,7 +183,7 @@ void PortalScene::drawRecurse(int level){
       portal->draw();
       // 3. ポータル面の深度を消す
       renderer->getDeviceContext()->OMSetDepthStencilState(stencilStateClearDepth, static_cast<UINT>(level + 1));
-      drawFullscreenQuad();
+      drawFullscreenQuad(true);
       // 4. ポータルの先を表示
       auto cameraTransform = camera->transform;
       
@@ -225,12 +223,14 @@ void PortalScene::drawRecurse(int level){
   layers[LAYER_TRANSPARENT_OBJECTS].draw();
 }
 
-void PortalScene::drawFullscreenQuad(){
+void PortalScene::drawFullscreenQuad(bool isBackground){
   auto* renderer = Near::renderer();
+  renderer->setVertexShader(vertexShader.get());
+  renderer->setPixelShader((isBackground ? pixelShaderNoTex : pixelShader).get());
   renderer->pushWorldTransform();
   renderer->setWorldTransform(Near::Math::Matrix::Identity);
   renderer->setViewTransform(Near::Math::Matrix::Identity);
   renderer->setProjectionTransform(Near::Math::Matrix::Identity);
-  fullscreenQuad.draw(sizeof(Near::Vertex3D), 0, 4, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+  fullscreenQuads.draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
   renderer->popWorldTransform();
 }

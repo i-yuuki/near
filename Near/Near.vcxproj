@@ -181,6 +181,7 @@
   <ItemGroup>
     <ClInclude Include="level-object.h" />
     <ClInclude Include="level.h" />
+    <ClInclude Include="main.h" />
     <ClInclude Include="player-camera.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="portal-camera.h" />
