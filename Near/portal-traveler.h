@@ -6,7 +6,7 @@
 
 class PortalTraveler : public virtual Near::GameObject{
 public:
-  void move(Near::Math::Vector3 movement, std::shared_ptr<Portal> ignorePortal = nullptr);
+  void move(Near::Math::Vector3& movement, float deltaTime, std::shared_ptr<Portal> ignorePortal = nullptr);
   const Near::Math::Vector3& getSize() const;
 protected:
   using super = Near::GameObject;

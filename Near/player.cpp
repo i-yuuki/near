@@ -58,11 +58,12 @@ void Player::update(float deltaTime){
   onGround = false;
 
   constexpr float walkSpeed = 150; // units per second
-  move((movement.x * right + movement.y * forward) * walkSpeed * deltaTime * 0.001f);
+  auto walk = (movement.x * right + movement.y * forward) * walkSpeed;
+  move(walk, deltaTime * 0.001f);
 
   constexpr float gravity = -500;
   velocity.y += gravity * (deltaTime * 0.001f);
-  move(velocity * deltaTime * 0.001f);
+  move(velocity, deltaTime * 0.001f);
 
   if(onGround){
     velocity.y = 0;

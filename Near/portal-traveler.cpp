@@ -16,9 +16,10 @@ struct LevelCollision{
 
 }
 
-void PortalTraveler::move(Near::Math::Vector3 movement, std::shared_ptr<Portal> ignorePortal){
+void PortalTraveler::move(Near::Math::Vector3& movement, float deltaTime, std::shared_ptr<Portal> ignorePortal){
   if(movement == Near::Math::Vector3::Zero) return;
-  float movementLen = movement.Length();
+  auto scaledMovement = movement * deltaTime;
+  float movementLen = scaledMovement.Length();
   Near::Math::Vector3 rayNormalized;
   movement.Normalize(rayNormalized);
 
@@ -68,7 +69,7 @@ void PortalTraveler::move(Near::Math::Vector3 movement, std::shared_ptr<Portal> 
   for(auto& block : levelObj->getLevel()->getBlocks()){
     Near::Collision::BoundingBox3D blockBox(block.position, block.size / 2);
     float hitNear;
-    if(me.collides(movement, blockBox, nullptr, nullptr, &hitNear)){
+    if(me.collides(scaledMovement, blockBox, nullptr, nullptr, &hitNear)){
       collisions.push_back({blockBox, hitNear});
     }
   }
@@ -80,7 +81,7 @@ void PortalTraveler::move(Near::Math::Vector3 movement, std::shared_ptr<Portal> 
     Near::Math::Vector3 hitPos;
     Near::Math::Vector3 hitDir;
     float hitNear;
-    if(!me.collides(movement, c.aabb, &hitPos, &hitDir, &hitNear)){
+    if(!me.collides(scaledMovement, c.aabb, &hitPos, &hitDir, &hitNear)){
       continue;
     }
     if(hitDir.y >= 0.5f){
@@ -93,6 +94,7 @@ void PortalTraveler::move(Near::Math::Vector3 movement, std::shared_ptr<Portal> 
       break;
     }
     movement = newMovement;
+    scaledMovement = movement * deltaTime;
   }
   
   // ポータルをくぐる portal-scene.cpp 参照
@@ -112,11 +114,13 @@ void PortalTraveler::move(Near::Math::Vector3 movement, std::shared_ptr<Portal> 
 
     // ポータルの先の当たり判定
     // (くぐったポータルを戻ってきて無限再帰する？ので無視させつつ)
-    move(movement - movementUntilPortal, otherPortal);
+    movement = Near::Math::Vector3::Transform(movement, portalInv);
+    movement = Near::Math::Vector3::Transform(movement, Near::Math::Quaternion::CreateFromYawPitchRoll(DirectX::XM_PI, 0, 0) * otherPortal->transform.rotation);
+    move(movement, deltaTime * (movementLen - portalDistance), otherPortal);
     return;
   }
 
-  transform.position += movement;
+  transform.position += movement * deltaTime;
 }
 
 const Near::Math::Vector3& PortalTraveler::getSize() const{
