@@ -36,7 +36,7 @@ void Camera::draw(){
 }
 
 Math::Matrix Camera::createViewTransform(){
-  return Math::Matrix::CreateLookAt(transform.position, transform.position + transform.getForward(), Math::Vector3::Up);
+  return Math::Matrix::CreateLookAt(transform.position, transform.position + transform.getForward(), transform.getUp());
 }
 
 Math::Matrix Camera::createProjectionTransform(){
