@@ -187,21 +187,15 @@ void PortalScene::drawRecurse(int level){
       // 4. ポータルの先を表示
       auto cameraTransform = camera->transform;
       
-      // 入口の向きから出口の向きの反対までの差rotを用意
-      // カメラ位置 (入口ポータルからの相対) と向きをrotで変換し
-      // それを出口のカメラ位置 (出口ポータルからの相対) と向きにする
-      Near::Math::Quaternion portalInv;
-      portal->transform.rotation.Inverse(portalInv);
-      // 反対 = ローカルY軸で180度回転 (仮; 天井ポータルで動く気しない)
-      Near::Math::Quaternion otherPortalInvOpposite = Near::Math::Quaternion::CreateFromYawPitchRoll(DirectX::XM_PI, 0, 0) * otherPortal->transform.rotation;
-      // AからBの差 = B * ivnerse(A)
-      // 入口から出口の差 = 反対(出口) * inverse(入口)
-      Near::Math::Quaternion rot = otherPortalInvOpposite * portalInv;
+      // カメラ - 入口ポータル + 180度 + 出口ポータル
+      // 1. カメラのワールド座標
+      // 2. 入口ポータルとの相対にする
+      // 3. 後ろを向く
+      // 4. 出口ポータルを足すといい感じのワールド座標に戻る
+      Near::Math::Matrix m = camera->transform.createTransform() * portal->transform.createTransform().Invert() * Near::Math::Matrix::CreateFromYawPitchRoll(DirectX::XM_PI, 0, 0) * otherPortal->transform.createTransform();
+      Near::Math::Vector3 dummy;
+      m.Decompose(dummy, camera->transform.rotation, camera->transform.position);
 
-      camera->transform.position -= portal->transform.position;
-      camera->transform.position = Near::Math::Vector3::Transform(camera->transform.position, rot);
-      camera->transform.rotation *= rot;
-      camera->transform.position += otherPortal->transform.position;
       camera->draw();
 
       Near::Math::Plane portalPlane(otherPortal->transform.position, otherPortal->transform.getForward());

@@ -104,13 +104,10 @@ void PortalTraveler::move(Near::Math::Vector3& movement, float deltaTime, std::s
 
     Near::Math::Quaternion portalInv;
     portalToCross->transform.rotation.Inverse(portalInv);
-    Near::Math::Quaternion otherPortalInvOpposite = Near::Math::Quaternion::CreateFromYawPitchRoll(DirectX::XM_PI, 0, 0) * otherPortal->transform.rotation;
-    Near::Math::Quaternion rot = otherPortalInvOpposite * portalInv;
 
-    transform.position -= portalToCross->transform.position;
-    transform.position = Near::Math::Vector3::Transform(transform.position, rot);
-    transform.rotation *= rot;
-    transform.position += otherPortal->transform.position;
+    Near::Math::Matrix m = transform.createTransform() * portalToCross->transform.createTransform().Invert() * Near::Math::Matrix::CreateFromYawPitchRoll(DirectX::XM_PI, 0, 0) * otherPortal->transform.createTransform();
+    Near::Math::Vector3 dummy;
+    m.Decompose(dummy, transform.rotation, transform.position);
 
     // ポータルの先の当たり判定
     // (くぐったポータルを戻ってきて無限再帰する？ので無視させつつ)
