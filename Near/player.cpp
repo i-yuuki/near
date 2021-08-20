@@ -27,9 +27,9 @@ void Player::update(float deltaTime){
   auto* input = Near::input();
 
   constexpr float sensitivity = 3.5f;
-  yaw -= input->getMouseMovementX() * 0.022f * sensitivity;
-  pitch -= input->getMouseMovementY() * 0.022f * sensitivity;
-  transform.rotation = Near::Math::Quaternion::CreateFromYawPitchRoll(DirectX::XMConvertToRadians(yaw), DirectX::XMConvertToRadians(pitch), 0);
+  float yaw = -input->getMouseMovementX() * 0.022f * sensitivity;
+  float pitch = -input->getMouseMovementY() * 0.022f * sensitivity;
+  transform.rotation = Near::Math::Quaternion::CreateFromYawPitchRoll(0, DirectX::XMConvertToRadians(pitch), 0) * transform.rotation * Near::Math::Quaternion::CreateFromYawPitchRoll(DirectX::XMConvertToRadians(yaw), 0, 0);
 
   Near::Math::Vector2 targetMovement;
   if(input->isKeyDown('W')){
@@ -76,7 +76,7 @@ void Player::draw(){
     r->setPixelShader(pixelShader.get());
     auto pos = transform.position;
     pos.y -= size.y / 2;
-    Near::Math::Matrix t = Near::Math::Matrix::CreateFromYawPitchRoll(DirectX::XMConvertToRadians(yaw), 0, 0) * Near::Math::Matrix::CreateTranslation(pos);
+    Near::Math::Matrix t = Near::Math::Matrix::CreateFromQuaternion(transform.rotation) * Near::Math::Matrix::CreateTranslation(pos);
     model->draw(&t);
   }
 }

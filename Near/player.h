@@ -18,8 +18,6 @@ private:
   Near::InputConnection keyListener;
   Near::Math::Vector2 movement;
   Near::Math::Vector3 velocity;
-  float yaw;
-  float pitch;
   bool thirdPerson;
   Near::FBXModel* model;
   std::shared_ptr<Near::VertexShader> vertexShader;
