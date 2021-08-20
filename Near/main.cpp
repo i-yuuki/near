@@ -51,8 +51,12 @@ int APIENTRY WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int cmdShow){
     auto level = scene.getLayer(Near::Scene::LAYER_OBJECTS)->createGameObject<LevelObject>("testlevel.txt");
     auto player = scene.getLayer(Near::Scene::LAYER_OBJECTS)->createGameObject<Player>();
     auto camera = scene.getLayer(Near::Scene::LAYER_MANAGERS)->createGameObject<PlayerCamera>(player);
-    auto portalA = scene.getLayer(Near::Scene::LAYER_TRANSPARENT_OBJECTS)->createGameObject<Portal>(Near::Math::Vector2(64, 64), Near::Math::Color(0.129f, 0.588f, 0.953f, 1.0f));
+    auto portalA = scene.getLayer(Near::Scene::LAYER_TRANSPARENT_OBJECTS)->createGameObject<Portal>(Near::Math::Vector2(64, 64), Near::Math::Color(1.000f, 0.341f, 0.133f, 1.0f));
     auto portalB = scene.getLayer(Near::Scene::LAYER_TRANSPARENT_OBJECTS)->createGameObject<Portal>(Near::Math::Vector2(64, 64), Near::Math::Color(1.000f, 0.341f, 0.133f, 1.0f));
+    auto portalC = scene.getLayer(Near::Scene::LAYER_TRANSPARENT_OBJECTS)->createGameObject<Portal>(Near::Math::Vector2(64, 64), Near::Math::Color(0.298f, 0.686f, 0.314f, 1.0f));
+    auto portalD = scene.getLayer(Near::Scene::LAYER_TRANSPARENT_OBJECTS)->createGameObject<Portal>(Near::Math::Vector2(64, 64), Near::Math::Color(0.298f, 0.686f, 0.314f, 1.0f));
+    auto portalE = scene.getLayer(Near::Scene::LAYER_TRANSPARENT_OBJECTS)->createGameObject<Portal>(Near::Math::Vector2(64, 64), Near::Math::Color(0.247f, 0.318f, 0.710f, 1.0f));
+    auto portalF = scene.getLayer(Near::Scene::LAYER_TRANSPARENT_OBJECTS)->createGameObject<Portal>(Near::Math::Vector2(64, 64), Near::Math::Color(0.247f, 0.318f, 0.710f, 1.0f));
     
     camera->setFar(8000);
 
@@ -65,9 +69,25 @@ int APIENTRY WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int cmdShow){
     portalA->transform.rotation = Near::Math::Quaternion::CreateFromYawPitchRoll(0, 0, 0);
     portalA->otherPortal = portalB;
 
-    portalB->transform.position = Near::Math::Vector3(10000, 64, 256);
+    portalB->transform.position = Near::Math::Vector3(0, 64, -256);
     portalB->transform.rotation = Near::Math::Quaternion::CreateFromYawPitchRoll(DirectX::XM_PI, 0, 0);
     portalB->otherPortal = portalA;
+
+    portalC->transform.position = Near::Math::Vector3(160, 64, 256);
+    portalC->transform.rotation = Near::Math::Quaternion::CreateFromYawPitchRoll(0, 0, 0);
+    portalC->otherPortal = portalD;
+
+    portalD->transform.position = Near::Math::Vector3(300, 64, 0);
+    portalD->transform.rotation = Near::Math::Quaternion::CreateFromYawPitchRoll(DirectX::XM_PIDIV2, 0, 0);
+    portalD->otherPortal = portalC;
+
+    portalE->transform.position = Near::Math::Vector3(0, -128, 384);
+    portalE->transform.rotation = Near::Math::Quaternion::CreateFromYawPitchRoll(0, DirectX::XM_PIDIV2, 0);
+    portalE->otherPortal = portalF;
+
+    portalF->transform.position = Near::Math::Vector3(-128, 64, -256);
+    portalF->transform.rotation = Near::Math::Quaternion::CreateFromYawPitchRoll(DirectX::XM_PI, 0, 0);
+    portalF->otherPortal = portalE;
 
     Near::input()->lockMouse(true);
 
