@@ -178,6 +178,8 @@ void PortalScene::drawRecurse(int level){
     for(auto portal : portals){
       std::shared_ptr<Portal> otherPortal = portal->otherPortal.lock();
       if(!otherPortal) continue;
+      if(!isPortalVisible(portal)) continue;
+
       // 2. ポータルのステンシルを書き込む
       renderer->getDeviceContext()->OMSetDepthStencilState(stencilStateIncr, static_cast<UINT>(level));
       portal->draw();
@@ -227,4 +229,25 @@ void PortalScene::drawFullscreenQuad(bool isBackground){
   renderer->setProjectionTransform(Near::Math::Matrix::Identity);
   fullscreenQuads.draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
   renderer->popWorldTransform();
+}
+
+bool PortalScene::isPortalVisible(std::shared_ptr<Portal> portal){
+  auto& extents = portal->getExtents();
+  Near::Math::Vector3 right = portal->transform.getRight() * extents.x;
+  Near::Math::Vector3 up    = portal->transform.getUp() * extents.y;
+  Near::Math::Vector3 p0 = portal->transform.position - right + up;
+  Near::Math::Vector3 p1 = portal->transform.position + right + up;
+  Near::Math::Vector3 p2 = portal->transform.position - right - up;
+  Near::Math::Vector3 p3 = portal->transform.position + right - up;
+  Near::Math::Matrix a;
+  DirectX::BoundingFrustum frustum;
+  Near::createBoundingFrustum(frustum, camera->createProjectionTransform(), true);
+  frustum.Transform(frustum, camera->createViewTransform().Invert());
+
+  auto res = frustum.Contains(p0, p1, p2);
+  if(res == DirectX::ContainmentType::INTERSECTS || res == DirectX::ContainmentType::CONTAINS) return true;
+  res = frustum.Contains(p2, p1, p3);
+  if(res == DirectX::ContainmentType::INTERSECTS || res == DirectX::ContainmentType::CONTAINS) return true;
+
+  return false;
 }

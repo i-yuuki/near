@@ -33,4 +33,5 @@ private:
   int portalLevel;
   void drawRecurse(int level);
   void drawFullscreenQuad(bool isBackground);
+  bool isPortalVisible(std::shared_ptr<Portal> portal);
 };
