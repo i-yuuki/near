@@ -69,4 +69,9 @@ Math::Vector3 toEulerAngles(const Math::Quaternion& q);
 Math::Quaternion opposite(const Math::Quaternion& q);
 */
 
+// BoundingFrustum::CreateFromMatrix()の右手座標対応版
+// DirectXMath January 2021 からコピペ
+// (VS2017とかでDirectXMathが古い環境用)
+void XM_CALLCONV createBoundingFrustum(_Out_ DirectX::BoundingFrustum& Out, _In_ DirectX::FXMMATRIX Projection, bool rhcoords = true) noexcept;
+
 }
