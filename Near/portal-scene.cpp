@@ -97,14 +97,13 @@ void PortalScene::init(){
 
   vertexShader = vertexShaders->getOrLoad("assets/nearlib/shaders/vs.hlsl");
   pixelShader = pixelShaders->getOrLoad("assets/shaders/ps-level-postprocess.hlsl");
-  pixelShaderNoTex = pixelShaders->getOrLoad("assets/shaders/ps-notex.hlsl");
+  pixelShaderClearNormal = pixelShaders->getOrLoad("assets/shaders/ps-clearnormal.hlsl");
 }
 
 void PortalScene::uninit(){
   fullscreenQuads.uninit();
   vertexShader.reset();
   pixelShader.reset();
-  pixelShaderNoTex.reset();
   Near::safeRelease(renderView);
   Near::safeRelease(renderViewNormal);
   Near::safeRelease(renderViewDepth);
@@ -222,7 +221,7 @@ void PortalScene::drawRecurse(int level){
 void PortalScene::drawFullscreenQuad(bool isBackground){
   auto* renderer = Near::renderer();
   renderer->setVertexShader(vertexShader.get());
-  renderer->setPixelShader((isBackground ? pixelShaderNoTex : pixelShader).get());
+  renderer->setPixelShader((isBackground ? pixelShaderClearNormal : pixelShader).get());
   renderer->pushWorldTransform();
   renderer->setWorldTransform(Near::Math::Matrix::Identity);
   renderer->setViewTransform(Near::Math::Matrix::Identity);
