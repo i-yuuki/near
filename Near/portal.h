@@ -12,6 +12,7 @@ public:
   virtual void update(float deltaTime) override;
   virtual void draw() override;
   const Near::Math::Vector2& getExtents() const;
+  bool intersects(const Near::Math::Vector3& origin, const Near::Math::Vector3& ray, float* dist);
   // void drawMask();
 protected:
   Near::Math::Vector2 extents;

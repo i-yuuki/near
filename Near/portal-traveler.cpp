@@ -30,31 +30,9 @@ void PortalTraveler::move(Near::Math::Vector3& movement, float deltaTime, std::s
   float portalDistance;
   for(auto& portal : portals){
     if(portal == ignorePortal) continue;
-    auto& extents = portal->getExtents();
-    Near::Math::Vector3 right = portal->transform.getRight() * extents.x;
-    Near::Math::Vector3 up    = portal->transform.getUp() * extents.y;
-    Near::Math::Vector3 p0 = portal->transform.position - right + up;
-    Near::Math::Vector3 p1 = portal->transform.position + right + up;
-    Near::Math::Vector3 p2 = portal->transform.position - right - up;
-    Near::Math::Vector3 p3 = portal->transform.position + right - up;
 
     float t;
-    bool intersects = DirectX::TriangleTests::Intersects(
-      transform.position,
-      rayNormalized,
-      p0, p1, p2,
-      t
-    );
-    bool canTeleport = intersects && t < movementLen && t > 0;
-    if(!canTeleport){
-      intersects = DirectX::TriangleTests::Intersects(
-        transform.position,
-        rayNormalized,
-        p2, p1, p3,
-        t
-      );
-      canTeleport = intersects && t < movementLen && t > 0;
-    }
+    bool canTeleport = portal->intersects(transform.position, scaledMovement, &t);
     if(canTeleport && (!portalToCross || t < portalDistance)){
       portalToCross = portal;
       portalDistance = t;

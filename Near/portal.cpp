@@ -43,3 +43,36 @@ void Portal::draw(){
 const Near::Math::Vector2& Portal::getExtents() const{
   return extents;
 }
+
+bool Portal::intersects(const Near::Math::Vector3& origin, const Near::Math::Vector3& ray, float* dist){
+  Near::Math::Vector3 right = transform.getRight() * extents.x;
+  Near::Math::Vector3 up    = transform.getUp() * extents.y;
+  Near::Math::Vector3 p0    = transform.position - right + up;
+  Near::Math::Vector3 p1    = transform.position + right + up;
+  Near::Math::Vector3 p2    = transform.position - right - up;
+  Near::Math::Vector3 p3    = transform.position + right - up;
+  Near::Math::Vector3 rayNormalized;
+  ray.Normalize(rayNormalized);
+  float len = ray.Length();
+  float t;
+  bool intersects = DirectX::TriangleTests::Intersects(
+    origin,
+    rayNormalized,
+    p0, p1, p2,
+    t
+  );
+  bool ret = intersects && t < len && t > 0;
+  if(!ret){
+    intersects = DirectX::TriangleTests::Intersects(
+      origin,
+      rayNormalized,
+      p2, p1, p3,
+      t
+    );
+    ret = intersects && t < len && t > 0;
+  }
+  if(ret && dist){
+    *dist = t;
+  }
+  return ret;
+}
