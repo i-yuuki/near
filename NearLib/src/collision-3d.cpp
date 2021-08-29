@@ -95,4 +95,15 @@ bool BoundingBox3D::collides(const Math::Vector3& velocity, const BoundingBox3D&
   return collides && near_ <= 1;
 }
 
+BoundingBox3D BoundingBox3D::FromPoints(const Math::Vector3* points, size_t count){
+  if(count == 0) throw std::exception("No points to create BoundingBox3D");
+  Near::Math::Vector3 min = points[0];
+  Near::Math::Vector3 max = min;
+  for(size_t i = 1;i < count;i ++){
+    min = Near::Math::Vector3::Min(min, points[i]);
+    max = Near::Math::Vector3::Max(max, points[i]);
+  }
+  return BoundingBox3D(Near::Math::Vector3::Lerp(min, max, 0.5f), (max - min) / 2);
+}
+
 }

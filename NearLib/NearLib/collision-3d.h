@@ -24,6 +24,7 @@ public:
   const Math::Vector3& getExtents() const;
   bool intersects(const BoundingBox3D& other) const;
   bool collides(const Math::Vector3& velocity, const BoundingBox3D& other, Math::Vector3* hitPoint, Math::Vector3* hitDir, float* hitNear) const;
+  static BoundingBox3D FromPoints(const Math::Vector3* points, size_t count);
 private:
   Math::Vector3 center;
   Math::Vector3 extents;
