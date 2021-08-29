@@ -22,6 +22,7 @@ public:
   BoundingBox3D(const Math::Vector3& center, const Math::Vector3& extents);
   const Math::Vector3& getCenter() const;
   const Math::Vector3& getExtents() const;
+  bool intersects(const BoundingBox3D& other) const;
   bool collides(const Math::Vector3& velocity, const BoundingBox3D& other, Math::Vector3* hitPoint, Math::Vector3* hitDir, float* hitNear) const;
 private:
   Math::Vector3 center;

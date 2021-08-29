@@ -74,6 +74,14 @@ const Math::Vector3& BoundingBox3D::getExtents() const{
   return extents;
 }
 
+bool BoundingBox3D::intersects(const BoundingBox3D& other) const{
+  auto min = center - extents;
+  auto max = center + extents;
+  auto otherMin = other.center - other.extents;
+  auto otherMax = other.center + other.extents;
+  return min.x < otherMax.x && otherMin.x < max.x && min.y < otherMax.y && otherMin.y < max.y && min.z < otherMax.z && otherMin.z < max.z;
+}
+
 bool BoundingBox3D::collides(const Math::Vector3& velocity, const BoundingBox3D& other, Math::Vector3* hitPoint, Math::Vector3* hitDir, float* hitNear) const{
   if(velocity == Math::Vector3::Zero) return false;
   BoundingBox3D otherExpanded = other;
