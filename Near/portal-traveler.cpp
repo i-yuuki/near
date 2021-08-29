@@ -2,20 +2,13 @@
 
 #include <algorithm>
 
-#include <NearLib/collision-3d.h>
 #include <NearLib/scene.h>
 
 #include "level-object.h"
 
-namespace{
-
-struct LevelCollision{
-  Near::Collision::BoundingBox3D aabb;
-  float hitNear;
-};
-
-}
-
+// 当たり判定が全然うまくできず妥協しまくった結果
+// 1回のmove()でくぐれるポータルは1個だけに
+// 60fpsもあれば大丈夫だと思うけど
 void PortalTraveler::move(Near::Math::Vector3& movement, float deltaTime, std::shared_ptr<Portal> ignorePortal){
   if(movement == Near::Math::Vector3::Zero) return;
   auto scaledMovement = movement * deltaTime;
@@ -23,9 +16,30 @@ void PortalTraveler::move(Near::Math::Vector3& movement, float deltaTime, std::s
   Near::Math::Vector3 rayNormalized;
   movement.Normalize(rayNormalized);
 
-  // 一番近いポータルを探しておく
+  // 使うオブジェクトを探しておく
   std::vector<std::shared_ptr<Portal>> portals;
   getLayer()->getScene()->findObjectsOfExactType<Portal>(portals);
+  std::shared_ptr<LevelObject> levelObj = getLayer()->getScene()->findObjectOfExactType<LevelObject>();
+  
+  // 近くのポータルを探しておく
+  std::vector<std::shared_ptr<Portal>> portalsOverlapping;
+  Near::Collision::BoundingBox3D me(transform.position, size / 2 + Near::Math::Vector3(DirectX::XMVectorAbs(movement)));
+  for(auto& portal : portals){
+    Near::Math::Vector3 right = portal->transform.getRight() * portal->getExtents().x;
+    Near::Math::Vector3 up    = portal->transform.getUp() * portal->getExtents().y;
+    Near::Math::Vector3 portalCorners[] = {
+      portal->transform.position - right + up,
+      portal->transform.position + right + up,
+      portal->transform.position - right - up,
+      portal->transform.position + right - up,
+    };
+    auto portalBox = Near::Collision::BoundingBox3D::FromPoints(portalCorners, 4);
+    if(me.intersects(portalBox)){
+      portalsOverlapping.push_back(portal);
+    }
+  }
+  
+  // 通るポータルを決める
   std::shared_ptr<Portal> portalToCross;
   float portalDistance;
   for(auto& portal : portals){
@@ -38,17 +52,23 @@ void PortalTraveler::move(Near::Math::Vector3& movement, float deltaTime, std::s
       portalDistance = t;
     }
   }
-  std::shared_ptr<Portal> otherPortal = portalToCross ? portalToCross->otherPortal.lock() : nullptr;
+
+  std::shared_ptr<Portal> otherPortal;
+  Near::Math::Vector3 posRelativeToOtherPortal;
+  Near::Math::Vector3 scaledMovementThroughPortal;
+  if(portalToCross){
+    otherPortal = portalToCross->otherPortal.lock();
+    posRelativeToOtherPortal = TransformThroughPortal(transform, portalToCross, otherPortal);
+    scaledMovementThroughPortal = TransformThroughPortal(scaledMovement, portalToCross, otherPortal);
+  }
 
   // レベルと当たり判定
-  auto levelObj = getLayer()->getScene()->findObjectOfExactType<LevelObject>();
   std::vector<LevelCollision> collisions;
-  Near::Collision::BoundingBox3D me(transform.position, size / 2);
-  for(auto& block : levelObj->getLevel()->getBlocks()){
-    Near::Collision::BoundingBox3D blockBox(block.position, block.size / 2);
-    float hitNear;
-    if(me.collides(scaledMovement, blockBox, nullptr, nullptr, &hitNear)){
-      collisions.push_back({blockBox, hitNear});
+  findCollisions(levelObj->getLevel(), transform.position, scaledMovement, collisions);
+  // 近くのポータルの先のレベルとも当たり判定
+  for(auto& portal : portalsOverlapping){
+    if(auto otherPortal = portal->otherPortal.lock()){
+      findCollisions(levelObj->getLevel(), TransformThroughPortal(transform, portal, otherPortal), TransformThroughPortal(scaledMovement, portal, otherPortal), collisions, portal);
     }
   }
   std::sort(collisions.begin(), collisions.end(), [](const LevelCollision& a, const LevelCollision& b){
@@ -59,7 +79,17 @@ void PortalTraveler::move(Near::Math::Vector3& movement, float deltaTime, std::s
     Near::Math::Vector3 hitPos;
     Near::Math::Vector3 hitDir;
     float hitNear;
-    if(!me.collides(scaledMovement, c.aabb, &hitPos, &hitDir, &hitNear)){
+    Near::Math::Vector3 pos, ray;
+    if(c.throughPortal){
+      auto other = c.throughPortal->otherPortal.lock();
+      pos = TransformThroughPortal(transform, c.throughPortal, other);
+      ray = TransformThroughPortal(scaledMovement, c.throughPortal, other);
+    }else{
+      pos = transform.position;
+      ray = scaledMovement;
+    }
+    Near::Collision::BoundingBox3D me(pos, size / 2);
+    if(!me.collides(ray, c.aabb, &hitPos, &hitDir, &hitNear)){
       continue;
     }
     if(hitDir.y >= 0.5f){
@@ -67,19 +97,12 @@ void PortalTraveler::move(Near::Math::Vector3& movement, float deltaTime, std::s
     }
     // DirectXTKになくてもabsやっちゃうぞ～～
     auto newMovement = movement + hitDir * Near::Math::Vector3(DirectX::XMVectorAbs(DirectX::XMLoadFloat3(&movement))) * (1 - hitNear);
-    if(otherPortal && portalToCross->transform.getForward().Dot(hitPos - portalToCross->transform.position) < 0){
-      // ポータルの先のブロック、もう当たり判定しない
-      break;
-    }
     movement = newMovement;
     scaledMovement = movement * deltaTime;
   }
   
   // ポータルをくぐる portal-scene.cpp 参照
   if(otherPortal){
-    Near::Math::Vector3 movementUntilPortal = rayNormalized * portalDistance;
-    transform.position += movementUntilPortal;
-
     Near::Math::Quaternion portalInv;
     portalToCross->transform.rotation.Inverse(portalInv);
 
@@ -87,17 +110,41 @@ void PortalTraveler::move(Near::Math::Vector3& movement, float deltaTime, std::s
     Near::Math::Vector3 dummy;
     m.Decompose(dummy, transform.rotation, transform.position);
 
-    // ポータルの先の当たり判定
-    // (くぐったポータルを戻ってきて無限再帰する？ので無視させつつ)
-    movement = Near::Math::Vector3::Transform(movement, portalInv);
-    movement = Near::Math::Vector3::Transform(movement, Near::Math::Quaternion::CreateFromYawPitchRoll(DirectX::XM_PI, 0, 0) * otherPortal->transform.rotation);
-    move(movement, deltaTime * (movementLen - portalDistance), otherPortal);
-    return;
+    movement = TransformThroughPortal(movement, portalToCross, otherPortal);
   }
 
   transform.position += movement * deltaTime;
 }
 
+void PortalTraveler::findCollisions(const Level* level, Near::Math::Vector3 origin, const Near::Math::Vector3& ray, std::vector<LevelCollision>& out, std::shared_ptr<Portal> portal){
+  Near::Collision::BoundingBox3D me(origin, size / 2);
+  for(auto& block : level->getBlocks()){
+    Near::Collision::BoundingBox3D blockBox(block.position, block.size / 2);
+    float hitNear;
+    if(me.collides(ray, blockBox, nullptr, nullptr, &hitNear)){
+      out.push_back({blockBox, hitNear, portal});
+    }
+  }
+}
+
 const Near::Math::Vector3& PortalTraveler::getSize() const{
   return size;
+}
+
+Near::Math::Vector3 PortalTraveler::TransformThroughPortal(const Near::Math::Vector3& pos, std::shared_ptr<Portal> portal, std::shared_ptr<Portal> otherPortal){
+  Near::Math::Quaternion portalInv;
+  portal->transform.rotation.Inverse(portalInv);
+  Near::Math::Vector3 ret = pos;
+  ret = Near::Math::Vector3::Transform(ret, portalInv);
+  ret = Near::Math::Vector3::Transform(ret, Near::Math::Quaternion::CreateFromYawPitchRoll(DirectX::XM_PI, 0, 0) * otherPortal->transform.rotation);
+  return ret;
+}
+
+Near::Math::Vector3 PortalTraveler::TransformThroughPortal(const Near::Transform& transform, std::shared_ptr<Portal> portal, std::shared_ptr<Portal> otherPortal){
+  Near::Math::Matrix m = transform.createTransform() * portal->transform.createTransform().Invert() * Near::Math::Matrix::CreateFromYawPitchRoll(DirectX::XM_PI, 0, 0) * otherPortal->transform.createTransform();
+  Near::Math::Vector3 dummy;
+  Near::Math::Quaternion dummyQ;
+  Near::Math::Vector3 ret;
+  m.Decompose(dummy, dummyQ, ret);
+  return ret;
 }
