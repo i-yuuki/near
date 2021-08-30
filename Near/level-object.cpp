@@ -27,14 +27,11 @@ static Near::Math::Color g_tmpFaceColors[5] = {
   Near::Math::Color(0.000f, 0.478f, 1.000f, 1),
 };
 
-LevelObject::LevelObject(const std::string& levelPath) : Near::GameObject(), levelPath(levelPath){
+LevelObject::LevelObject(std::shared_ptr<Level> level) : Near::GameObject(), level(level){
 }
 
 void LevelObject::init(Near::Layer* layer){
   Near::GameObject::init(layer);
-
-  level.reset(new Level());
-  level->load(levelPath);
 
   std::vector<Near::Vertex3D> vertices;
   std::vector<uint32_t> indices;

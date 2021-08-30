@@ -8,14 +8,13 @@
 
 class LevelObject : public Near::GameObject{
 public:
-  LevelObject(const std::string& levelPath);
+  LevelObject(std::shared_ptr<Level> level);
   virtual void init(Near::Layer* layer) override;
   virtual void draw() override;
   virtual void uninit() override;
   Level* getLevel();
 private:
-  std::string levelPath;
-  std::unique_ptr<Level> level;
+  std::shared_ptr<Level> level;
   Near::StandardVertexBuffer vertexBuffer;
   Near::IndexBuffer indexBuffer;
   Near::IndexBuffer indexBufferWireframe;
