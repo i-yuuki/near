@@ -162,6 +162,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="game.cpp" />
     <ClCompile Include="level-object.cpp" />
     <ClCompile Include="level.cpp" />
     <ClCompile Include="main.cpp" />
@@ -172,6 +173,7 @@
     <ClCompile Include="portal-scene.cpp" />
     <ClCompile Include="portal-traveler.cpp" />
     <ClCompile Include="portal.cpp" />
+    <ClCompile Include="scene-title.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NearLib\NearLib.vcxproj">
@@ -180,6 +182,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="game.h" />
     <ClInclude Include="level-object.h" />
     <ClInclude Include="level.h" />
     <ClInclude Include="main.h" />
@@ -190,6 +193,7 @@
     <ClInclude Include="portal-scene.h" />
     <ClInclude Include="portal-traveler.h" />
     <ClInclude Include="portal.h" />
+    <ClInclude Include="scene-title.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
