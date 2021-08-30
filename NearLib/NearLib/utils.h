@@ -63,6 +63,8 @@ std::string narrow(std::wstring_view str);
 // Windows系APIを呼ぶときに使ってね。
 std::wstring widen(std::string_view str);
 
+Math::Quaternion createEularRotation(const Math::Vector3& degrees);
+
 Math::Matrix createObliqueMatrix(const Math::Matrix& view, const Math::Matrix& projection, Math::Plane c);
 /*
 Math::Vector3 toEulerAngles(const Math::Quaternion& q);

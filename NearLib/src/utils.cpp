@@ -37,6 +37,11 @@ std::wstring widen(std::string_view str){
   return wide;
 }
 
+Math::Quaternion createEularRotation(const Math::Vector3& degrees){
+  auto radians = degrees * (DirectX::XM_PI / 180.0f);
+  return Math::Quaternion::CreateFromYawPitchRoll(radians.y, radians.x, radians.z);
+}
+
 Math::Matrix createObliqueMatrix(const Math::Matrix& view, const Math::Matrix& projection, Math::Plane c){
   // http://www.terathon.com/lengyel/Lengyel-Oblique.pdf
   // M' =        M₁
