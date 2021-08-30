@@ -28,10 +28,14 @@ public:
 class Level : public Near::Asset{
 public:
   void load(const std::string& path) override;
+  const Near::Math::Vector3& getSpawnPosition() const;
+  const Near::Math::Vector3& getSpawnRotation() const;
   const std::vector<LevelBlock>& getBlocks() const;
   const std::vector<LevelPortal>& getPortals() const;
   void createGameObjects(Near::Scene& scene);
 private:
+  Near::Math::Vector3 spawnPosition;
+  Near::Math::Vector3 spawnRotation;
   std::vector<LevelBlock> blocks;
   std::vector<LevelPortal> portals;
   void loadObject(std::istream& is);

@@ -27,6 +27,14 @@ void Level::load(const std::string& path){
   portals.shrink_to_fit();
 }
 
+const Near::Math::Vector3& Level::getSpawnPosition() const{
+  return spawnPosition;
+}
+
+const Near::Math::Vector3& Level::getSpawnRotation() const{
+  return spawnRotation;
+}
+
 const std::vector<LevelBlock>& Level::getBlocks() const{
   return blocks;
 }
@@ -85,6 +93,19 @@ void Level::loadObject(std::istream& is){
       }else if(token == u8"size"){
         portal.size.x = readFloat(is);
         portal.size.y = readFloat(is);
+      }
+    }
+  }else if(token == u8"spawn"){
+    LevelPortal& portal = portals.emplace_back();
+    while((token = readToken(is)) != u8"}"){
+      if(token == u8"position"){
+        spawnPosition.x = readFloat(is);
+        spawnPosition.y = readFloat(is);
+        spawnPosition.z = readFloat(is);
+      }else if(token == u8"rotation"){
+        spawnRotation.x = readFloat(is);
+        spawnRotation.y = readFloat(is);
+        spawnRotation.z = readFloat(is);
       }
     }
   }else{

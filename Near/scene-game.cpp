@@ -2,6 +2,8 @@
 
 #include <algorithm>
 
+#include <NearLib/utils.h>
+
 #include "game.h"
 #include "player-camera.h"
 
@@ -16,7 +18,10 @@ void SceneGame::init(){
   level->createGameObjects(*this);
   auto player = getLayer(Near::Scene::LAYER_OBJECTS)->createGameObject<Player>();
   auto camera = getLayer(Near::Scene::LAYER_MANAGERS)->createGameObject<PlayerCamera>(player);
-  player->transform.position.y = 500;
+  player->transform.position = level->getSpawnPosition();
+  player->transform.position.y += player->getSize().y / 2;
+  auto spawnRotation = level->getSpawnRotation();
+  player->transform.rotation = Near::createEularRotation(spawnRotation);
   camera->setFar(8000);
 }
 
