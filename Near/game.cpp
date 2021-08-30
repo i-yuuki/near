@@ -11,13 +11,19 @@ Game::Game(){
 }
 
 void Game::init(){
-  setNextScene<SceneTitle>();
+  fade.init();
+  fadeToNextScene<SceneTitle>(Near::Math::Color(0, 0, 0, 1), 0);
 }
 
 void Game::update(){
   timer.frame();
   Near::pollEvents();
+  fade.update(timer.getLastFrameTime());
   if(nextScene){
+    if(fade.getState() == Fade::State::FADE_OUT){
+      if(fade.getProgress() < 1) return;
+      fade.fadeIn(1000);
+    }
     if(scene){
       scene->uninit();
       delete scene;
@@ -25,6 +31,9 @@ void Game::update(){
     scene = nextScene;
     nextScene = nullptr;
     scene->init();
+    // deltaTimeをクリア (ちょっとゴリ押し感ある)
+    timer.frame();
+    timer.frame();
   }
   if(scene){
     scene->beforeUpdate(timer.getLastFrameTime());
@@ -40,6 +49,7 @@ void Game::draw(){
   if(scene){
     scene->draw();
   }
+  fade.draw();
   r->present();
 }
 
