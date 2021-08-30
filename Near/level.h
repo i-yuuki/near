@@ -2,6 +2,7 @@
 
 #include <NearLib/asset.h>
 #include <NearLib/buffer.h>
+#include <NearLib/scene.h>
 
 class LevelBlock{
 public:
@@ -29,6 +30,7 @@ public:
   void load(const std::string& path) override;
   const std::vector<LevelBlock>& getBlocks() const;
   const std::vector<LevelPortal>& getPortals() const;
+  void createGameObjects(Near::Scene& scene);
 private:
   std::vector<LevelBlock> blocks;
   std::vector<LevelPortal> portals;

@@ -9,6 +9,8 @@
 
 #include <NearLib/vertex.h>
 
+#include "portal.h"
+
 void Level::load(const std::string& path){
   blocks.clear();
   {
@@ -27,6 +29,23 @@ void Level::load(const std::string& path){
 
 const std::vector<LevelBlock>& Level::getBlocks() const{
   return blocks;
+}
+
+void Level::createGameObjects(Near::Scene& scene){
+  Near::Layer& layerTransparent = *scene.getLayer(Near::Scene::LAYER_TRANSPARENT_OBJECTS);
+  std::unordered_map<std::string, std::shared_ptr<Portal>> portalObjects;
+  for(auto& portal : portals){
+    auto obj = layerTransparent.createGameObject<Portal>(portal.size / 2);
+    obj->transform.position = portal.position;
+    obj->transform.rotation = Near::Math::Quaternion::CreateFromYawPitchRoll(portal.rotation.y, portal.rotation.x, portal.rotation.z);
+    portalObjects.emplace(portal.name, obj);
+  }
+  for(auto& portal : portals){
+    auto partner = portalObjects.find(portal.partner);
+    if(partner != portalObjects.end()){
+      portalObjects[portal.name]->otherPortal = partner->second;
+    }
+  }
 }
 
 void Level::loadObject(std::istream& is){
