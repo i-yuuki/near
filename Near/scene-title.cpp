@@ -7,6 +7,7 @@
 #include "game.h"
 #include "main.h"
 #include "polygon-2d.h"
+#include "scene-game.h"
 
 SceneTitle::SceneTitle() : PortalScene(){
 }
@@ -22,6 +23,9 @@ void SceneTitle::update(float deltaTime){
   PortalScene::update(deltaTime);
   time += deltaTime;
   title->setColor(Near::Math::Color(1, 1, 1, std::clamp((time - 1000) / 1000, 0.0f, 1.0f)));
+  if(Near::input()->isKeyPressedThisFrame(VK_SPACE)){
+    NearGame::Game::Instance->setNextScene<SceneGame>();
+  }
 }
 
 void SceneTitle::draw(){

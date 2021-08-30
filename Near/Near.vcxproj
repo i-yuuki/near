@@ -173,6 +173,7 @@
     <ClCompile Include="portal-scene.cpp" />
     <ClCompile Include="portal-traveler.cpp" />
     <ClCompile Include="portal.cpp" />
+    <ClCompile Include="scene-game.cpp" />
     <ClCompile Include="scene-title.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -193,6 +194,7 @@
     <ClInclude Include="portal-scene.h" />
     <ClInclude Include="portal-traveler.h" />
     <ClInclude Include="portal.h" />
+    <ClInclude Include="scene-game.h" />
     <ClInclude Include="scene-title.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
