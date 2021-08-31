@@ -162,8 +162,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="activatable.cpp" />
     <ClCompile Include="cube.cpp" />
     <ClCompile Include="fade.cpp" />
+    <ClCompile Include="floor-button.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="level-object.cpp" />
     <ClCompile Include="level.cpp" />
@@ -185,8 +187,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="activatable.h" />
     <ClInclude Include="cube.h" />
     <ClInclude Include="fade.h" />
+    <ClInclude Include="floor-button.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="level-object.h" />
     <ClInclude Include="level.h" />
