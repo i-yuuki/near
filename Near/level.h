@@ -39,6 +39,7 @@ private:
   std::vector<LevelBlock> blocks;
   std::vector<LevelEntity> cubes;
   std::vector<LevelEntity> floorButtons;
+  std::vector<LevelEntity> doors;
   std::vector<LevelPortal> portals;
   void loadObject(std::istream& is);
   bool loadEntityToken(std::istream& is, const std::string& token, LevelEntity& ent);

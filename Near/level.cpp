@@ -11,6 +11,7 @@
 #include <NearLib/vertex.h>
 
 #include "cube.h"
+#include "door.h"
 #include "floor-button.h"
 #include "portal.h"
 
@@ -56,6 +57,12 @@ void Level::createGameObjects(Near::Scene& scene){
     auto obj = layerObjects.createGameObject<FloorButton>();
     obj->transform.position = btn.position;
     obj->transform.rotation = Near::createEularRotation(btn.rotation);
+  }
+
+  for(auto& door : doors){
+    auto obj = layerObjects.createGameObject<Door>();
+    obj->transform.position = door.position;
+    obj->transform.rotation = Near::createEularRotation(door.rotation);
   }
 
   std::unordered_map<std::string, std::shared_ptr<Portal>> portalObjects;
@@ -122,6 +129,11 @@ void Level::loadObject(std::istream& is){
     while((token = readToken(is)) != u8"}"){
       if(loadEntityToken(is, token, ent)) continue;
       // TODO ドアとかつなげるオブジェクトを読む
+    }
+  }else if(token == u8"door"){
+    LevelEntity& ent = doors.emplace_back();
+    while((token = readToken(is)) != u8"}"){
+      loadEntityToken(is, token, ent);
     }
   }else if(token == u8"spawn"){
     LevelPortal& portal = portals.emplace_back();

@@ -164,6 +164,7 @@
   <ItemGroup>
     <ClCompile Include="activatable.cpp" />
     <ClCompile Include="cube.cpp" />
+    <ClCompile Include="door.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="floor-button.cpp" />
     <ClCompile Include="game.cpp" />
@@ -189,6 +190,7 @@
   <ItemGroup>
     <ClInclude Include="activatable.h" />
     <ClInclude Include="cube.h" />
+    <ClInclude Include="door.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="floor-button.h" />
     <ClInclude Include="game.h" />
