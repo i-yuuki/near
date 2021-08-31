@@ -439,7 +439,7 @@ void Renderer::compilePixelShader(ID3D11PixelShader** shader, const char* path){
     char* a = (char*)errorMessages->GetBufferPointer();
     safeRelease(code);
     safeRelease(errorMessages);
-    throwResult("Vertex shader compile failed", res);
+    throwResult("Pixel shader compile failed", res);
   }
   
   res = device->CreatePixelShader(code->GetBufferPointer(), code->GetBufferSize(), nullptr, shader);
