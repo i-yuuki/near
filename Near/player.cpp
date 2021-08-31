@@ -68,6 +68,13 @@ void Player::update(float deltaTime){
   if(onGround){
     velocity.y = 0;
   }
+
+  if(auto cube = cubeHolding.lock()){
+    cube->transform.position = transform.position;
+    cube->transform.position.y += size.y / 2;
+    auto fwd = transform.getForward() * 128;
+    cube->move(fwd, 1);
+  }
 }
 
 void Player::draw(){
@@ -95,6 +102,8 @@ void Player::onKeyDown(int vkey, bool isRepeat){
     if(!isRepeat && onGround){
       velocity.y = 200;
     }
+  }else if(vkey == 'E'){
+    interact();
   }else if(vkey == 'F'){
     thirdPerson = !thirdPerson;
   }
@@ -102,4 +111,29 @@ void Player::onKeyDown(int vkey, bool isRepeat){
 
 bool Player::isThirdPerson() const{
   return thirdPerson;
+}
+
+void Player::interact(){
+  if(auto cube = cubeHolding.lock()){
+    cube->setHolder(nullptr);
+    cubeHolding.reset();
+    return;
+  }
+  // とりあえず一番近いキューブを拾う
+  std::vector<std::shared_ptr<Cube>> cubes;
+  getLayer()->getScene()->findObjectsOfExactType<Cube>(cubes);
+  float nearest;
+  std::shared_ptr<Cube> cubeToPick;
+  for(auto& cube : cubes){
+    float distance = Near::Math::Vector3::DistanceSquared(cube->transform.position, transform.position);
+    if(distance >= 128 * 128) continue;
+    if(!cubeToPick || distance < nearest){
+      cubeToPick = cube;
+      nearest = distance;
+    }
+  }
+  if(cubeToPick){
+    cubeToPick->setHolder(this);
+    cubeHolding = cubeToPick;
+  }
 }

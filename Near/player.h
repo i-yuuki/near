@@ -3,6 +3,7 @@
 #include <NearLib/game-object.h>
 #include <NearLib/fbx-model.h>
 
+#include "cube.h"
 #include "portal-traveler.h"
 #include "level.h"
 
@@ -14,11 +15,13 @@ public:
   virtual void uninit() override;
   virtual void onKeyDown(int vkey, bool isRepeat) override;
   bool isThirdPerson() const;
+  void interact();
 private:
   Near::InputConnection keyListener;
   Near::Math::Vector2 movement;
   Near::Math::Vector3 velocity;
   bool thirdPerson;
+  std::weak_ptr<Cube> cubeHolding;
   Near::FBXModel* model;
   std::shared_ptr<Near::VertexShader> vertexShader;
   std::shared_ptr<Near::PixelShader> pixelShader;

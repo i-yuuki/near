@@ -13,8 +13,9 @@ public:
   virtual void update(float deltaTime) override;
   virtual void draw() override;
   virtual void uninit() override;
+  void setHolder(Player* holder);
 private:
-  std::weak_ptr<Player> holder;
+  Player* holder = nullptr;
   Near::Math::Vector3 velocity;
   std::shared_ptr<Near::FBXModel> model;
 };

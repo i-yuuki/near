@@ -16,7 +16,7 @@ void Cube::init(Near::Layer* layer){
 }
 
 void Cube::update(float deltaTime){
-  if(!holder.expired()){
+  if(holder){
     velocity = Near::Math::Vector3::Zero;
     return;
   }
@@ -34,4 +34,8 @@ void Cube::draw(){
 
 void Cube::uninit(){
   model.reset();
+}
+
+void Cube::setHolder(Player* holder){
+  this->holder = holder;
 }
