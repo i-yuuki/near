@@ -55,7 +55,7 @@ void Level::createGameObjects(Near::Scene& scene){
   for(auto& portal : portals){
     auto obj = layerTransparent.createGameObject<Portal>(portal.size / 2);
     obj->transform.position = portal.position;
-    obj->transform.rotation = Near::Math::Quaternion::CreateFromYawPitchRoll(portal.rotation.y, portal.rotation.x, portal.rotation.z);
+    obj->transform.rotation = Near::createEularRotation(portal.rotation);
     portalObjects.emplace(portal.name, obj);
   }
   for(auto& portal : portals){
