@@ -5,6 +5,7 @@
 #include <NearLib/utils.h>
 
 #include "game.h"
+#include "main.h"
 #include "player-camera.h"
 
 SceneGame::SceneGame() : PortalScene(){
@@ -28,6 +29,11 @@ void SceneGame::init(){
 
 void SceneGame::update(float deltaTime){
   PortalScene::update(deltaTime);
+#ifdef _DEBUG
+  if(Near::input()->isKeyPressedThisFrame('R') && Near::input()->isKeyDown(VK_CONTROL)){
+    NearGame::Game::Instance->fadeToNextScene<SceneGame>(NearGame::BACKGROUND_COLOR, 0);
+  }
+#endif
 }
 
 void SceneGame::draw(){
