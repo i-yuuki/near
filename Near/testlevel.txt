@@ -1,27 +1,31 @@
 Near Map v1
 
-spawn { position 0 0 0 rotation 0 180 0 }
+spawn { position 0 0 400 rotation 0 0 0 }
 
-block { position     0 -8 0 size 640 16 640 faces 0 0 0 0 1 0 }
+block { position     0 -8 0 size 960 16 960 faces 0 0 0 0 1 0 }
 block { position 10000 -8 0 size 640 16 640 faces 0 0 0 0 2 0 }
-
-block { position  -288  -16 384 size 64 32 128 faces 1 0 0 0 1 0 }
-block { position  -240  -48 384 size 32 32 128 faces 1 0 0 0 1 0 }
-block { position  -208  -80 384 size 32 32 128 faces 1 0 0 0 1 0 }
-block { position  -176 -112 384 size 32 32 128 faces 1 0 0 0 1 0 }
-block { position  -112 -144 384 size 96 32 128 faces 0 1 0 0 1 0 }
-block { position  -112 -176 464 size 96 32  32 faces 0 1 0 0 1 0 }
-block { position  -112 -208 496 size 96 32  32 faces 0 1 0 0 1 0 }
-block { position  -112 -240 528 size 96 32  32 faces 0 1 0 0 1 0 }
+block { position 20000 -8 0 size 640 16 640 faces 0 0 0 0 3 0 }
 
 # Gate
-block { position -80  64 256 size  32 128 32 faces 4 4 4 4 4 0 }
-block { position  80  64 256 size  32 128 32 faces 4 4 4 4 4 0 }
-block { position   0 144 256 size 192  32 32 faces 4 4 4 4 4 4 }
-portal { name portal_a partner portal_b position 0 64 256 size 128 128 }
+block { position  0  64 -80 size 64 128  32 faces 1 1 1 1 1 0 }
+block { position  0  64  80 size 64 128  32 faces 1 1 1 1 1 0 }
+block { position  0 144   0 size 64  32 192 faces 1 1 1 1 1 1 }
+block { position 28  64   0 size  8 128 128 faces 1 1 1 1 1 1 }
+portal { name portal_a partner portal_b position -8 64 0 rotation 0  90 0 size 128 128 }
 
 # Gate
-block { position  9920  64 256 size  32 128 32 faces 4 4 4 4 4 0 }
-block { position 10080  64 256 size  32 128 32 faces 4 4 4 4 4 0 }
-block { position 10000 144 256 size 192  32 32 faces 4 4 4 4 4 4 }
-portal { name portal_b partner portal_a position 10000 64 256 size 128 128 }
+block { position 10000  64 -80 size 64 128  32 faces 1 1 1 1 1 0 }
+block { position 10000  64  80 size 64 128  32 faces 1 1 1 1 1 0 }
+block { position 10000 144   0 size 64  32 192 faces 1 1 1 1 1 1 }
+portal { name portal_b partner portal_a position 10008 64 0 rotation 0 -90 0 size 128 128 }
+portal { name portal_c partner portal_d position  9992 64 0 rotation 0  90 0 size 128 128 }
+
+# Gate
+block { position 20000  64 -80 size 64 128  32 faces 1 1 1 1 1 0 }
+block { position 20000  64  80 size 64 128  32 faces 1 1 1 1 1 0 }
+block { position 20000 144   0 size 64  32 192 faces 1 1 1 1 1 1 }
+block { position 19972  64   0 size  8 128 128 faces 1 1 1 1 1 1 }
+portal { name portal_d partner portal_c position 20002 64 0 rotation 0 -90 0 size 128 128 }
+
+portal { name portal_sky_a partner portal_sky_b position 20000 -2000 0 rotation  90 0 0 size 2000 2000 }
+portal { name portal_sky_b partner portal_sky_a position 20000  2000 0 rotation -90 0 0 size 2000 2000 }
