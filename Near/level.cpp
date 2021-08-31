@@ -47,35 +47,17 @@ void Level::createGameObjects(Near::Scene& scene){
   Near::Layer& layerObjects = *scene.getLayer(Near::Scene::LAYER_OBJECTS);
   Near::Layer& layerTransparent = *scene.getLayer(Near::Scene::LAYER_TRANSPARENT_OBJECTS);
 
-  for(auto& cube : cubes){
-    auto obj = layerObjects.createGameObject<Cube>();
-    obj->transform.position = cube.position;
-    obj->transform.rotation = Near::createEularRotation(cube.rotation);
-  }
+  createEntityObjects<Cube>(cubes, layerObjects);
+  createEntityObjects<FloorButton>(floorButtons, layerObjects);
+  createEntityObjects<Door>(doors, layerObjects);
 
-  for(auto& btn : floorButtons){
-    auto obj = layerObjects.createGameObject<FloorButton>();
-    obj->transform.position = btn.position;
-    obj->transform.rotation = Near::createEularRotation(btn.rotation);
-  }
-
-  for(auto& door : doors){
-    auto obj = layerObjects.createGameObject<Door>();
-    obj->transform.position = door.position;
-    obj->transform.rotation = Near::createEularRotation(door.rotation);
-  }
-
-  std::unordered_map<std::string, std::shared_ptr<Portal>> portalObjects;
   for(auto& portal : portals){
-    auto obj = layerTransparent.createGameObject<Portal>(portal.size / 2);
-    obj->transform.position = portal.position;
-    obj->transform.rotation = Near::createEularRotation(portal.rotation);
-    portalObjects.emplace(portal.name, obj);
+    addEntityObject(layerTransparent.createGameObject<Portal>(portal.size / 2), portal);
   }
+
   for(auto& portal : portals){
-    auto partner = portalObjects.find(portal.partner);
-    if(partner != portalObjects.end()){
-      portalObjects[portal.name]->otherPortal = partner->second;
+    if(auto partner = findObjectByName<Portal>(portal.partner)){
+      findObjectByName<Portal>(portal.name)->otherPortal = partner;
     }
   }
 }

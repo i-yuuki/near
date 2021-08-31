@@ -41,9 +41,30 @@ private:
   std::vector<LevelEntity> floorButtons;
   std::vector<LevelEntity> doors;
   std::vector<LevelPortal> portals;
+  std::unordered_map<std::string, std::shared_ptr<Near::GameObject>> objectsCreated;
   void loadObject(std::istream& is);
   bool loadEntityToken(std::istream& is, const std::string& token, LevelEntity& ent);
   std::string readToken(std::istream& is);
   int readInt(std::istream& is);
   float readFloat(std::istream& is);
+  template<class Ent>
+  void addEntityObject(std::shared_ptr<Near::GameObject> obj, const Ent& entity){
+    obj->transform.position = entity.position;
+    obj->transform.rotation = Near::createEularRotation(entity.rotation);
+    if(!entity.name.empty()){
+      objectsCreated.emplace(entity.name, obj);
+    }
+  }
+  template<class Obj, class Ent>
+  void createEntityObjects(const std::vector<Ent>& entities, Near::Layer& layer){
+    for(auto& ent : entities){
+      addEntityObject(layer.createGameObject<Obj>(), ent);
+    }
+  }
+  template<class Obj>
+  std::shared_ptr<Obj> findObjectByName(const std::string& key){
+    auto it = objectsCreated.find(key);
+    if(it == objectsCreated.end()) return nullptr;
+    return std::dynamic_pointer_cast<Obj>(it->second);
+  }
 };
