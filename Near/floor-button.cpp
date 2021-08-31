@@ -9,6 +9,7 @@ void FloorButton::init(Near::Layer* layer){
   GameObject::init(layer);
   model.reset(new Near::FBXModel());
   model->load("assets/models/floor-button.fbx");
+  active = false;
 }
 
 void FloorButton::draw(){
@@ -22,7 +23,9 @@ void FloorButton::uninit(){
 }
 
 void FloorButton::activate(){
+  activateTargets();
 }
 
 void FloorButton::deactivate(){
+  deactivateTargets();
 }

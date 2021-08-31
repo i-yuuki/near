@@ -51,6 +51,8 @@ void Level::createGameObjects(Near::Scene& scene){
   createEntityObjects<FloorButton>(floorButtons, layerObjects);
   createEntityObjects<Door>(doors, layerObjects);
 
+  connectObjects(floorButtons);
+
   for(auto& portal : portals){
     addEntityObject(layerTransparent.createGameObject<Portal>(portal.size / 2), portal);
   }
@@ -107,10 +109,12 @@ void Level::loadObject(std::istream& is){
       loadEntityToken(is, token, ent);
     }
   }else if(token == u8"floorButton"){
-    LevelEntity& ent = floorButtons.emplace_back();
+    LevelActivatable& ent = floorButtons.emplace_back();
     while((token = readToken(is)) != u8"}"){
       if(loadEntityToken(is, token, ent)) continue;
-      // TODO ドアとかつなげるオブジェクトを読む
+      if(token == u8"target"){
+        ent.targets.push_back(readToken(is));
+      }
     }
   }else if(token == u8"door"){
     LevelEntity& ent = doors.emplace_back();

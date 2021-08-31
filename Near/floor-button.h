@@ -5,7 +5,7 @@
 
 #include "activatable.h"
 
-class FloorButton : public Near::GameObject, public Activatable{
+class FloorButton : public Near::GameObject, public Activatable, public Activator{
 public:
   FloorButton();
   virtual void init(Near::Layer* layer) override;

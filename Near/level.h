@@ -4,6 +4,8 @@
 #include <NearLib/buffer.h>
 #include <NearLib/scene.h>
 
+#include "activatable.h"
+
 class LevelBlock{
 public:
   Near::Math::Vector3 position;
@@ -17,6 +19,11 @@ public:
   std::string name;
   Near::Math::Vector3 position;
   Near::Math::Vector3 rotation;
+};
+
+class LevelActivatable : public LevelEntity{
+public:
+  std::vector<std::string> targets;
 };
 
 class LevelPortal : public LevelEntity{
@@ -38,7 +45,7 @@ private:
   Near::Math::Vector3 spawnRotation;
   std::vector<LevelBlock> blocks;
   std::vector<LevelEntity> cubes;
-  std::vector<LevelEntity> floorButtons;
+  std::vector<LevelActivatable> floorButtons;
   std::vector<LevelEntity> doors;
   std::vector<LevelPortal> portals;
   std::unordered_map<std::string, std::shared_ptr<Near::GameObject>> objectsCreated;
@@ -66,5 +73,16 @@ private:
     auto it = objectsCreated.find(key);
     if(it == objectsCreated.end()) return nullptr;
     return std::dynamic_pointer_cast<Obj>(it->second);
+  }
+  template<class Ent>
+  void connectObjects(std::vector<Ent>& entities){
+    for(auto& ent : entities){
+      auto obj = findObjectByName<Activator>(ent.name);
+      for(auto& target : ent.targets){
+        if(auto targetObj = findObjectByName<Activatable>(target)){
+          obj->addTarget(targetObj);
+        }
+      }
+    }
   }
 };
