@@ -2,6 +2,7 @@
 
 #include <NearLib/fbx-model.h>
 
+#include "floor-button.h"
 #include "portal-traveler.h"
 
 class Player;
@@ -16,6 +17,7 @@ public:
   void setHolder(Player* holder);
 private:
   Player* holder = nullptr;
+  std::weak_ptr<FloorButton> button;
   Near::Math::Vector3 velocity;
   std::shared_ptr<Near::FBXModel> model;
 };
