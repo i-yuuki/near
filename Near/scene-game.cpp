@@ -23,6 +23,7 @@ void SceneGame::init(){
   auto spawnRotation = level->getSpawnRotation();
   player->transform.rotation = Near::createEularRotation(spawnRotation);
   camera->setFar(8000);
+  Near::input()->lockMouse(true);
 }
 
 void SceneGame::update(float deltaTime){
@@ -35,4 +36,5 @@ void SceneGame::draw(){
 
 void SceneGame::uninit(){
   PortalScene::uninit();
+  Near::input()->lockMouse(false);
 }
