@@ -7,8 +7,10 @@
 #include <sstream>
 #include <vector>
 
+#include <NearLib/utils.h>
 #include <NearLib/vertex.h>
 
+#include "cube.h"
 #include "portal.h"
 
 void Level::load(const std::string& path){
@@ -40,7 +42,15 @@ const std::vector<LevelBlock>& Level::getBlocks() const{
 }
 
 void Level::createGameObjects(Near::Scene& scene){
+  Near::Layer& layerObjects = *scene.getLayer(Near::Scene::LAYER_OBJECTS);
   Near::Layer& layerTransparent = *scene.getLayer(Near::Scene::LAYER_TRANSPARENT_OBJECTS);
+
+  for(auto& cube : cubes){
+    auto obj = layerObjects.createGameObject<Cube>();
+    obj->transform.position = cube.position;
+    obj->transform.rotation = Near::createEularRotation(cube.rotation);
+  }
+
   std::unordered_map<std::string, std::shared_ptr<Portal>> portalObjects;
   for(auto& portal : portals){
     auto obj = layerTransparent.createGameObject<Portal>(portal.size / 2);
@@ -94,6 +104,11 @@ void Level::loadObject(std::istream& is){
         portal.size.x = readFloat(is);
         portal.size.y = readFloat(is);
       }
+    }
+  }else if(token == u8"cube"){
+    LevelEntity& ent = cubes.emplace_back();
+    while((token = readToken(is)) != u8"}"){
+      loadEntityToken(is, token, ent);
     }
   }else if(token == u8"spawn"){
     LevelPortal& portal = portals.emplace_back();
