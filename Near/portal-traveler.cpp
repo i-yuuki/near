@@ -76,12 +76,12 @@ void PortalTraveler::move(Near::Math::Vector3& movement, float deltaTime, std::s
   });
 
   for(auto& c : collisions){
+    auto other = c.throughPortal ? c.throughPortal->otherPortal.lock() : nullptr;
     Near::Math::Vector3 hitPos;
     Near::Math::Vector3 hitDir;
     float hitNear;
     Near::Math::Vector3 pos, ray;
     if(c.throughPortal){
-      auto other = c.throughPortal->otherPortal.lock();
       pos = TransformThroughPortal(transform, c.throughPortal, other);
       ray = TransformThroughPortal(scaledMovement, c.throughPortal, other);
     }else{
@@ -91,6 +91,13 @@ void PortalTraveler::move(Near::Math::Vector3& movement, float deltaTime, std::s
     Near::Collision::BoundingBox3D me(pos, size / 2);
     if(!me.collides(ray, c.aabb, &hitPos, &hitDir, &hitNear)){
       continue;
+    }
+    // ポータル越しの衝突がポータルの手前だったら当たらない
+    // もうここまでくると何がどうなってるのかわからない (課題提出前日23時)
+    if(c.throughPortal){
+      if(other->transform.getForward().Dot(hitPos - c.throughPortal->transform.position) > 0){
+        continue;
+      }
     }
     if(hitDir.y >= 0.5f){
       onGround = true;
