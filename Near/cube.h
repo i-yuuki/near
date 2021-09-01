@@ -7,13 +7,14 @@
 
 class Player;
 
-class Cube : public PortalTraveler{
+class Cube : public PortalTraveler, public Near::ICollidable{
 public:
   Cube();
   virtual void init(Near::Layer* layer) override;
   virtual void update(float deltaTime) override;
   virtual void draw() override;
   virtual void uninit() override;
+  virtual void addColliders(std::function<void(const Near::Collision::BoundingBox3D&)> out) override;
   void setHolder(Player* holder);
 private:
   Player* holder = nullptr;

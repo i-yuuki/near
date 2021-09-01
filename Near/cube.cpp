@@ -74,6 +74,10 @@ void Cube::uninit(){
   model.reset();
 }
 
+void Cube::addColliders(std::function<void(const Near::Collision::BoundingBox3D&)> out){
+  out(Near::Collision::BoundingBox3D(transform.position, size / 2));
+}
+
 void Cube::setHolder(Player* holder){
   if(holder == this->holder) return;
   this->holder = holder;
