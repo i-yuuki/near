@@ -97,6 +97,10 @@ void Player::uninit(){
   keyListener.disconnect();
 }
 
+void Player::addColliders(std::function<void(const Near::Collision::BoundingBox3D&)> out){
+  out(Near::Collision::BoundingBox3D(transform.position, size / 2));
+}
+
 void Player::onKeyDown(int vkey, bool isRepeat){
   printf_s("Player received keyDown: %d\n", vkey);
   if(vkey == VK_SPACE){
