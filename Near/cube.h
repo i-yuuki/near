@@ -20,4 +20,6 @@ private:
   std::weak_ptr<FloorButton> button;
   Near::Math::Vector3 velocity;
   std::shared_ptr<Near::FBXModel> model;
+  std::shared_ptr<Near::VertexShader> vertexShader;
+  std::shared_ptr<Near::PixelShader> pixelShader;
 };

@@ -20,4 +20,6 @@ protected:
 private:
   float time;
   std::unique_ptr<Near::FBXModel> model;
+  std::shared_ptr<Near::VertexShader> vertexShader;
+  std::shared_ptr<Near::PixelShader> pixelShader;
 };

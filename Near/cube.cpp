@@ -16,6 +16,8 @@ void Cube::init(Near::Layer* layer){
   size = Near::Math::Vector3(32, 32, 32);
   model.reset(new Near::FBXModel());
   model->load("assets/models/cube.fbx");
+  vertexShader = layer->getScene()->vertexShaders->getOrLoad("assets/nearlib/shaders/vs.hlsl");
+  pixelShader = layer->getScene()->pixelShaders->getOrLoad("assets/shaders/ps-level.hlsl");
 }
 
 void Cube::update(float deltaTime){
@@ -59,11 +61,16 @@ void Cube::update(float deltaTime){
 }
 
 void Cube::draw(){
+  auto* r = Near::renderer();
   auto t = transform.createTransform();
+  r->setVertexShader(vertexShader.get());
+  r->setPixelShader(pixelShader.get());
   model->draw(&t);
 }
 
 void Cube::uninit(){
+  vertexShader.reset();
+  pixelShader.reset();
   model.reset();
 }
 

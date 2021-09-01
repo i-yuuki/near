@@ -16,4 +16,6 @@ protected:
   virtual void deactivate() override;
 private:
   std::unique_ptr<Near::FBXModel> model;
+  std::shared_ptr<Near::VertexShader> vertexShader;
+  std::shared_ptr<Near::PixelShader> pixelShader;
 };
