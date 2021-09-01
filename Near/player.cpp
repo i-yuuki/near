@@ -10,6 +10,7 @@
 #include "main.h"
 #include "portal-scene.h"
 #include "scene-game.h"
+#include "scene-finish.h"
 #include "level-object.h"
 
 void Player::init(Near::Layer* layer){
@@ -64,10 +65,16 @@ void Player::update(float deltaTime){
   velocity.y += gravity * (deltaTime * 0.001f);
   move(velocity, deltaTime * 0.001f);
 
+  auto* game = NearGame::Game::Instance;
   if(transform.position.y < NearGame::VOID_Y){
-    auto* game = NearGame::Game::Instance;
     game->levels.setNextLevel(game->levels.getLevelIdx());
     game->fadeToNextScene<SceneGame>(Near::Math::Color(0, 0, 0, 1), 500);
+    return;
+  }
+
+  float distanceToFinish = Near::Math::Vector3::DistanceSquared(transform.position, game->levels.getLevel()->getFinishPosition());
+  if(distanceToFinish < 64 * 64){
+    game->fadeToNextScene<SceneFinish>(NearGame::BACKGROUND_COLOR, 1000);
     return;
   }
 

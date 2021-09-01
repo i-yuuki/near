@@ -39,6 +39,10 @@ const Near::Math::Vector3& Level::getSpawnRotation() const{
   return spawnRotation;
 }
 
+const Near::Math::Vector3& Level::getFinishPosition() const{
+  return finishPosition;
+}
+
 const std::vector<LevelBlock>& Level::getBlocks() const{
   return blocks;
 }

@@ -179,6 +179,7 @@
     <ClCompile Include="portal-scene.cpp" />
     <ClCompile Include="portal-traveler.cpp" />
     <ClCompile Include="portal.cpp" />
+    <ClCompile Include="scene-finish.cpp" />
     <ClCompile Include="scene-game.cpp" />
     <ClCompile Include="scene-title.cpp" />
   </ItemGroup>
@@ -206,6 +207,7 @@
     <ClInclude Include="portal-scene.h" />
     <ClInclude Include="portal-traveler.h" />
     <ClInclude Include="portal.h" />
+    <ClInclude Include="scene-finish.h" />
     <ClInclude Include="scene-game.h" />
     <ClInclude Include="scene-title.h" />
   </ItemGroup>
