@@ -6,12 +6,13 @@
 
 #include "level.h"
 
-class LevelObject : public Near::GameObject{
+class LevelObject : public Near::GameObject, public Near::ICollidable{
 public:
   LevelObject(std::shared_ptr<Level> level);
   virtual void init(Near::Layer* layer) override;
   virtual void draw() override;
   virtual void uninit() override;
+  virtual void addColliders(std::function<void(const Near::Collision::BoundingBox3D&)> out) override;
   Level* getLevel();
 private:
   std::shared_ptr<Level> level;

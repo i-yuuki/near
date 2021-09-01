@@ -85,6 +85,13 @@ void LevelObject::uninit(){
   indexBufferWireframe.uninit();
 }
 
+void LevelObject::addColliders(std::function<void(const Near::Collision::BoundingBox3D&)> out){
+  if(!level) return;
+  for(auto& block : level->getBlocks()){
+    out(Near::Collision::BoundingBox3D(block.position, block.size / 2));
+  }
+}
+
 Level* LevelObject::getLevel(){
   return level.get();
 }

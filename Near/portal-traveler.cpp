@@ -19,6 +19,8 @@ void PortalTraveler::move(Near::Math::Vector3& movement, float deltaTime, std::s
   // 使うオブジェクトを探しておく
   std::vector<std::shared_ptr<Portal>> portals;
   getLayer()->getScene()->findObjectsOfExactType<Portal>(portals);
+  std::vector<Near::Collision::BoundingBox3D> colliders;
+  getLayer()->findColliders([&colliders](auto obj, auto aabb){ colliders.push_back(aabb); });
   std::shared_ptr<LevelObject> levelObj = getLayer()->getScene()->findObjectOfExactType<LevelObject>();
   
   // 近くのポータルを探しておく
@@ -64,11 +66,11 @@ void PortalTraveler::move(Near::Math::Vector3& movement, float deltaTime, std::s
 
   // レベルと当たり判定
   std::vector<LevelCollision> collisions;
-  findCollisions(levelObj->getLevel(), transform.position, scaledMovement, collisions);
+  findCollisions(colliders, transform.position, scaledMovement, collisions);
   // 近くのポータルの先のレベルとも当たり判定
   for(auto& portal : portalsOverlapping){
     if(auto otherPortal = portal->otherPortal.lock()){
-      findCollisions(levelObj->getLevel(), TransformThroughPortal(transform, portal, otherPortal), TransformThroughPortal(scaledMovement, portal, otherPortal), collisions, portal);
+      findCollisions(colliders, TransformThroughPortal(transform, portal, otherPortal), TransformThroughPortal(scaledMovement, portal, otherPortal), collisions, portal);
     }
   }
   std::sort(collisions.begin(), collisions.end(), [](const LevelCollision& a, const LevelCollision& b){
@@ -123,13 +125,12 @@ void PortalTraveler::move(Near::Math::Vector3& movement, float deltaTime, std::s
   transform.position += movement * deltaTime;
 }
 
-void PortalTraveler::findCollisions(const Level* level, Near::Math::Vector3 origin, const Near::Math::Vector3& ray, std::vector<LevelCollision>& out, std::shared_ptr<Portal> portal){
+void PortalTraveler::findCollisions(const std::vector<Near::Collision::BoundingBox3D>& aabbs, Near::Math::Vector3 origin, const Near::Math::Vector3& ray, std::vector<LevelCollision>& out, std::shared_ptr<Portal> portal){
   Near::Collision::BoundingBox3D me(origin, size / 2);
-  for(auto& block : level->getBlocks()){
-    Near::Collision::BoundingBox3D blockBox(block.position, block.size / 2);
+  for(auto& box : aabbs){
     float hitNear;
-    if(me.collides(ray, blockBox, nullptr, nullptr, &hitNear)){
-      out.push_back({blockBox, hitNear, portal});
+    if(me.collides(ray, box, nullptr, nullptr, &hitNear)){
+      out.push_back({box, hitNear, portal});
     }
   }
 }
