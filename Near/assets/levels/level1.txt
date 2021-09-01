@@ -35,5 +35,5 @@ block { position 19972  64   0 size  8 128 128 faces 1 1 1 1 1 1 }
 portal { name portal_d partner portal_c position 20002 64 0 rotation 0 -90 0 size 128 128 }
 
 cube { position 20480 200 100 }
-floorButton { name exit_button position 20640 0 -100 target exit_door }
+floorButton { name exit_button position 20840 0 -100 target exit_door }
 door { name exit_door position 20960 0 0 rotation 0 -90 0 }
