@@ -134,6 +134,14 @@ void Level::loadObject(std::istream& is){
         spawnRotation.z = readFloat(is);
       }
     }
+  }else if(token == u8"finish"){
+    while((token = readToken(is)) != u8"}"){
+      if(token == u8"position"){
+        finishPosition.x = readFloat(is);
+        finishPosition.y = readFloat(is);
+        finishPosition.z = readFloat(is);
+      }
+    }
   }else{
     printf_s("Skipping unknown map object %s\n", token.c_str());
     while((token = readToken(is)) != u8"}"){}

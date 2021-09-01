@@ -1,6 +1,7 @@
 Near Map v1
 
 spawn { position 0 0 400 rotation 0 0 0 }
+finish { position 21200 0 0 }
 
 block { position     0  -8    0 size 960  16 960 faces 0 0 0 0 1 0 }
 block { position 10000  -8    0 size 640  16 640 faces 0 0 0 0 2 0 }
