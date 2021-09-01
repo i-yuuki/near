@@ -6,7 +6,10 @@
 #include <NearLib/scene.h>
 #include <NearLib/utils.h>
 
+#include "game.h"
+#include "main.h"
 #include "portal-scene.h"
+#include "scene-game.h"
 #include "level-object.h"
 
 void Player::init(Near::Layer* layer){
@@ -60,6 +63,13 @@ void Player::update(float deltaTime){
   constexpr float gravity = -500;
   velocity.y += gravity * (deltaTime * 0.001f);
   move(velocity, deltaTime * 0.001f);
+
+  if(transform.position.y < NearGame::VOID_Y){
+    auto* game = NearGame::Game::Instance;
+    game->levels.setNextLevel(game->levels.getLevelIdx());
+    game->fadeToNextScene<SceneGame>(Near::Math::Color(0, 0, 0, 1), 500);
+    return;
+  }
 
   if(onGround){
     velocity.y = 0;

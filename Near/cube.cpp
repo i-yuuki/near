@@ -3,7 +3,10 @@
 #include <NearLib/scene.h>
 #include <NearLib/utils.h>
 
+#include "game.h"
+#include "main.h"
 #include "player.h"
+#include "scene-game.h"
 
 Cube::Cube() : PortalTraveler(){
 }
@@ -25,6 +28,13 @@ void Cube::update(float deltaTime){
   velocity.x -= std::abs(velocity.x) * (deltaTime * 0.001f) * Near::sign(velocity.x);
   velocity.z -= std::abs(velocity.z) * (deltaTime * 0.001f) * Near::sign(velocity.z);
   move(velocity, deltaTime * 0.001f);
+
+  if(transform.position.y < NearGame::VOID_Y){
+    auto* game = NearGame::Game::Instance;
+    game->levels.setNextLevel(game->levels.getLevelIdx());
+    game->fadeToNextScene<SceneGame>(Near::Math::Color(0, 0, 0, 1), 500);
+    return;
+  }
 
   if(button.expired()){
     std::vector<std::shared_ptr<FloorButton>> buttons;
