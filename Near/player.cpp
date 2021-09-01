@@ -15,10 +15,6 @@ void Player::init(Near::Layer* layer){
   onGround = false;
   thirdPerson = false;
   keyListener = Near::input()->addKeyListener(this);
-  model = new Near::FBXModel();
-  model->load("assets/models/player.fbx");
-  vertexShader = layer->getScene()->vertexShaders->getOrLoad("assets/nearlib/shaders/vs.hlsl");
-  pixelShader = layer->getScene()->pixelShaders->getOrLoad("assets/nearlib/shaders/ps.hlsl");
 }
 
 void Player::update(float deltaTime){
@@ -78,21 +74,9 @@ void Player::update(float deltaTime){
 }
 
 void Player::draw(){
-  auto* r = Near::renderer();
-  if(thirdPerson || static_cast<PortalScene*>(getLayer()->getScene())->getPortalLevel() > 0){
-    r->setVertexShader(vertexShader.get());
-    r->setPixelShader(pixelShader.get());
-    auto pos = transform.position;
-    pos.y -= size.y / 2;
-    Near::Math::Matrix t = Near::Math::Matrix::CreateFromQuaternion(transform.rotation) * Near::Math::Matrix::CreateTranslation(pos);
-    model->draw(&t);
-  }
 }
 
 void Player::uninit(){
-  Near::safeDelete(model);
-  vertexShader.reset();
-  pixelShader.reset();
   keyListener.disconnect();
 }
 

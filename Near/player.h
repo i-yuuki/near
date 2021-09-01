@@ -22,7 +22,4 @@ private:
   Near::Math::Vector3 velocity;
   bool thirdPerson;
   std::weak_ptr<Cube> cubeHolding;
-  Near::FBXModel* model;
-  std::shared_ptr<Near::VertexShader> vertexShader;
-  std::shared_ptr<Near::PixelShader> pixelShader;
 };
