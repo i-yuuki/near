@@ -12,6 +12,7 @@
 
 #include "cube.h"
 #include "door.h"
+#include "finish-particles.h"
 #include "floor-button.h"
 #include "portal.h"
 
@@ -54,6 +55,8 @@ void Level::createGameObjects(Near::Scene& scene){
   createEntityObjects<Cube>(cubes, layerObjects);
   createEntityObjects<FloorButton>(floorButtons, layerObjects);
   createEntityObjects<Door>(doors, layerObjects);
+
+  layerObjects.createGameObject<FinishParticles>()->transform.position = finishPosition;
 
   connectObjects(floorButtons);
 
