@@ -88,8 +88,10 @@ void Player::onKeyDown(int vkey, bool isRepeat){
     }
   }else if(vkey == 'E'){
     interact();
+#ifdef _DEBUG
   }else if(vkey == 'F'){
     thirdPerson = !thirdPerson;
+#endif
   }
 }
 
