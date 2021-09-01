@@ -10,6 +10,4 @@ public:
   virtual void update(float deltaTime) override;
   virtual void draw() override;
   virtual void uninit() override;
-private:
-  std::shared_ptr<Level> level;
 };

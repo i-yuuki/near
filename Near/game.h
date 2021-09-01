@@ -4,6 +4,7 @@
 #include <NearLib/scene.h>
 
 #include "fade.h"
+#include "level-manager.h"
 
 namespace NearGame{
 
@@ -27,6 +28,7 @@ public:
     fade.fadeOut(color, duration);
     setNextScene<T>(std::forward<Args>(args)...);
   }
+  LevelManager levels;
   Near::FPSCounter timer;
 private:
   Near::Scene* scene = nullptr;

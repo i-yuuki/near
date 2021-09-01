@@ -13,8 +13,8 @@ SceneGame::SceneGame() : PortalScene(){
 
 void SceneGame::init(){
   PortalScene::init();
-  level.reset(new Level());
-  level->load("testlevel.txt");
+  NearGame::Game::Instance->levels.nextLevel();
+  auto level = NearGame::Game::Instance->levels.getLevel();
   getLayer(Near::Scene::LAYER_OBJECTS)->createGameObject<LevelObject>(level);
   level->createGameObjects(*this);
   auto player = getLayer(Near::Scene::LAYER_OBJECTS)->createGameObject<Player>();
@@ -31,7 +31,9 @@ void SceneGame::update(float deltaTime){
   PortalScene::update(deltaTime);
 #ifdef _DEBUG
   if(Near::input()->isKeyPressedThisFrame('R') && Near::input()->isKeyDown(VK_CONTROL)){
-    NearGame::Game::Instance->fadeToNextScene<SceneGame>(NearGame::BACKGROUND_COLOR, 0);
+    auto* game = NearGame::Game::Instance;
+    game->levels.setNextLevel(game->levels.getLevelIdx());
+    game->fadeToNextScene<SceneGame>(NearGame::BACKGROUND_COLOR, 0);
   }
 #endif
 }

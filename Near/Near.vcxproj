@@ -168,6 +168,7 @@
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="floor-button.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="level-manager.cpp" />
     <ClCompile Include="level-object.cpp" />
     <ClCompile Include="level.cpp" />
     <ClCompile Include="main.cpp" />
@@ -194,6 +195,7 @@
     <ClInclude Include="fade.h" />
     <ClInclude Include="floor-button.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="level-manager.h" />
     <ClInclude Include="level-object.h" />
     <ClInclude Include="level.h" />
     <ClInclude Include="main.h" />

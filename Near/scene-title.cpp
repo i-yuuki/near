@@ -24,6 +24,7 @@ void SceneTitle::update(float deltaTime){
   time += deltaTime;
   title->setColor(Near::Math::Color(1, 1, 1, std::clamp((time - 1000) / 1000, 0.0f, 1.0f)));
   if(Near::input()->isKeyPressedThisFrame(VK_SPACE)){
+    NearGame::Game::Instance->levels.setNextLevel(0);
     NearGame::Game::Instance->fadeToNextScene<SceneGame>(NearGame::BACKGROUND_COLOR, 1000);
   }
 }

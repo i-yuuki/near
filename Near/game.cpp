@@ -11,6 +11,7 @@ Game::Game(){
 }
 
 void Game::init(){
+  levels.init("assets/levels.txt");
   fade.init();
   fadeToNextScene<SceneTitle>(Near::Math::Color(0, 0, 0, 1), 0);
 }
