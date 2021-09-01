@@ -14,7 +14,7 @@ void Door::init(Near::Layer* layer){
   model.reset(new Near::FBXModel());
   model->load("assets/models/door.fbx");
   vertexShader = layer->getScene()->vertexShaders->getOrLoad("assets/nearlib/shaders/vs.hlsl");
-  pixelShader = layer->getScene()->pixelShaders->getOrLoad("assets/shaders/ps-level.hlsl");
+  pixelShader = layer->getScene()->pixelShaders->getOrLoad("assets/shaders/ps-level-tex.hlsl");
 }
 
 void Door::update(float deltaTime){
