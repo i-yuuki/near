@@ -10,6 +10,7 @@ public:
   virtual void init(Near::Layer* layer) override;
   virtual void draw() override;
   virtual void uninit() override;
+  void setTexture(std::shared_ptr<Near::Texture> texture);
   void setColor(const Near::Math::Color& color);
 private:
   std::string path;

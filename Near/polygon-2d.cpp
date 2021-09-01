@@ -36,6 +36,10 @@ void Polygon2D::uninit(){
   pixelShader.reset();
 }
 
+void Polygon2D::setTexture(std::shared_ptr<Near::Texture> texture){
+  this->texture = texture;
+}
+
 void Polygon2D::setColor(const Near::Math::Color& color){
   for(int i = 0;i < 4;i ++){
     vertices[i].color = color;
