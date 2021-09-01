@@ -20,7 +20,10 @@ void PortalTraveler::move(Near::Math::Vector3& movement, float deltaTime, std::s
   std::vector<std::shared_ptr<Portal>> portals;
   getLayer()->getScene()->findObjectsOfExactType<Portal>(portals);
   std::vector<Near::Collision::BoundingBox3D> colliders;
-  getLayer()->findColliders([&colliders](auto obj, auto aabb){ colliders.push_back(aabb); });
+  getLayer()->findColliders([this, &colliders](auto obj, auto aabb){
+    if(obj.get() == this) return;
+    colliders.push_back(aabb);
+  });
   std::shared_ptr<LevelObject> levelObj = getLayer()->getScene()->findObjectOfExactType<LevelObject>();
   
   // 近くのポータルを探しておく
