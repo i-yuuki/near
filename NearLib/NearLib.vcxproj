@@ -48,6 +48,7 @@
   <ItemGroup>
     <ClInclude Include="NearLib\buffer.h" />
     <ClInclude Include="NearLib\camera.h" />
+    <ClInclude Include="NearLib\collidable.h" />
     <ClInclude Include="NearLib\collision-3d.h" />
     <ClInclude Include="NearLib\debug-camera.h" />
     <ClInclude Include="NearLib\debug-grid.h" />

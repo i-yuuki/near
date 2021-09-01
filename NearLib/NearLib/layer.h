@@ -2,6 +2,7 @@
 
 #include "near.h"
 #include "game-object.h"
+#include "collidable.h"
 
 namespace Near{
 
@@ -15,6 +16,7 @@ public:
   void afterUpdate(float deltaTime);
   void draw();
   void uninit();
+  void findColliders(std::function<void(std::shared_ptr<GameObject>, const Collision::BoundingBox3D&)> callback);
   Scene* getScene();
   template<class T>
   std::shared_ptr<T> findObjectOfType(){
@@ -61,11 +63,15 @@ public:
     auto obj = std::make_shared<T>(std::forward<Args>(args)...);
     obj->init(this);
     objects.push_back(obj);
+    if(std::is_base_of<ICollidable, T>::value){
+      collidables.push_back(std::weak_ptr<GameObject>(obj));
+    }
     return obj;
   }
 private:
   Scene* scene = nullptr;
   std::vector<std::shared_ptr<GameObject>> objects;
+  std::vector<std::weak_ptr<GameObject>> collidables;
 };
 
 }

@@ -24,9 +24,17 @@ void Layer::update(float deltaTime){
   for(auto obj : objects){
     obj->update(deltaTime);
   }
-  auto result = std::remove_if(objects.begin(), objects.end(), [](std::shared_ptr<GameObject>& obj){ return obj->isRemoveMarked(); });
-  std::for_each(result, objects.end(), [](std::shared_ptr<GameObject>& obj){ obj->uninit(); });
-  objects.erase(result, objects.end());
+
+  {
+    auto result = std::remove_if(objects.begin(), objects.end(), [](std::shared_ptr<GameObject>& obj){ return obj->isRemoveMarked(); });
+    std::for_each(result, objects.end(), [](std::shared_ptr<GameObject>& obj){ obj->uninit(); });
+    objects.erase(result, objects.end());
+  }
+
+  {
+    auto result = std::remove_if(collidables.begin(), collidables.end(), [](auto& obj){ return obj.expired(); });
+    collidables.erase(result, collidables.end());
+  }
 }
 
 void Layer::afterUpdate(float deltaTime){
@@ -46,6 +54,16 @@ void Layer::uninit(){
     obj->uninit();
   }
   objects.clear();
+}
+
+void Layer::findColliders(std::function<void(std::shared_ptr<GameObject>, const Collision::BoundingBox3D&)> callback){
+  for(auto& c : collidables){
+    auto obj = c.lock();
+    if(!obj) continue;
+    std::dynamic_pointer_cast<ICollidable>(obj)->addColliders([&](auto aabb){
+      callback(obj, aabb);
+    });
+  }
 }
 
 Scene* Layer::getScene(){

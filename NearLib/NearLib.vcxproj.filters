@@ -209,6 +209,9 @@
     <ClInclude Include="NearLib\collision-3d.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="NearLib\collidable.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="NearLib\DirectXTK\SimpleMath.inl">
