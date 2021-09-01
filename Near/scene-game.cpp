@@ -7,6 +7,7 @@
 #include "game.h"
 #include "main.h"
 #include "player-camera.h"
+#include "tutorial.h"
 
 SceneGame::SceneGame() : PortalScene(){
 }
@@ -24,6 +25,12 @@ void SceneGame::init(){
   auto spawnRotation = level->getSpawnRotation();
   player->transform.rotation = Near::createEularRotation(spawnRotation);
   camera->setFar(8000);
+  std::string tutorialTextures[] = {
+    "assets/textures/tutorial-look.png",
+    "assets/textures/tutorial-move.png",
+    "assets/textures/tutorial-interact.png",
+  };
+  getLayer(Near::Scene::LAYER_OVERLAY)->createGameObject<Tutorial>(Near::Math::Vector2(440, 600), Near::Math::Vector2(400, 104), tutorialTextures, 3);
   Near::input()->lockMouse(true);
 }
 

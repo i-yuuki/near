@@ -183,6 +183,7 @@
     <ClCompile Include="scene-finish.cpp" />
     <ClCompile Include="scene-game.cpp" />
     <ClCompile Include="scene-title.cpp" />
+    <ClCompile Include="tutorial.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NearLib\NearLib.vcxproj">
@@ -212,6 +213,7 @@
     <ClInclude Include="scene-finish.h" />
     <ClInclude Include="scene-game.h" />
     <ClInclude Include="scene-title.h" />
+    <ClInclude Include="tutorial.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
