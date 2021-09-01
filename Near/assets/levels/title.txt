@@ -1,0 +1,19 @@
+Near Map v1
+
+spawn { position -200 0 200 rotation 0 -50 0 }
+finish { position 21200 0 0 }
+
+block { position     0  -8    0 size 960  16 960 faces 0 0 0 0 1 0 }
+block { position 10000  -8    0 size 960  16 960 faces 0 0 0 0 3 0 }
+
+# Gate
+block { position  0  64 -80 size 32 128  32 faces 1 1 1 1 1 0 }
+block { position  0  64  80 size 32 128  32 faces 1 1 1 1 1 0 }
+block { position  0 144   0 size 32  32 192 faces 1 1 1 1 1 1 }
+portal { name portal_a partner portal_b position 0 64 0 rotation 0  90 0 size 128 128 }
+
+# Gate
+block { position 10000  64 -80 size 32 128  32 faces 1 1 1 1 1 0 }
+block { position 10000  64  80 size 32 128  32 faces 1 1 1 1 1 0 }
+block { position 10000 144   0 size 32  32 192 faces 1 1 1 1 1 1 }
+portal { name portal_b partner portal_a position 10000 64 0 rotation 0 -90 0 size 128 128 }
