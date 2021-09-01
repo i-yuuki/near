@@ -23,6 +23,7 @@
   language='*'\"")
 
 int APIENTRY WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int cmdShow){
+#ifdef _DEBUG
   {
     AllocConsole();
     SetConsoleOutputCP(CP_UTF8);
@@ -30,6 +31,7 @@ int APIENTRY WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int cmdShow){
     freopen_s(&fp_c, "CONOUT$", "w", stdout);
     freopen_s(&fp_c, "CONIN$", "r", stdin);
   }
+#endif
   
   try{
     Near::InitParams initParams;
