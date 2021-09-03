@@ -26,6 +26,7 @@
     <ClCompile Include="src\debug-grid.cpp" />
     <ClCompile Include="src\dialog.cpp" />
     <ClCompile Include="src\fbx-model.cpp" />
+    <ClCompile Include="src\font.cpp" />
     <ClCompile Include="src\fps-counter.cpp" />
     <ClCompile Include="src\game-object.cpp" />
     <ClCompile Include="src\input.cpp" />
@@ -75,6 +76,7 @@
     <ClInclude Include="NearLib\DirectXTK\WICTextureLoader.h" />
     <ClInclude Include="NearLib\DirectXTK\XboxDDSTextureLoader.h" />
     <ClInclude Include="NearLib\fbx-model.h" />
+    <ClInclude Include="NearLib\font.h" />
     <ClInclude Include="NearLib\input.h" />
     <ClInclude Include="NearLib\model-object.h" />
     <ClInclude Include="NearLib\near.h" />
