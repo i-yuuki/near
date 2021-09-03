@@ -1,5 +1,6 @@
 #pragma once
 
+#include <charconv>
 #include <string_view>
 #include <d3d11.h>
 
@@ -53,6 +54,24 @@ void safeDeleteArray(T*& thing){
 // 0なら0、負なら-1、正なら1を返します。
 constexpr int sign(float v){
   return v > 0 ? 1 : v < 0 ? -1 : 0;
+}
+
+template<typename T>
+T parseInt(std::string_view str, int base = 10){
+  T val;
+  auto res = std::from_chars(str.data(), str.data() + str.size(), val, base);
+  if(res.ec == std::errc::invalid_argument) throw std::invalid_argument("Not a number: " + std::string(str));
+  if(res.ec == std::errc::result_out_of_range) throw std::out_of_range("Number out of range: " + std::string(str));
+  return val;
+}
+
+template<typename T>
+T parseFloat(std::string_view str){
+  T val;
+  auto res = std::from_chars(str.data(), str.data() + str.size(), val);
+  if(res.ec == std::errc::invalid_argument) throw std::invalid_argument("Not a number: " + std::string(str));
+  if(res.ec == std::errc::result_out_of_range) throw std::out_of_range("Number out of range: " + std::string(str));
+  return val;
 }
 
 // ワイド文字列をUTF-8文字列に変換します。
