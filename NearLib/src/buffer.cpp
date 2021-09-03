@@ -65,7 +65,7 @@ void VertexBuffer::draw(unsigned int stride, unsigned int offset, unsigned int v
   r->getDeviceContext()->IASetVertexBuffers(0, 1, &buffer, &stride, &offset);
   r->getDeviceContext()->IASetIndexBuffer(indices.getBuffer(), DXGI_FORMAT_R32_UINT, 0);
   r->getDeviceContext()->IASetPrimitiveTopology(topology);
-  r->getDeviceContext()->DrawIndexed(indices.getIndexCount(), 0, 0);
+  r->getDeviceContext()->DrawIndexed(vertexCount, 0, 0);
 }
 
 ID3D11Buffer* VertexBuffer::getBuffer() const{
