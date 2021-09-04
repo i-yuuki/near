@@ -13,9 +13,9 @@ void Polygon2D::init(Near::Layer* layer){
   vertices[2] = {Near::Math::Vector3(position.x,          position.y,          0), Near::Math::Vector3(0, 0, 0), Near::Math::Color(1, 1, 1, 1), Near::Math::Vector2(0, 0)};
   vertices[3] = {Near::Math::Vector3(position.x + size.x, position.y,          0), Near::Math::Vector3(0, 0, 0), Near::Math::Color(1, 1, 1, 1), Near::Math::Vector2(1, 0)};
   vertexBuffer.init(true, 4, vertices);
-  texture = layer->getScene()->textures->getOrLoad(path);
-  vertexShader = layer->getScene()->vertexShaders->getOrLoad("assets/nearlib/shaders/vs.hlsl");
-  pixelShader = layer->getScene()->pixelShaders->getOrLoad("assets/nearlib/shaders/ps.hlsl");
+  texture = Near::Assets::textures()->getOrLoad(path);
+  vertexShader = Near::Assets::vertexShaders()->getOrLoad("assets/nearlib/shaders/vs.hlsl");
+  pixelShader = Near::Assets::pixelShaders()->getOrLoad("assets/nearlib/shaders/ps.hlsl");
 }
 
 void Polygon2D::draw(){

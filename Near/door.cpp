@@ -13,8 +13,8 @@ void Door::init(Near::Layer* layer){
   active = false;
   model.reset(new Near::FBXModel());
   model->load("assets/models/door.fbx");
-  vertexShader = layer->getScene()->vertexShaders->getOrLoad("assets/nearlib/shaders/vs.hlsl");
-  pixelShader = layer->getScene()->pixelShaders->getOrLoad("assets/shaders/ps-level-tex.hlsl");
+  vertexShader = Near::Assets::vertexShaders()->getOrLoad("assets/nearlib/shaders/vs.hlsl");
+  pixelShader = Near::Assets::pixelShaders()->getOrLoad("assets/shaders/ps-level-tex.hlsl");
 }
 
 void Door::update(float deltaTime){

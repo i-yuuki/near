@@ -16,9 +16,9 @@ void FinishParticles::init(Near::Layer* layer){
     { Near::Math::Vector3( 3.0f, -3.0f, 0), Near::Math::Vector3(0, 0, -1), Near::Math::Color(0.157f, 0.804f, 0.255f, 1), Near::Math::Vector2(1, 1) },
   };
   vertexBuffer.init(false, 4, vertices);
-  texture = layer->getScene()->textures->getOrLoad("assets/textures/finish-particle.png");
-  vertexShader = layer->getScene()->vertexShaders->getOrLoad("assets/nearlib/shaders/vs.hlsl");
-  pixelShader = layer->getScene()->pixelShaders->getOrLoad("assets/nearlib/shaders/ps.hlsl");
+  texture = Near::Assets::textures()->getOrLoad("assets/textures/finish-particle.png");
+  vertexShader = Near::Assets::vertexShaders()->getOrLoad("assets/nearlib/shaders/vs.hlsl");
+  pixelShader = Near::Assets::pixelShaders()->getOrLoad("assets/nearlib/shaders/ps.hlsl");
 }
 
 void FinishParticles::update(float deltaTime){

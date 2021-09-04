@@ -14,7 +14,7 @@ void Tutorial::init(Near::Layer* layer){
   time = 0;
   textures.resize(texturePaths.size());
   for(int i = 0;i < texturePaths.size();i ++){
-    textures[i] = layer->getScene()->textures->getOrLoad(texturePaths[i]);
+    textures[i] = Near::Assets::textures()->getOrLoad(texturePaths[i]);
   }
 }
 

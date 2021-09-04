@@ -95,9 +95,9 @@ void PortalScene::init(){
 
   texture->Release();
 
-  vertexShader = vertexShaders->getOrLoad("assets/nearlib/shaders/vs.hlsl");
-  pixelShader = pixelShaders->getOrLoad("assets/shaders/ps-level-postprocess.hlsl");
-  pixelShaderClearNormal = pixelShaders->getOrLoad("assets/shaders/ps-clearnormal.hlsl");
+  vertexShader = Near::Assets::vertexShaders()->getOrLoad("assets/nearlib/shaders/vs.hlsl");
+  pixelShader = Near::Assets::pixelShaders()->getOrLoad("assets/shaders/ps-level-postprocess.hlsl");
+  pixelShaderClearNormal = Near::Assets::pixelShaders()->getOrLoad("assets/shaders/ps-clearnormal.hlsl");
 }
 
 void PortalScene::uninit(){

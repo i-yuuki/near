@@ -9,8 +9,8 @@ void FloorButton::init(Near::Layer* layer){
   GameObject::init(layer);
   model.reset(new Near::FBXModel());
   model->load("assets/models/floor-button.fbx");
-  vertexShader = layer->getScene()->vertexShaders->getOrLoad("assets/nearlib/shaders/vs.hlsl");
-  pixelShader = layer->getScene()->pixelShaders->getOrLoad("assets/shaders/ps-level.hlsl");
+  vertexShader = Near::Assets::vertexShaders()->getOrLoad("assets/nearlib/shaders/vs.hlsl");
+  pixelShader = Near::Assets::pixelShaders()->getOrLoad("assets/shaders/ps-level.hlsl");
   active = false;
 }
 
