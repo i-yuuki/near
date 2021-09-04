@@ -4,7 +4,6 @@
 
 #include "near.h"
 #include "layer.h"
-#include "assets.h"
 #include "shader.h"
 #include "texture.h"
 
@@ -78,9 +77,6 @@ public:
     }
     return total;
   }
-  AssetManager<VertexShader>* vertexShaders;
-  AssetManager<PixelShader>* pixelShaders;
-  AssetManager<Texture>* textures;
 protected:
   std::map<int, Layer> layers;
 };

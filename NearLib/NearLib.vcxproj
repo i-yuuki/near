@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\assets.cpp" />
     <ClCompile Include="src\buffer.cpp" />
     <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\collision-3d.cpp" />
@@ -47,6 +48,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="NearLib\assets.h" />
     <ClInclude Include="NearLib\buffer.h" />
     <ClInclude Include="NearLib\camera.h" />
     <ClInclude Include="NearLib\collidable.h" />
@@ -81,7 +83,7 @@
     <ClInclude Include="NearLib\model-object.h" />
     <ClInclude Include="NearLib\near.h" />
     <ClInclude Include="NearLib\asset.h" />
-    <ClInclude Include="NearLib\assets.h" />
+    <ClInclude Include="NearLib\asset-manager.h" />
     <ClInclude Include="NearLib\fps-counter.h" />
     <ClInclude Include="NearLib\game-object.h" />
     <ClInclude Include="NearLib\layer.h" />

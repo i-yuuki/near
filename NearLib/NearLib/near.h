@@ -7,6 +7,7 @@
 #include "DirectXTK/SimpleMath.h"
 #include "renderer.h"
 #include "input.h"
+#include "assets.h"
 
 namespace Near{
 

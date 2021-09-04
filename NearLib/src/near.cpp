@@ -29,6 +29,13 @@ LRESULT CALLBACK WindowProc(HWND window, UINT msg, WPARAM wParam, LPARAM lParam)
 
 }
 
+namespace Assets{
+
+void init();
+void uninit();
+
+}
+
 void init(const InitParams& params){
   CoInitialize(nullptr);
 
@@ -83,6 +90,8 @@ void init(const InitParams& params){
   ShowWindow(window, SW_NORMAL);
   UpdateWindow(window);
 
+  Assets::init();
+
   g_input = new InputManager();
   g_input->init(window);
 
@@ -96,6 +105,7 @@ void uninit(){
   DestroyWindow(g_renderer->getWindow());
   safeUninitDelete(g_input);
   safeUninitDelete(g_renderer);
+  Assets::uninit();
   CoUninitialize();
 }
 

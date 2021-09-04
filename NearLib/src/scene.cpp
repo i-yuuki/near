@@ -7,16 +7,10 @@ Scene::Scene(){
 }
 
 Scene::~Scene(){
-  delete textures;
-  delete vertexShaders;
-  delete pixelShaders;
   uninit();
 }
 
 void Scene::init(){
-  pixelShaders = new AssetManager<PixelShader>();
-  vertexShaders = new AssetManager<VertexShader>();
-  textures = new AssetManager<Texture>();
   insertLayer(LAYER_MANAGERS);
   insertLayer(LAYER_OBJECTS);
   insertLayer(LAYER_TRANSPARENT_OBJECTS);

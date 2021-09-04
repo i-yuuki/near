@@ -16,8 +16,8 @@ void DebugGrid::init(Layer* layer){
   vertices = new Vertex3D[vertexCount];
   vertexBuffer.init(true, vertexCount * sizeof(Vertex3D), nullptr);
   updateVertexBuffer(true);
-  vertexShader = layer->getScene()->vertexShaders->getOrLoad("assets/nearlib/shaders/vs.hlsl");
-  pixelShader = layer->getScene()->pixelShaders->getOrLoad("assets/nearlib/shaders/ps.hlsl");
+  vertexShader = Near::Assets::vertexShaders()->getOrLoad("assets/nearlib/shaders/vs.hlsl");
+  pixelShader = Near::Assets::pixelShaders()->getOrLoad("assets/nearlib/shaders/ps.hlsl");
 }
 
 void DebugGrid::draw(){

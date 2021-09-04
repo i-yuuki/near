@@ -63,7 +63,7 @@ void Font::load(const std::string& path){
           file = value;
         }
       }
-      textures[page].load((std::filesystem::path(path).parent_path() / file).string());
+      textures[page] = Near::Assets::textures()->getOrLoad((std::filesystem::path(path).parent_path() / file).string());
     }else if(type == u8"chars"){
       // 特に何もしなくていい
     }else if(type == u8"char"){
@@ -182,7 +182,7 @@ void Font::calcLineWidths(const std::string_view text, std::vector<LineMetrics>&
 }
 
 void Font::addChar(const FontChar* ch, const Math::Vector2& pos, const Math::Color& color){
-  auto* texture = &textures[ch->page];
+  auto* texture = textures[ch->page].get();
   if(texture != this->texture || rectIdx >= VERTEX_BUFFER_RECTS){
     flush();
     this->texture = texture;

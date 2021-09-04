@@ -38,7 +38,7 @@ private:
   int textureWidth;
   int textureHeight;
   std::unordered_map<uint32_t, FontChar> characters;
-  std::vector<Texture> textures;
+  std::vector<std::shared_ptr<Texture>> textures;
   StandardVertexBuffer vertexBuffer;
   IndexBuffer indexBuffer;
   Vertex3D vertices[VERTEX_BUFFER_RECTS * 4];
