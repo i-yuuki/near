@@ -32,6 +32,9 @@ void Game::update(){
     scene = nextScene;
     nextScene = nullptr;
     scene->init();
+    Near::Assets::vertexShaders()->unloadUnused();
+    Near::Assets::pixelShaders()->unloadUnused();
+    Near::Assets::textures()->unloadUnused();
     // deltaTimeをクリア (ちょっとゴリ押し感ある)
     timer.frame();
     timer.frame();
