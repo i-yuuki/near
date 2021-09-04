@@ -118,6 +118,8 @@ void Font::load(const std::string& path){
   }
   indexBuffer.init(false, indexCount, indices);
   delete[] indices;
+
+  pixelShader = Assets::pixelShaders()->getOrLoad("assets/nearlib/shaders/ps.hlsl");
 }
 
 void Font::drawText(const std::string_view text, const Math::Vector2& position, const Math::Vector2& origin, float size, const Math::Color& color){
@@ -215,6 +217,7 @@ void Font::flush(){
     return;
   }
   auto* r = renderer();
+  r->setPixelShader(pixelShader.get());
   r->setTexture(texture);
   vertexBuffer.set(vertices);
   vertexBuffer.draw(0, rectIdx * 6, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST, indexBuffer);

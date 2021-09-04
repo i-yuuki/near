@@ -41,6 +41,7 @@ private:
   std::vector<std::shared_ptr<Texture>> textures;
   StandardVertexBuffer vertexBuffer;
   IndexBuffer indexBuffer;
+  std::shared_ptr<PixelShader> pixelShader;
   Vertex3D vertices[VERTEX_BUFFER_RECTS * 4];
   unsigned int rectIdx;
   Texture* texture;
