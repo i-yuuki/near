@@ -29,7 +29,7 @@ public:
   // @param vertexCount 頂点数
   // @param topology 描き方 (`D3D11_PRIMITIVE_TOPOLOGY_XXX`)
   void draw(unsigned int stride, unsigned int offset, unsigned int vertexCount, D3D11_PRIMITIVE_TOPOLOGY topology);
-  void draw(unsigned int stride, unsigned int offset, unsigned int vertexCount, D3D11_PRIMITIVE_TOPOLOGY topology, const IndexBuffer& indices);
+  void draw(unsigned int stride, unsigned int offset, unsigned int indexCount, D3D11_PRIMITIVE_TOPOLOGY topology, const IndexBuffer& indices);
   ID3D11Buffer* getBuffer() const;
 private:
   bool dynamic = false;
@@ -49,13 +49,13 @@ public:
   void set(const Vertex3D* vertices);
   void set(const Vertex3D* vertices, unsigned int vertexCount);
   void draw(unsigned int stride, unsigned int offset, unsigned int vertexCount, D3D11_PRIMITIVE_TOPOLOGY topology) = delete;
-  void draw(unsigned int stride, unsigned int offset, unsigned int vertexCount, D3D11_PRIMITIVE_TOPOLOGY topology, const IndexBuffer& indices) = delete;
+  void draw(unsigned int stride, unsigned int offset, unsigned int indexCount, D3D11_PRIMITIVE_TOPOLOGY topology, const IndexBuffer& indices) = delete;
   // バッファの頂点を描画します。
   // @param vertexOffset 何頂点目から描画するか
   // @param vertexCount 頂点数
   // @param topology 描き方 (`D3D11_PRIMITIVE_TOPOLOGY_XXX`)
   void draw(unsigned int vertexOffset, unsigned int vertexCount, D3D11_PRIMITIVE_TOPOLOGY topology);
-  void draw(unsigned int vertexOffset, unsigned int vertexCount, D3D11_PRIMITIVE_TOPOLOGY topology, const IndexBuffer& indices);
+  void draw(unsigned int vertexOffset, unsigned int indexCount, D3D11_PRIMITIVE_TOPOLOGY topology, const IndexBuffer& indices);
   // 全ての頂点を描画します。
   // @param topology 描き方 (`D3D11_PRIMITIVE_TOPOLOGY_XXX`)
   void draw(D3D11_PRIMITIVE_TOPOLOGY topology);

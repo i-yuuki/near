@@ -64,12 +64,12 @@ void VertexBuffer::draw(unsigned int stride, unsigned int offset, unsigned int v
   r->getDeviceContext()->Draw(vertexCount, 0);
 }
 
-void VertexBuffer::draw(unsigned int stride, unsigned int offset, unsigned int vertexCount, D3D11_PRIMITIVE_TOPOLOGY topology, const IndexBuffer& indices){
+void VertexBuffer::draw(unsigned int stride, unsigned int offset, unsigned int indexCount, D3D11_PRIMITIVE_TOPOLOGY topology, const IndexBuffer& indices){
   auto* r = renderer();
   r->getDeviceContext()->IASetVertexBuffers(0, 1, &buffer, &stride, &offset);
   r->getDeviceContext()->IASetIndexBuffer(indices.getBuffer(), DXGI_FORMAT_R32_UINT, 0);
   r->getDeviceContext()->IASetPrimitiveTopology(topology);
-  r->getDeviceContext()->DrawIndexed(vertexCount, 0, 0);
+  r->getDeviceContext()->DrawIndexed(indexCount, 0, 0);
 }
 
 ID3D11Buffer* VertexBuffer::getBuffer() const{
@@ -97,12 +97,12 @@ void StandardVertexBuffer::draw(unsigned int vertexOffset, unsigned int vertexCo
   VertexBuffer::draw(sizeof(Vertex3D), 0, vertexCount, topology);
 }
 
-void StandardVertexBuffer::draw(unsigned int vertexOffset, unsigned int vertexCount, D3D11_PRIMITIVE_TOPOLOGY topology, const IndexBuffer& indices){
-  VertexBuffer::draw(sizeof(Vertex3D), sizeof(Vertex3D) * vertexOffset, vertexCount, topology, indices);
+void StandardVertexBuffer::draw(unsigned int vertexOffset, unsigned int indexCount, D3D11_PRIMITIVE_TOPOLOGY topology, const IndexBuffer& indices){
+  VertexBuffer::draw(sizeof(Vertex3D), sizeof(Vertex3D) * vertexOffset, indexCount, topology, indices);
 }
 
 void StandardVertexBuffer::draw(D3D11_PRIMITIVE_TOPOLOGY topology, const IndexBuffer& indices){
-  draw(0, vertexCount, topology, indices);
+  draw(0, indices.getIndexCount(), topology, indices);
 }
 
 IndexBuffer::~IndexBuffer(){
