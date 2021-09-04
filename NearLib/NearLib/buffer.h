@@ -22,6 +22,7 @@ public:
   bool isDynamic() const;
   // バッファの中身を変えます。`isDynamic()`が`false`のバッファで呼ぶと例外が投げられます。
   void set(const void* data);
+  void set(const void* data, unsigned int size);
   // バッファの頂点を描画します。
   // @param stride 1頂点のバイト数 (`sizeof(Vertex3D)`など)
   // @param offset バッファの何バイト目から描画するか (3頂点目から描くには`sizeof(Vertex3D) * 2`)
@@ -44,8 +45,9 @@ public:
   // @param vertexCount 頂点数
   // @param vertices 頂点データ。`dynamic`が`false`の場合、`nullptr`にすると例外が投げられます。
   void init(bool dynamic, unsigned int vertexCount, const Vertex3D* vertices);
-  void set(const void* data) = delete;
+  void set(const void* data, unsigned int size) = delete;
   void set(const Vertex3D* vertices);
+  void set(const Vertex3D* vertices, unsigned int vertexCount);
   void draw(unsigned int stride, unsigned int offset, unsigned int vertexCount, D3D11_PRIMITIVE_TOPOLOGY topology) = delete;
   void draw(unsigned int stride, unsigned int offset, unsigned int vertexCount, D3D11_PRIMITIVE_TOPOLOGY topology, const IndexBuffer& indices) = delete;
   // バッファの頂点を描画します。

@@ -42,6 +42,10 @@ bool VertexBuffer::isDynamic() const{
 }
 
 void VertexBuffer::set(const void* data){
+  set(data, size);
+}
+
+void VertexBuffer::set(const void* data, unsigned int size){
   if(!dynamic) throw std::exception("Non-dynamic VertexBuffer::set() was called");
 
   HRESULT res;
@@ -79,6 +83,10 @@ void StandardVertexBuffer::init(bool dynamic, unsigned int vertexCount, const Ve
 
 void StandardVertexBuffer::set(const Vertex3D* vertices){
   VertexBuffer::set(vertices);
+}
+
+void StandardVertexBuffer::set(const Vertex3D* vertices, unsigned int vertexCount){
+  VertexBuffer::set(vertices, sizeof(Vertex3D) * vertexCount);
 }
 
 void StandardVertexBuffer::draw(D3D11_PRIMITIVE_TOPOLOGY topology){
