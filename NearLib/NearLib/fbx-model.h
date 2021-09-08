@@ -2,6 +2,7 @@
 
 #include "vertex.h"
 #include "buffer.h"
+#include "texture.h"
 
 namespace Near{
 

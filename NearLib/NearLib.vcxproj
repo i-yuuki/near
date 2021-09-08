@@ -34,6 +34,7 @@
     <ClCompile Include="src\layer.cpp" />
     <ClCompile Include="src\model-object.cpp" />
     <ClCompile Include="src\near.cpp" />
+    <ClCompile Include="src\renderer-2d.cpp" />
     <ClCompile Include="src\renderer.cpp" />
     <ClCompile Include="src\scene.cpp" />
     <ClCompile Include="src\shader.cpp" />
@@ -80,6 +81,7 @@
     <ClInclude Include="NearLib\fbx-model.h" />
     <ClInclude Include="NearLib\font.h" />
     <ClInclude Include="NearLib\input.h" />
+    <ClInclude Include="NearLib\math.h" />
     <ClInclude Include="NearLib\model-object.h" />
     <ClInclude Include="NearLib\near.h" />
     <ClInclude Include="NearLib\asset.h" />
@@ -87,6 +89,7 @@
     <ClInclude Include="NearLib\fps-counter.h" />
     <ClInclude Include="NearLib\game-object.h" />
     <ClInclude Include="NearLib\layer.h" />
+    <ClInclude Include="NearLib\renderer-2d.h" />
     <ClInclude Include="NearLib\vertex.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="NearLib\renderer.h" />

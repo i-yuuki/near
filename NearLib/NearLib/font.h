@@ -3,6 +3,7 @@
 #include <unordered_map>
 
 #include "buffer.h"
+#include "shader.h"
 #include "texture.h"
 
 namespace Near::Font{
@@ -31,7 +32,6 @@ public:
   virtual void load(const std::string& path) override;
   void drawText(const std::string_view text, const Math::Vector2& position, const Math::Vector2& origin, float size, const Math::Color& color);
 private:
-  static constexpr unsigned int VERTEX_BUFFER_RECTS = 1024;
   int fontSize;
   int lineHeight;
   int baseline;
@@ -39,17 +39,9 @@ private:
   int textureHeight;
   std::unordered_map<uint32_t, FontChar> characters;
   std::vector<std::shared_ptr<Texture>> textures;
-  StandardVertexBuffer vertexBuffer;
-  IndexBuffer indexBuffer;
   std::shared_ptr<PixelShader> pixelShader;
-  Vertex3D vertices[VERTEX_BUFFER_RECTS * 4];
-  unsigned int rectIdx;
-  Texture* texture;
   FontChar* findChar(uint32_t codepoint);
   void calcLineWidths(const std::string_view text, std::vector<LineMetrics>& out);
-  void addRect(Texture* texture, float x, float y, float w, float h, const Math::Color& color);
-  void addChar(const FontChar* ch, const Math::Vector2& pos, const Math::Color& color);
-  void flush();
 };
 
 }

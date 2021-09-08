@@ -1,6 +1,6 @@
 #pragma once
 
-#include "near.h"
+#include "math.h"
 
 namespace Near{
 

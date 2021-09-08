@@ -4,14 +4,13 @@
 #define NOMINMAX
 #include <Windows.h>
 
-#include "DirectXTK/SimpleMath.h"
+#include "math.h"
 #include "renderer.h"
+#include "renderer-2d.h"
 #include "input.h"
 #include "assets.h"
 
 namespace Near{
-
-namespace Math = DirectX::SimpleMath;
 
 class Renderer;
 
@@ -55,5 +54,8 @@ InputManager* input();
 
 // Nearレンダラーを返します。
 Renderer* renderer();
+
+// Nearスプライトレンダラーを返します。
+Renderer2D* renderer2D();
 
 }

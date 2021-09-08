@@ -2,6 +2,7 @@
 #include "near.h"
 
 #include "renderer.h"
+#include "renderer-2d.h"
 #include "utils.h"
 
 namespace Near{
@@ -10,6 +11,7 @@ namespace{
 
 InputManager* g_input = nullptr;
 Renderer* g_renderer = nullptr;
+Renderer2D* g_renderer2D = nullptr;
 bool g_closeMarked = false;
 
 LRESULT CALLBACK WindowProc(HWND window, UINT msg, WPARAM wParam, LPARAM lParam){
@@ -98,12 +100,16 @@ void init(const InitParams& params){
   g_renderer = new Renderer();
   g_renderer->init(window, params.width, params.height);
 
+  g_renderer2D = new Renderer2D();
+  g_renderer2D->init();
+
   g_closeMarked = false;
 }
 
 void uninit(){
   DestroyWindow(g_renderer->getWindow());
   safeUninitDelete(g_input);
+  safeUninitDelete(g_renderer2D);
   safeUninitDelete(g_renderer);
   Assets::uninit();
   CoUninitialize();
@@ -130,6 +136,10 @@ bool shouldClose(){
 
 Renderer* renderer(){
   return g_renderer;
+}
+
+Renderer2D* renderer2D(){
+  return g_renderer2D;
 }
 
 InputManager* input(){
