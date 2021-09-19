@@ -30,6 +30,8 @@
     <ClCompile Include="src\font.cpp" />
     <ClCompile Include="src\fps-counter.cpp" />
     <ClCompile Include="src\game-object.cpp" />
+    <ClCompile Include="src\gui\component.cpp" />
+    <ClCompile Include="src\gui\container.cpp" />
     <ClCompile Include="src\input.cpp" />
     <ClCompile Include="src\layer.cpp" />
     <ClCompile Include="src\model-object.cpp" />
@@ -80,6 +82,8 @@
     <ClInclude Include="NearLib\DirectXTK\XboxDDSTextureLoader.h" />
     <ClInclude Include="NearLib\fbx-model.h" />
     <ClInclude Include="NearLib\font.h" />
+    <ClInclude Include="NearLib\gui\component.h" />
+    <ClInclude Include="NearLib\gui\container.h" />
     <ClInclude Include="NearLib\input.h" />
     <ClInclude Include="NearLib\math.h" />
     <ClInclude Include="NearLib\model-object.h" />
