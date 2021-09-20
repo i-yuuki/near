@@ -2,6 +2,7 @@
 
 #include <array>
 
+#include "shader.h"
 #include "texture.h"
 #include "vertex.h"
 
@@ -32,9 +33,15 @@ public:
 private:
   static constexpr unsigned int VERTEX_BUFFER_SIZE = 1024;
   static constexpr unsigned int INDEX_BUFFER_SIZE = 1536;
+  struct ConstantBufferData{
+    bool useTexture;
+    uint8_t _pad[16];
+  };
 
   ID3D11Buffer* vertexBuffer;
   ID3D11Buffer* indexBuffer;
+  ID3D11Buffer* constantBuffer;
+  ConstantBufferData constantBufferData;
 
   Vertex3D vertices[VERTEX_BUFFER_SIZE];
   uint32_t indices[INDEX_BUFFER_SIZE];
@@ -43,6 +50,7 @@ private:
   bool createBufferSpace(unsigned int vertices, unsigned int indices);
 
   Texture* texture;
+  std::shared_ptr<PixelShader> pixelShader;
 
   void addVertex(const Vertex2D& v);
   void addIndex(uint32_t idx);

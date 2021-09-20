@@ -34,6 +34,7 @@ void Component::setBackground(const Near::Math::Color& background){
 }
 
 void Component::draw(){
+  Near::renderer2D()->setTexture(nullptr);
   Near::renderer2D()->fillRect(position, size, Math::Vector2::Zero, background);
 }
 

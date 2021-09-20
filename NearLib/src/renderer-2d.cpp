@@ -29,12 +29,22 @@ void Renderer2D::init(){
   res = device->CreateBuffer(&bufferDesc, nullptr, &indexBuffer);
   if(FAILED(res)) throwResult("CreateBuffer failed", res);
 
+  bufferDesc.Usage = D3D11_USAGE_DEFAULT;
+  bufferDesc.ByteWidth = sizeof(constantBufferData) / 16 * 16;
+  bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+  bufferDesc.CPUAccessFlags = 0;
+  res = device->CreateBuffer(&bufferDesc, nullptr, &constantBuffer);
+  if(FAILED(res)) throwResult("CreateBuffer failed", res);
+
   for(unsigned int i = 0;i < VERTEX_BUFFER_SIZE;i ++){
     vertices[i] = {Math::Vector3::Zero, Math::Vector3::Forward, Math::Vector4::One, Math::Vector2::Zero};
   }
+
+  pixelShader = Assets::pixelShaders()->getOrLoad("assets/nearlib/shaders/ps-sprite.hlsl");
 }
 
 void Renderer2D::uninit(){
+  pixelShader.reset();
   safeRelease(indexBuffer);
   safeRelease(vertexBuffer);
 }
@@ -43,6 +53,7 @@ void Renderer2D::begin(){
   vertexIdx = 0;
   indexIdx = 0;
   texture = nullptr;
+  renderer()->setPixelShader(pixelShader.get());
 }
 
 void Renderer2D::end(){
@@ -73,6 +84,8 @@ void Renderer2D::flush(){
   ctx->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
   ctx->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
   ctx->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+  constantBufferData.useTexture = texture;
+  ctx->UpdateSubresource(constantBuffer, 0, nullptr, &constantBufferData, 0, 0);
   ctx->DrawIndexed(indexIdx, 0, 0);
 
   vertexIdx = 0;
