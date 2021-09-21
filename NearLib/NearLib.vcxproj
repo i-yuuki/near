@@ -32,6 +32,7 @@
     <ClCompile Include="src\game-object.cpp" />
     <ClCompile Include="src\gui\component.cpp" />
     <ClCompile Include="src\gui\container.cpp" />
+    <ClCompile Include="src\gui\text.cpp" />
     <ClCompile Include="src\input.cpp" />
     <ClCompile Include="src\layer.cpp" />
     <ClCompile Include="src\model-object.cpp" />
@@ -84,6 +85,7 @@
     <ClInclude Include="NearLib\font.h" />
     <ClInclude Include="NearLib\gui\component.h" />
     <ClInclude Include="NearLib\gui\container.h" />
+    <ClInclude Include="NearLib\gui\text.h" />
     <ClInclude Include="NearLib\input.h" />
     <ClInclude Include="NearLib\math.h" />
     <ClInclude Include="NearLib\model-object.h" />
