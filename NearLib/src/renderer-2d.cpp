@@ -16,6 +16,8 @@ void Renderer2D::init(){
   HRESULT res;
   auto* device = renderer()->getDevice();
 
+  active = false;
+
   D3D11_BUFFER_DESC bufferDesc = {};
   bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
   bufferDesc.ByteWidth = sizeof(vertices);
@@ -49,15 +51,22 @@ void Renderer2D::uninit(){
   safeRelease(vertexBuffer);
 }
 
+bool Renderer2D::isActive(){
+  return active;
+}
+
 void Renderer2D::begin(){
+  active = true;
   vertexIdx = 0;
   indexIdx = 0;
   texture = nullptr;
   renderer()->setPixelShader(pixelShader.get());
+  renderer()->getDeviceContext()->PSSetConstantBuffers(0, 1, &constantBuffer);
 }
 
 void Renderer2D::end(){
   flush();
+  active = false;
 }
 
 void Renderer2D::flush(){

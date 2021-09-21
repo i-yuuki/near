@@ -109,6 +109,7 @@ void Font::drawText(const std::string_view text, const Math::Vector2& position, 
   float texH = static_cast<float>(textureHeight);
   auto* r = renderer();
   auto* r2d = renderer2D();
+  bool r2dActive = r2d->isActive();
 
   // 行数と各行の幅を求める
   std::vector<LineMetrics> lines;
@@ -116,7 +117,7 @@ void Font::drawText(const std::string_view text, const Math::Vector2& position, 
 
   r->pushWorldTransform();
   r->applyWorldTransform(Math::Matrix::CreateScale(size / fontSize) * Math::Matrix::CreateTranslation(position.x, position.y, 0));
-  r2d->begin();
+  if(!r2dActive) r2d->begin();
   Math::Vector2 drawPos(0, lines.size() * lineHeight * -origin.y);
   for(auto& line : lines){
     auto it = line.text.data();
@@ -139,7 +140,7 @@ void Font::drawText(const std::string_view text, const Math::Vector2& position, 
     }
     drawPos.y += lineHeight;
   }
-  r2d->end();
+  if(!r2dActive) r2d->end();
   r->popWorldTransform();
 }
 

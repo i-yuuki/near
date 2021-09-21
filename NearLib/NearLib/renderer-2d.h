@@ -21,6 +21,7 @@ public:
   void init();
   void uninit();
 
+  bool isActive();
   void begin();
   void end();
   void flush();
@@ -37,6 +38,8 @@ private:
     bool useTexture;
     uint8_t _pad[16];
   };
+
+  bool active;
 
   ID3D11Buffer* vertexBuffer;
   ID3D11Buffer* indexBuffer;
