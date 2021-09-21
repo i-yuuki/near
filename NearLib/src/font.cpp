@@ -107,7 +107,6 @@ void Font::drawText(const std::string_view text, const Math::Vector2& position, 
   float scale = size / fontSize;
   float texW = static_cast<float>(textureWidth);
   float texH = static_cast<float>(textureHeight);
-  auto* r = renderer();
   auto* r2d = renderer2D();
   bool r2dActive = r2d->isActive();
 
@@ -115,9 +114,9 @@ void Font::drawText(const std::string_view text, const Math::Vector2& position, 
   std::vector<LineMetrics> lines;
   calcLineWidths(text, lines);
 
-  r->pushWorldTransform();
-  r->applyWorldTransform(Math::Matrix::CreateScale(size / fontSize) * Math::Matrix::CreateTranslation(position.x, position.y, 0));
   if(!r2dActive) r2d->begin();
+  r2d->pushTransform();
+  r2d->applyTransform(Math::Matrix::CreateScale(size / fontSize) * Math::Matrix::CreateTranslation(position.x, position.y, 0));
   Math::Vector2 drawPos(0, lines.size() * lineHeight * -origin.y);
   for(auto& line : lines){
     auto it = line.text.data();
@@ -140,8 +139,8 @@ void Font::drawText(const std::string_view text, const Math::Vector2& position, 
     }
     drawPos.y += lineHeight;
   }
+  r2d->popTransform();
   if(!r2dActive) r2d->end();
-  r->popWorldTransform();
 }
 
 FontChar* Font::findChar(uint32_t codepoint){
