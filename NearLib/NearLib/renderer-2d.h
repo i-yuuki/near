@@ -27,6 +27,13 @@ public:
   void flush();
 
   void setTexture(Texture* texture);
+  void pushTransform();
+  void popTransform();
+  void setTransform(const Math::Matrix& transform);
+  void applyTransform(const Math::Matrix& transform);
+  void translate(float x, float y);
+  void scale(float x, float y);
+  void scale(float xy);
 
   void fillRect(const Math::Vector2& pos, const Math::Vector2& size, const Math::Vector2& origin = Math::Vector2(0, 0), const Math::Color& color = Math::Color(1, 1, 1, 1));
   void fillRectUV(const Math::Vector2& pos, const Math::Vector2& size, const Math::Vector2& uv, const Math::Vector2& uvSize, const Math::Vector2& origin = Math::Vector2(0, 0), const Math::Color& color = Math::Color(1, 1, 1, 1));
@@ -53,6 +60,8 @@ private:
   bool createBufferSpace(unsigned int vertices, unsigned int indices);
 
   Texture* texture;
+  Math::Matrix transform;
+  std::vector<Math::Matrix> transforms;
   std::shared_ptr<PixelShader> pixelShader;
 
   void addVertex(const Vertex2D& v);

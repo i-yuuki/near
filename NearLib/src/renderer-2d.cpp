@@ -62,6 +62,8 @@ void Renderer2D::begin(){
   texture = nullptr;
   renderer()->setPixelShader(pixelShader.get());
   renderer()->getDeviceContext()->PSSetConstantBuffers(0, 1, &constantBuffer);
+  transforms.clear();
+  setTransform(Math::Matrix::Identity);
 }
 
 void Renderer2D::end(){
@@ -105,6 +107,38 @@ void Renderer2D::setTexture(Texture* texture){
   if(this->texture == texture) return;
   flush();
   this->texture = texture;
+}
+
+void Renderer2D::pushTransform(){
+  transforms.push_back(transform);
+}
+
+void Renderer2D::popTransform(){
+  if(transforms.empty()) return;
+  setTransform(*transforms.rbegin());
+  transforms.pop_back();
+}
+
+void Renderer2D::setTransform(const Math::Matrix& transform){
+  flush();
+  this->transform = transform;
+  renderer()->setWorldTransform(transform);
+}
+
+void Renderer2D::applyTransform(const Math::Matrix& transform){
+  setTransform(this->transform * transform);
+}
+
+void Renderer2D::translate(float x, float y){
+  applyTransform(Math::Matrix::CreateTranslation(x, y, 0));
+}
+
+void Renderer2D::scale(float x, float y){
+  applyTransform(Math::Matrix::CreateScale(x, y, 1));
+}
+
+void Renderer2D::scale(float xy){
+  applyTransform(Math::Matrix::CreateScale(xy, xy, 1));
 }
 
 void Renderer2D::fillRect(const Math::Vector2& pos, const Math::Vector2& size, const Math::Vector2& origin, const Math::Color& color){
