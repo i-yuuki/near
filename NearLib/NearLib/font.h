@@ -30,6 +30,7 @@ class Font : public Asset{
 public:
   virtual ~Font();
   virtual void load(const std::string& path) override;
+  Math::Vector2 measureText(const std::string_view text, float size);
   void drawText(const std::string_view text, const Math::Vector2& position, const Math::Vector2& origin, float size, const Math::Color& color);
 private:
   int fontSize;

@@ -103,6 +103,27 @@ void Font::load(const std::string& path){
   pixelShader = Assets::pixelShaders()->getOrLoad("assets/nearlib/shaders/ps.hlsl");
 }
 
+Math::Vector2 Font::measureText(const std::string_view text, float size){
+  uint32_t x = 0;
+  uint32_t width = 0;
+  int lines = 1;
+  auto it = text.begin();
+  auto itEnd = text.end();
+  while(it != itEnd){
+    auto codepoint = utf8::next(it, itEnd);
+    if(codepoint == u8'\n'){
+      x = 0;
+      lines ++;
+      continue;
+    }
+    if(auto* charInfo = findChar(codepoint)){
+      x += charInfo->xAdvance;
+      width = std::max(x, width);
+    }
+  }
+  return Math::Vector2(width, lines * lineHeight) * (size / fontSize);
+}
+
 void Font::drawText(const std::string_view text, const Math::Vector2& position, const Math::Vector2& origin, float size, const Math::Color& color){
   float scale = size / fontSize;
   float texW = static_cast<float>(textureWidth);
