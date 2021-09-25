@@ -1,5 +1,5 @@
 info face="源真ゴシック Inter" size=64 bold=0 italic=0 charset="" unicode=1 stretchH=100 smooth=1 aa=1 padding=2,2,2,2 spacing=2,2 outline=0
-common lineHeight=64 base=49 scaleW=4096 scaleH=4096 pages=2 packed=0 alphaChnl=0 redChnl=4 greenChnl=4 blueChnl=4
+common lineHeight=95 base=49 scaleW=4096 scaleH=4096 pages=2 packed=0 alphaChnl=0 redChnl=4 greenChnl=4 blueChnl=4
 page id=0 file="inter_0.png"
 page id=1 file="inter_1.png"
 chars count=6767
