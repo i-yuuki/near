@@ -15,4 +15,15 @@ void ContainerBase::draw(){
   renderer()->popWorldTransform();
 }
 
+void ContainerBase::layout(){
+}
+
+void ContainerBase::sizeChanged(){
+  layout();
+}
+
+void ContainerBase::childAdded(std::shared_ptr<Component> child){
+  layout();
+}
+
 }

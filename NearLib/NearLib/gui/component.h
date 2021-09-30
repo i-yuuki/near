@@ -33,6 +33,7 @@ protected:
   SizeUnit widthUnit = SizeUnit::PX;
   SizeUnit heightUnit = SizeUnit::PX;
   */
+ virtual void sizeChanged();
 };
 
 }

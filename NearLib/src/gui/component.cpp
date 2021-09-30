@@ -38,4 +38,7 @@ void Component::draw(){
   Near::renderer2D()->fillRect(position, size, Math::Vector2::Zero, background);
 }
 
+void Component::sizeChanged(){
+}
+
 }

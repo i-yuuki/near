@@ -28,7 +28,9 @@ void FlexContainer::layout(){
   for(auto& child : children){
     Math::Vector2 childPosAxis(pos, 0);
     auto childSizeAxis = getAxisSize(child->getSize());
-    childSizeAxis.y = counterAxisMaxSize;
+    if(false /* 交差軸サイズがgrow */){
+      childSizeAxis.y = counterAxisMaxSize;
+    }
     child->setPosition(getAxisSize(childPosAxis));
     child->setSize(getAxisSize(childSizeAxis));
     pos += childSizeAxis.x;

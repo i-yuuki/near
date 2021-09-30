@@ -14,7 +14,7 @@ public:
   FlexContainer(Direction direction);
   Direction getDirection();
   void setDirection(Direction direction);
-  void layout();
+  virtual void layout() override;
 protected:
   Direction direction;
   // x/yサイズを主軸/交差軸サイズにします。
