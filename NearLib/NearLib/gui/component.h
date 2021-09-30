@@ -18,13 +18,13 @@ class FlexContainer;
 class Component{
 public:
   friend FlexContainer;
-  std::weak_ptr<Container> getParent();
-  const Near::Math::Vector2& getPosition();
-  const Near::Math::Vector2& getSize();
-  const Near::Math::Vector2& getLayoutSize();
-  SizeUnit getWidthUnit();
-  SizeUnit getHeightUnit();
-  const Near::Math::Color& getBackground();
+  std::weak_ptr<Container> getParent() const;
+  const Near::Math::Vector2& getPosition() const;
+  const Near::Math::Vector2& getSize() const;
+  const Near::Math::Vector2& getLayoutSize() const;
+  SizeUnit getWidthUnit() const;
+  SizeUnit getHeightUnit() const;
+  const Near::Math::Color& getBackground() const;
   void setPosition(const Near::Math::Vector2& position);
   void setSize(const Near::Math::Vector2& size);
   void setWidthUnit(SizeUnit unit);

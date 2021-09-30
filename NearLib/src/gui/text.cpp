@@ -9,7 +9,7 @@ Text::Text(const std::string& text, std::shared_ptr<Font::Font> font)
 : Component(), text(text), font(font){
 }
 
-const std::string& Text::getText(){
+const std::string& Text::getText() const{
   return text;
 }
 

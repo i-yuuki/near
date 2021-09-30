@@ -8,7 +8,7 @@ namespace Near::GUI{
 FlexContainer::FlexContainer(Direction direction) : direction(direction){
 }
 
-FlexContainer::Direction FlexContainer::getDirection(){
+FlexContainer::Direction FlexContainer::getDirection() const{
   return direction;
 }
 
@@ -49,18 +49,18 @@ void FlexContainer::layout(){
   }
 }
 
-Math::Vector2 FlexContainer::getAxisSize(const Math::Vector2 size){
+Math::Vector2 FlexContainer::getAxisSize(const Math::Vector2 size) const{
   if(direction == Direction::VERTICAL){
     return Math::Vector2(size.y, size.x);
   }
   return size;
 }
 
-SizeUnit FlexContainer::getMainAxisUnit(Component* comp){
+SizeUnit FlexContainer::getMainAxisUnit(Component* comp) const{
   return direction == Direction::VERTICAL ? comp->getHeightUnit() : comp->getWidthUnit();
 }
 
-SizeUnit FlexContainer::getCrossAxisUnit(Component* comp){
+SizeUnit FlexContainer::getCrossAxisUnit(Component* comp) const{
   return direction == Direction::VERTICAL ? comp->getWidthUnit() : comp->getHeightUnit();
 }
 

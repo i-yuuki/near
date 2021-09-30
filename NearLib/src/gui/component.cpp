@@ -5,27 +5,27 @@
 
 namespace Near::GUI{
 
-std::weak_ptr<Container> Component::getParent(){
+std::weak_ptr<Container> Component::getParent() const{
   return parent;
 }
 
-const Near::Math::Vector2& Component::getPosition(){
+const Near::Math::Vector2& Component::getPosition() const{
   return position;
 }
 
-const Near::Math::Vector2& Component::getSize(){
+const Near::Math::Vector2& Component::getSize() const{
   return size;
 }
 
-SizeUnit Component::getWidthUnit(){
+SizeUnit Component::getWidthUnit() const{
   return widthUnit;
 }
 
-SizeUnit Component::getHeightUnit(){
+SizeUnit Component::getHeightUnit() const{
   return heightUnit;
 }
 
-const Near::Math::Color& Component::getBackground(){
+const Near::Math::Color& Component::getBackground() const{
   return background;
 }
 
