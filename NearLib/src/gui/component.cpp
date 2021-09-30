@@ -44,14 +44,17 @@ void Component::setPosition(const Near::Math::Vector2& position){
 
 void Component::setSize(const Near::Math::Vector2& size){
   this->size = size;
+  sizeChanged();
 }
 
 void Component::setWidthUnit(SizeUnit unit){
   widthUnit = unit;
+  sizeChanged();
 }
 
 void Component::setHeightUnit(SizeUnit unit){
   heightUnit = unit;
+  sizeChanged();
 }
 
 void Component::setBackground(const Near::Math::Color& background){
@@ -63,7 +66,14 @@ void Component::draw(){
   Near::renderer2D()->fillRect(layoutPosition, layoutSize, Math::Vector2::Zero, background);
 }
 
+void Component::layoutParent(){
+  if(auto p = parent.lock()){
+    p->layout();
+  }
+}
+
 void Component::sizeChanged(){
+  layoutParent();
 }
 
 }

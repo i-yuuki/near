@@ -42,6 +42,7 @@ protected:
   Near::Math::Color background;
   SizeUnit widthUnit = SizeUnit::PX;
   SizeUnit heightUnit = SizeUnit::PX;
+ void layoutParent();
  virtual void sizeChanged();
 };
 
