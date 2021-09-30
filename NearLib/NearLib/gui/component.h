@@ -17,6 +17,7 @@ class FlexContainer;
 
 class Component{
 public:
+  friend Container;
   friend FlexContainer;
   std::weak_ptr<Container> getParent() const;
   const Near::Math::Vector2& getPosition() const;

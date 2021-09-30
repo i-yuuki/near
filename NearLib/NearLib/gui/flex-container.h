@@ -5,7 +5,7 @@
 namespace Near::GUI{
 
 
-class FlexContainer : public TContainer<FlexContainer>{
+class FlexContainer : public Container{
 public:
   enum class Direction{
     HORIZONTAL,

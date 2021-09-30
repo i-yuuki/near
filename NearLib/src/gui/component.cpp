@@ -2,6 +2,7 @@
 #include "gui/component.h"
 
 #include "near.h"
+#include "gui/container.h"
 
 namespace Near::GUI{
 

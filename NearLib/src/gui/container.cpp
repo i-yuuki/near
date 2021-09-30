@@ -5,7 +5,7 @@
 
 namespace Near::GUI{
 
-void ContainerBase::draw(){
+void Container::draw(){
   Component::draw();
   renderer()->pushWorldTransform();
   renderer()->applyWorldTransform(Math::Matrix::CreateTranslation(position.x, position.y, 0));
@@ -15,14 +15,23 @@ void ContainerBase::draw(){
   renderer()->popWorldTransform();
 }
 
-void ContainerBase::layout(){
+void Container::add(std::shared_ptr<Component> child){
+  if(!child->getParent().expired()){
+    // 既にどこかに追加されていたらなんかする？
+  }
+  children.push_back(child);
+  child->parent = this->shared_from_this();
+  childAdded(child);
 }
 
-void ContainerBase::sizeChanged(){
+void Container::layout(){
+}
+
+void Container::sizeChanged(){
   layout();
 }
 
-void ContainerBase::childAdded(std::shared_ptr<Component> child){
+void Container::childAdded(std::shared_ptr<Component> child){
   layout();
 }
 
