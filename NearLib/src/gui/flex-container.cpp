@@ -3,10 +3,6 @@
 
 #include "near.h"
 
-#define MAIN_AXIS(size) (direction == Direction::HORIZONTAL ? size.x : size.y)
-#define COUNTER_AXIS(size) (direction == Direction::HORIZONTAL ? size.y : size.x)
-#define MAKE_VEC2(main, counter) (direction == Direction::HORIZONTAL ? Math::Vector2(main, counter) : Math::Vector2(counter, main))
-
 namespace Near::GUI{
 
 FlexContainer::FlexContainer(Direction direction) : direction(direction){
