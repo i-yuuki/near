@@ -5,7 +5,7 @@
 
 namespace Near::GUI{
 
-std::weak_ptr<Component> Component::getParent(){
+std::weak_ptr<Container> Component::getParent(){
   return parent;
 }
 
