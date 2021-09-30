@@ -2,6 +2,8 @@
 
 #include <algorithm>
 
+#include <NearLib/near.h>
+
 Fade::Fade(){
 }
 

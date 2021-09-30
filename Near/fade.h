@@ -1,6 +1,7 @@
 #pragma once
 
 #include <NearLib/buffer.h>
+#include <NearLib/shader.h>
 
 class Fade{
 public:
