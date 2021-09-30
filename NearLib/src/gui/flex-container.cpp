@@ -12,6 +12,17 @@ namespace Near::GUI{
 FlexContainer::FlexContainer(Direction direction) : direction(direction){
 }
 
+FlexContainer::Direction FlexContainer::getDirection(){
+  return direction;
+}
+
+void FlexContainer::setDirection(Direction direction){
+  if(direction != this->direction){
+    this->direction = direction;
+    layout();
+  }
+}
+
 void FlexContainer::layout(){
   // 1. 主軸サイズautoと固定の合計を求め、のこりを割ってgrowに使う
   // 2. 交差軸軸サイズautoと固定の最大を求め、growに使う
