@@ -19,6 +19,8 @@ protected:
   Direction direction;
   // x/yサイズを主軸/交差軸サイズにします。
   Math::Vector2 getAxisSize(const Math::Vector2 size);
+  SizeUnit getMainAxisUnit(Component* comp);
+  SizeUnit getCrossAxisUnit(Component* comp);
 };
 
 }

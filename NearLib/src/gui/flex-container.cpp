@@ -31,15 +31,20 @@ void FlexContainer::layout(){
     counterAxisMaxSize = std::max(counterAxisMaxSize, childSizeAxis.y);
   }
 
+  Math::Vector2 selfSizeAxis = getAxisSize(size);
   float pos = 0;
   for(auto& child : children){
     Math::Vector2 childPosAxis(pos, 0);
     auto childSizeAxis = getAxisSize(child->getSize());
-    if(false /* 交差軸サイズがgrow */){
-      childSizeAxis.y = counterAxisMaxSize;
+    auto childLayoutSizeAxis = childSizeAxis;
+    SizeUnit childCrossUnit = getCrossAxisUnit(child.get());
+    if(childCrossUnit == SizeUnit::FILL_CONTAINER){
+      childLayoutSizeAxis.y = counterAxisMaxSize;
+    }else if(childCrossUnit == SizeUnit::PARENT){
+      childLayoutSizeAxis.y = selfSizeAxis.y * childSizeAxis.y;
     }
     child->setPosition(getAxisSize(childPosAxis));
-    child->setSize(getAxisSize(childSizeAxis));
+    child->layoutSize = getAxisSize(childLayoutSizeAxis);
     pos += childSizeAxis.x;
   }
 }
@@ -49,6 +54,14 @@ Math::Vector2 FlexContainer::getAxisSize(const Math::Vector2 size){
     return Math::Vector2(size.y, size.x);
   }
   return size;
+}
+
+SizeUnit FlexContainer::getMainAxisUnit(Component* comp){
+  return direction == Direction::VERTICAL ? comp->getHeightUnit() : comp->getWidthUnit();
+}
+
+SizeUnit FlexContainer::getCrossAxisUnit(Component* comp){
+  return direction == Direction::VERTICAL ? comp->getWidthUnit() : comp->getHeightUnit();
 }
 
 }
