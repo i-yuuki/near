@@ -22,6 +22,7 @@ public:
   std::weak_ptr<Container> getParent() const;
   const Near::Math::Vector2& getPosition() const;
   const Near::Math::Vector2& getSize() const;
+  const Near::Math::Vector2& getLayoutPosition() const;
   const Near::Math::Vector2& getLayoutSize() const;
   SizeUnit getWidthUnit() const;
   SizeUnit getHeightUnit() const;
@@ -35,6 +36,7 @@ public:
 protected:
   std::weak_ptr<Container> parent;
   Near::Math::Vector2 position{0, 0};
+  Near::Math::Vector2 layoutPosition{0, 0};
   Near::Math::Vector2 size{1, 1};
   Near::Math::Vector2 layoutSize{1, 1};
   Near::Math::Color background;

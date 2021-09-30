@@ -18,6 +18,14 @@ const Near::Math::Vector2& Component::getSize() const{
   return size;
 }
 
+const Near::Math::Vector2& Component::getLayoutPosition() const{
+  return layoutPosition;
+}
+
+const Near::Math::Vector2& Component::getLayoutSize() const{
+  return layoutSize;
+}
+
 SizeUnit Component::getWidthUnit() const{
   return widthUnit;
 }
@@ -52,7 +60,7 @@ void Component::setBackground(const Near::Math::Color& background){
 
 void Component::draw(){
   Near::renderer2D()->setTexture(nullptr);
-  Near::renderer2D()->fillRect(position, layoutSize, Math::Vector2::Zero, background);
+  Near::renderer2D()->fillRect(layoutPosition, layoutSize, Math::Vector2::Zero, background);
 }
 
 void Component::sizeChanged(){

@@ -43,7 +43,7 @@ void FlexContainer::layout(){
     }else if(childCrossUnit == SizeUnit::PARENT){
       childLayoutSizeAxis.y = selfSizeAxis.y * childSizeAxis.y;
     }
-    child->setPosition(getAxisSize(childPosAxis));
+    child->layoutPosition = getAxisSize(childPosAxis);
     child->layoutSize = getAxisSize(childLayoutSizeAxis);
     pos += childSizeAxis.x;
   }

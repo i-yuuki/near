@@ -16,7 +16,7 @@ const std::string& Text::getText() const{
 void Text::draw(){
   Component::draw();
   if(font == nullptr) return;
-  font->drawText(text, position, Math::Vector2::Zero, 16, Math::Color(1, 1, 1, 1));
+  font->drawText(text, layoutPosition, Math::Vector2::Zero, 16, Math::Color(1, 1, 1, 1));
 }
 
 }
