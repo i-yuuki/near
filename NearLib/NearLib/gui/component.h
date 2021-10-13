@@ -32,6 +32,7 @@ public:
   void setWidthUnit(SizeUnit unit);
   void setHeightUnit(SizeUnit unit);
   void setBackground(const Near::Math::Color& background);
+  virtual void layout();
   virtual void draw();
 protected:
   std::weak_ptr<Container> parent;

@@ -7,7 +7,7 @@ namespace Near::GUI{
 class Container : public Component, public std::enable_shared_from_this<Container>{
 public:
   void add(std::shared_ptr<Component> child);
-  virtual void layout();
+  virtual void layout() override;
   virtual void draw() override;
 protected:
   std::vector<std::shared_ptr<Component>> children;

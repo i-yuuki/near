@@ -20,13 +20,14 @@ void FlexContainer::setDirection(Direction direction){
 }
 
 void FlexContainer::layout(){
+  Container::layout();
   // 1. 主軸サイズautoと固定の合計を求め、のこりを割ってgrowに使う
   // 2. 交差軸軸サイズautoと固定の最大を求め、growに使う
   // 3. 完成
   float mainAxisTotalSize = 0;
   float counterAxisMaxSize = 0;
   for(auto& child : children){
-    auto childSizeAxis = getAxisSize(child->getSize());
+    auto childSizeAxis = getAxisSize(child->getLayoutSize());
     mainAxisTotalSize += childSizeAxis.x;
     counterAxisMaxSize = std::max(counterAxisMaxSize, childSizeAxis.y);
   }
@@ -35,13 +36,11 @@ void FlexContainer::layout(){
   float pos = 0;
   for(auto& child : children){
     Math::Vector2 childPosAxis(pos, 0);
-    auto childSizeAxis = getAxisSize(child->getSize());
+    auto childSizeAxis = getAxisSize(child->getLayoutSize());
     auto childLayoutSizeAxis = childSizeAxis;
     SizeUnit childCrossUnit = getCrossAxisUnit(child.get());
     if(childCrossUnit == SizeUnit::FILL_CONTAINER){
       childLayoutSizeAxis.y = counterAxisMaxSize;
-    }else if(childCrossUnit == SizeUnit::PARENT){
-      childLayoutSizeAxis.y = selfSizeAxis.y * childSizeAxis.y;
     }
     child->layoutPosition = getAxisSize(childPosAxis);
     child->layoutSize = getAxisSize(childLayoutSizeAxis);

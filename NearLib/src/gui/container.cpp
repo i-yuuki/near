@@ -25,6 +25,10 @@ void Container::add(std::shared_ptr<Component> child){
 }
 
 void Container::layout(){
+  Component::layout();
+  for(auto child : children){
+    child->layout();
+  }
 }
 
 void Container::sizeChanged(){

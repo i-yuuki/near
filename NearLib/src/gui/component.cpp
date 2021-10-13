@@ -66,6 +66,27 @@ void Component::draw(){
   Near::renderer2D()->fillRect(layoutPosition, layoutSize, Math::Vector2::Zero, background);
 }
 
+void Component::layout(){
+  layoutPosition = position;
+  Near::Math::Vector2 parentSize;
+  if(auto p = parent.lock()){
+    parentSize = p->getSize();
+  }else{
+    auto* r = Near::renderer();
+    parentSize = Near::Math::Vector2(r->getWidth(), r->getHeight());
+  }
+  switch(getWidthUnit()){
+    case SizeUnit::FILL_CONTAINER: layoutSize.x = parentSize.x; break;
+    case SizeUnit::PARENT:         layoutSize.x = parentSize.x * size.x; break;
+    default:                       layoutSize.x = size.x; break;
+  }
+  switch(getHeightUnit()){
+    case SizeUnit::FILL_CONTAINER: layoutSize.y = parentSize.y; break;
+    case SizeUnit::PARENT:         layoutSize.y = parentSize.y * size.y; break;
+    default:                       layoutSize.y = size.y; break;
+  }
+}
+
 void Component::layoutParent(){
   if(auto p = parent.lock()){
     p->layout();
