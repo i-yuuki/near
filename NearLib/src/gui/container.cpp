@@ -7,12 +7,12 @@ namespace Near::GUI{
 
 void Container::draw(){
   Component::draw();
-  renderer()->pushWorldTransform();
-  renderer()->applyWorldTransform(Math::Matrix::CreateTranslation(position.x, position.y, 0));
+  renderer2D()->pushTransform();
+  renderer2D()->translate(layoutPosition.x, layoutPosition.y);
   for(auto& child : children){
     child->draw();
   }
-  renderer()->popWorldTransform();
+  renderer2D()->popTransform();
 }
 
 void Container::add(std::shared_ptr<Component> child){
