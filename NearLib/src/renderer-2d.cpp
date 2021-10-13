@@ -126,7 +126,7 @@ void Renderer2D::setTransform(const Math::Matrix& transform){
 }
 
 void Renderer2D::applyTransform(const Math::Matrix& transform){
-  setTransform(this->transform * transform);
+  setTransform(transform * this->transform);
 }
 
 void Renderer2D::translate(float x, float y){
