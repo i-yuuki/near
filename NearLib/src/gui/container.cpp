@@ -26,6 +26,10 @@ void Container::add(std::shared_ptr<Component> child){
 
 void Container::layout(){
   Component::layout();
+  layoutChildren();
+}
+
+void Container::layoutChildren(){
   for(auto child : children){
     child->layout();
   }

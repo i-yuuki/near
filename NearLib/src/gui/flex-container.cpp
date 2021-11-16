@@ -20,31 +20,49 @@ void FlexContainer::setDirection(Direction direction){
 }
 
 void FlexContainer::layout(){
-  Container::layout();
-  // 1. 主軸サイズautoと固定の合計を求め、のこりを割ってgrowに使う
-  // 2. 交差軸軸サイズautoと固定の最大を求め、growに使う
-  // 3. 完成
-  float mainAxisTotalSize = 0;
+  Component::layout();
+  layoutChildren();
+}
+
+void FlexContainer::layoutChildren(){
+  // 子の大きさを決める
+  // このとき主軸サイズfillと固定の合計、交差軸サイズ固定の最大をとっておく
+  float mainAxisTotalFillSize = 0;
+  float mainAxisTotalFixedSize = 0;
   float counterAxisMaxSize = 0;
   for(auto& child : children){
-    auto childSizeAxis = getAxisSize(child->getLayoutSize());
-    mainAxisTotalSize += childSizeAxis.x;
-    counterAxisMaxSize = std::max(counterAxisMaxSize, childSizeAxis.y);
+    child->computeSize();
+    auto childSizeAxis = getAxisSize(child->getSize());
+    auto childLayoutSizeAxis = getAxisSize(child->getLayoutSize());
+    if(getMainAxisUnit(child.get()) == SizeUnit::FILL_CONTAINER){
+      mainAxisTotalFillSize += childSizeAxis.x;
+    }else{
+      mainAxisTotalFixedSize += childLayoutSizeAxis.x;
+    }
+    if(getCrossAxisUnit(child.get()) != SizeUnit::FILL_CONTAINER){
+      counterAxisMaxSize = std::max(counterAxisMaxSize, childLayoutSizeAxis.y);
+    }
   }
 
-  Math::Vector2 selfSizeAxis = getAxisSize(size);
-  float pos = 0;
+  // 子を配置 & fillの大きさを決める
+  Math::Vector2 selfSizeAxis = getAxisSize(layoutSize);
+  Math::Vector2 childPosAxis(0, 0);
   for(auto& child : children){
-    Math::Vector2 childPosAxis(pos, 0);
-    auto childSizeAxis = getAxisSize(child->getLayoutSize());
-    auto childLayoutSizeAxis = childSizeAxis;
-    SizeUnit childCrossUnit = getCrossAxisUnit(child.get());
-    if(childCrossUnit == SizeUnit::FILL_CONTAINER){
-      childLayoutSizeAxis.y = counterAxisMaxSize;
+    auto childSizeAxis = getAxisSize(child->getSize());
+    auto childLayoutSizeAxis = getAxisSize(child->getLayoutSize());
+    if(getMainAxisUnit(child.get()) == SizeUnit::FILL_CONTAINER){
+      childLayoutSizeAxis.x = std::max(0.0f, (childSizeAxis.x / mainAxisTotalFillSize) * (selfSizeAxis.x - mainAxisTotalFixedSize));
     }
+    // xy→軸サイズの変換関数だけどたぶん逆もいける
     child->layoutPosition = getAxisSize(childPosAxis);
     child->layoutSize = getAxisSize(childLayoutSizeAxis);
-    pos += childSizeAxis.x;
+
+    // 子の大きさが確定したので孫を配置
+    if(auto childAsContainer = std::dynamic_pointer_cast<Container>(child)){
+      childAsContainer->layoutChildren();
+    }
+
+    childPosAxis.x += childLayoutSizeAxis.x;
   }
 }
 

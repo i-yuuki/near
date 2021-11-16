@@ -44,6 +44,7 @@ protected:
   SizeUnit widthUnit = SizeUnit::PX;
   SizeUnit heightUnit = SizeUnit::PX;
  void layoutParent();
+ void computeSize();
  virtual void sizeChanged();
 };
 

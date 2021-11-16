@@ -15,6 +15,7 @@ public:
   Direction getDirection() const;
   void setDirection(Direction direction);
   virtual void layout() override;
+  virtual void layoutChildren() override;
 protected:
   Direction direction;
   // x/yサイズを主軸/交差軸サイズにします。

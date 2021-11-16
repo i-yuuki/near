@@ -9,6 +9,7 @@ public:
   void add(std::shared_ptr<Component> child);
   virtual void layout() override;
   virtual void draw() override;
+  virtual void layoutChildren();
 protected:
   std::vector<std::shared_ptr<Component>> children;
   virtual void sizeChanged() override;
