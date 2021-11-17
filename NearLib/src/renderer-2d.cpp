@@ -60,8 +60,11 @@ void Renderer2D::begin(){
   vertexIdx = 0;
   indexIdx = 0;
   texture = nullptr;
-  renderer()->setPixelShader(pixelShader.get());
-  renderer()->getDeviceContext()->PSSetConstantBuffers(0, 1, &constantBuffer);
+  auto* r = renderer();
+  r->setPixelShader(pixelShader.get());
+  r->getDeviceContext()->PSSetConstantBuffers(0, 1, &constantBuffer);
+  r->setViewTransform(Near::Math::Matrix::Identity);
+  r->setProjectionTransform(Near::Math::Matrix::CreateOrthographicOffCenter(0, r->getWidth(), r->getHeight(), 0, 0, 1));
   transforms.clear();
   setTransform(Math::Matrix::Identity);
 }
