@@ -9,10 +9,13 @@ class Text : public Component{
 public:
   Text(const std::string& text, std::shared_ptr<Font::Font> font);
   const std::string& getText() const;
+  float getFontSize() const;
+  void setFontSize(float fontSize);
   virtual void draw() override;
 private:
   std::string text;
   std::shared_ptr<Font::Font> font;
+  float fontSize;
 };
 
 }
