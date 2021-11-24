@@ -67,7 +67,7 @@ void Component::draw(){
 }
 
 void Component::layout(){
-  layoutPosition = position;
+  // layoutPosition = position;
   computeSize();
 }
 

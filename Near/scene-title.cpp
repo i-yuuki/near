@@ -9,6 +9,7 @@
 #include "level-object.h"
 #include "polygon-2d.h"
 #include "scene-game.h"
+#include "scene-guitest.h"
 
 SceneTitle::SceneTitle() : PortalScene(){
 }
@@ -39,6 +40,10 @@ void SceneTitle::update(float deltaTime){
   if(Near::input()->isKeyPressedThisFrame(VK_SPACE)){
     NearGame::Game::Instance->levels.setNextLevel(0);
     NearGame::Game::Instance->fadeToNextScene<SceneGame>(NearGame::BACKGROUND_COLOR, 1000);
+    return;
+  }
+  if(Near::input()->isKeyPressedThisFrame('G')){
+    NearGame::Game::Instance->fadeToNextScene<SceneGUITest>(NearGame::BACKGROUND_COLOR, 1000);
     return;
   }
 }

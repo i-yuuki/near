@@ -182,6 +182,7 @@
     <ClCompile Include="portal.cpp" />
     <ClCompile Include="scene-finish.cpp" />
     <ClCompile Include="scene-game.cpp" />
+    <ClCompile Include="scene-guitest.cpp" />
     <ClCompile Include="scene-title.cpp" />
     <ClCompile Include="tutorial.cpp" />
   </ItemGroup>
@@ -212,6 +213,7 @@
     <ClInclude Include="portal.h" />
     <ClInclude Include="scene-finish.h" />
     <ClInclude Include="scene-game.h" />
+    <ClInclude Include="scene-guitest.h" />
     <ClInclude Include="scene-title.h" />
     <ClInclude Include="tutorial.h" />
   </ItemGroup>
