@@ -21,10 +21,18 @@ void Text::setFontSize(float fontSize){
   this->fontSize = fontSize;
 }
 
+const Math::Vector2& Text::getTextAlign() const{
+  return textAlign;
+}
+
+void Text::setTextAlign(const Math::Vector2& textAlign){
+  this->textAlign = textAlign;
+}
+
 void Text::draw(){
   Component::draw();
   if(font == nullptr) return;
-  font->drawText(text, layoutPosition, Math::Vector2::Zero, fontSize, Math::Color(1, 1, 1, 1));
+  font->drawText(text, layoutPosition + layoutSize * textAlign, textAlign, fontSize, Math::Color(1, 1, 1, 1));
 }
 
 }
