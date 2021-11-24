@@ -24,7 +24,9 @@ void SceneGUITest::init(){
 
   auto text = std::make_shared<Near::GUI::Text>(u8"SETTINGS", font);
   text->setSize(Near::Math::Vector2(1, 48));
-  text->setWidthUnit(Near::GUI::SizeUnit::FILL_CONTAINER);
+  text->setWidthUnit(Near::GUI::SizeUnit::PARENT);
+  text->setFontSize(32);
+  text->setTextAlign(Near::Math::Vector2(0.5f, 0.5f));
   gui->add(text);
 
   auto tabs = std::make_shared<Near::GUI::FlexContainer>(Near::GUI::FlexContainer::Direction::HORIZONTAL);
@@ -35,6 +37,7 @@ void SceneGUITest::init(){
     text->setSize(Near::Math::Vector2(1, 32));
     text->setWidthUnit(Near::GUI::SizeUnit::FILL_CONTAINER);
     text->setBackground(Near::Math::Color(0.286f, 0.239f, 0.184f, 1.0f));
+    text->setTextAlign(Near::Math::Vector2(0.5f, 0.5f));
     tabs->add(text);
   };
   addTab(u8"GAMEPLAY");
@@ -98,18 +101,22 @@ void SceneGUITest::init(){
   text = std::make_shared<Near::GUI::Text>(u8"吾", font);
   text->setSize(Near::Math::Vector2(1, 30));
   text->setWidthUnit(Near::GUI::SizeUnit::PARENT);
+  text->setTextAlign(Near::Math::Vector2(0.5f, 0.0f));
   col->add(text);
   text = std::make_shared<Near::GUI::Text>(u8"輩", font);
   text->setSize(Near::Math::Vector2(1, 30));
   text->setWidthUnit(Near::GUI::SizeUnit::PARENT);
+  text->setTextAlign(Near::Math::Vector2(0.5f, 0.0f));
   col->add(text);
   text = std::make_shared<Near::GUI::Text>(u8"は", font);
   text->setSize(Near::Math::Vector2(1, 30));
   text->setWidthUnit(Near::GUI::SizeUnit::PARENT);
+  text->setTextAlign(Near::Math::Vector2(0.5f, 0.0f));
   col->add(text);
   text = std::make_shared<Near::GUI::Text>(u8"猫", font);
   text->setSize(Near::Math::Vector2(1, 30));
   text->setWidthUnit(Near::GUI::SizeUnit::PARENT);
+  text->setTextAlign(Near::Math::Vector2(0.5f, 0.0f));
   col->add(text);
   sizetest->add(col);
 
