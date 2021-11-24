@@ -203,65 +203,9 @@ void Renderer::init(HWND window, int width, int height){
   res = device->CreateBuffer(&bufferDesc, NULL, &projectionBuffer);
   if(FAILED(res)) throwResult("CreateBuffer (projection transform) failed", res);
   deviceContext->VSSetConstantBuffers(2, 1, &projectionBuffer);
-
-  // Direct2D + DirectWrite
-
-  res = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &d2dFactory);
-  if(FAILED(res)) throwResult("D2D1CreateFactory failed", res);
-
-  IDXGIDevice1* dxgiDevice = nullptr;
-  res = device->QueryInterface(IID_PPV_ARGS(&dxgiDevice));
-  if(FAILED(res)) throwResult("QueryInterface for DXGIDevice failed", res);
-  res = d2dFactory->CreateDevice(dxgiDevice, &d2dDevice);
-  if(FAILED(res)) throwResult("Direct2D CreateDevice failed", res);
-  res = d2dDevice->CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS_NONE, &d2dDeviceContext);
-  if(FAILED(res)) throwResult("Direct2D CreateDeviceContext failed", res);
-
-  IDXGISurface1* backBuffer;
-  swapChain->GetBuffer(0, IID_PPV_ARGS(&backBuffer));
-
-  FLOAT dpiX;
-  FLOAT dpiY;
-  d2dFactory->GetDesktopDpi(&dpiX, &dpiY);
-  D2D1_BITMAP_PROPERTIES1 bitmapProps = D2D1::BitmapProperties1(
-    D2D1_BITMAP_OPTIONS_TARGET | D2D1_BITMAP_OPTIONS_CANNOT_DRAW,
-    D2D1::PixelFormat(DXGI_FORMAT_UNKNOWN, D2D1_ALPHA_MODE_PREMULTIPLIED),
-    dpiX, dpiY
-  );
-  d2dDeviceContext->CreateBitmapFromDxgiSurface(backBuffer, &bitmapProps, &d2dBitmap);
-
-  d2dDeviceContext->CreateSolidColorBrush({1, 1, 1, 1}, &d2dBrush);
-
-  DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory2), reinterpret_cast<IUnknown**>(&dwFactory));
-  dwFactory->CreateTextFormat(L"Inter", nullptr, DWRITE_FONT_WEIGHT_SEMI_LIGHT, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, 20, L"ja-JP", reinterpret_cast<IDWriteTextFormat**>(&dwFormat));
-
-  dwFactory->CreateTypography(&dwTypography);
-  dwTypography->AddFontFeature({static_cast<DWRITE_FONT_FEATURE_TAG>(DWRITE_MAKE_OPENTYPE_TAG('c', 'v', '0', '3')), 1});
-  dwTypography->AddFontFeature({static_cast<DWRITE_FONT_FEATURE_TAG>(DWRITE_MAKE_OPENTYPE_TAG('c', 'v', '0', '4')), 1});
-  dwTypography->AddFontFeature({DWRITE_FONT_FEATURE_TAG_TABULAR_FIGURES, 1});
-
-  IDWriteFontFallbackBuilder* fallbackBuilder;
-  IDWriteFontFallback* fallback;
-  DWRITE_UNICODE_RANGE range = {0, 0xffffffff};
-  auto family = L"Noto Sans CJK JP";
-  dwFactory->CreateFontFallbackBuilder(&fallbackBuilder);
-  fallbackBuilder->AddMapping(&range, 1, &family, 1, nullptr, L"ja-jp");
-  fallbackBuilder->CreateFontFallback(&fallback);
-  dwFormat->SetFontFallback(fallback);
-  
-  fallback->Release();
-  fallbackBuilder->Release();
 }
 
 void Renderer::uninit(){
-  safeRelease(dwTypography);
-  safeRelease(dwFormat);
-  safeRelease(dwFactory);
-  safeRelease(d2dBrush);
-  safeRelease(d2dBitmap);
-  safeRelease(d2dDeviceContext);
-  safeRelease(d2dDevice);
-  safeRelease(d2dFactory);
   safeRelease(projectionBuffer);
   safeRelease(viewBuffer);
   safeRelease(worldBuffer);
@@ -282,23 +226,10 @@ void Renderer::uninit(){
 void Renderer::clear(DirectX::SimpleMath::Color color){
   deviceContext->ClearRenderTargetView(renderTargetView, color);
   deviceContext->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-  d2dDeviceContext->BeginDraw();
-  d2dDeviceContext->SetTarget(d2dBitmap);
 }
 
 void Renderer::present(){
-  d2dDeviceContext->EndDraw();
   swapChain->Present(1, 0);
-}
-
-void Renderer::drawText(std::string_view str, Math::Vector2 topleft){
-  // std::wstring text = L"エラー(アクティブ) E0065 ';' が必要です NearLib renderer.cpp 219";
-  std::wstring text = widen(str);
-  IDWriteTextLayout* layout;
-  dwFactory->CreateTextLayout(text.c_str(), text.size(), dwFormat, std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), &layout);
-  layout->SetTypography(dwTypography, {0, 0xffffffff});
-  d2dDeviceContext->DrawTextLayout({topleft.x, topleft.y}, layout, d2dBrush);
-  layout->Release();
 }
 
 void Renderer::setCulling(bool cull){

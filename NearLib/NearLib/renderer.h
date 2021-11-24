@@ -82,15 +82,6 @@ private:
   DirectX::SimpleMath::Matrix wiewTransform;
   DirectX::SimpleMath::Matrix wrojectionTransform;
   std::vector<DirectX::SimpleMath::Matrix> worldTransforms;
-
-  ID2D1Factory1* d2dFactory = nullptr;
-  ID2D1Device* d2dDevice = nullptr;
-  ID2D1DeviceContext* d2dDeviceContext = nullptr;
-  ID2D1Bitmap1* d2dBitmap = nullptr;
-  ID2D1SolidColorBrush* d2dBrush = nullptr;
-  IDWriteFactory2* dwFactory = nullptr;
-  IDWriteTextFormat1* dwFormat = nullptr;
-  IDWriteTypography* dwTypography = nullptr;
 };
 
 }

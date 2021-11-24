@@ -201,7 +201,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>DirectXTKd.lib;comctl32.lib;dxgi.lib;d3d11.lib;d3dcompiler.lib;d2d1.lib;dwrite.lib;libxml2-mt.lib;zlib-mt.lib;libfbxsdk-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>DirectXTKd.lib;comctl32.lib;dxgi.lib;d3d11.lib;d3dcompiler.lib;libxml2-mt.lib;zlib-mt.lib;libfbxsdk-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -222,7 +222,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>DirectXTKd.lib;comctl32.lib;dxgi.lib;d3d11.lib;d3dcompiler.lib;d2d1.lib;dwrite.lib;libxml2-mt.lib;zlib-mt.lib;libfbxsdk-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>DirectXTKd.lib;comctl32.lib;dxgi.lib;d3d11.lib;d3dcompiler.lib;libxml2-mt.lib;zlib-mt.lib;libfbxsdk-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -248,7 +248,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>DirectXTK.lib;comctl32.lib;dxgi.lib;d3d11.lib;d3dcompiler.lib;d2d1.lib;dwrite.lib;libxml2-mt.lib;zlib-mt.lib;libfbxsdk-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>DirectXTK.lib;comctl32.lib;dxgi.lib;d3d11.lib;d3dcompiler.lib;libxml2-mt.lib;zlib-mt.lib;libfbxsdk-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -273,7 +273,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>DirectXTK.lib;comctl32.lib;dxgi.lib;d3d11.lib;d3dcompiler.lib;d2d1.lib;dwrite.lib;libxml2-mt.lib;zlib-mt.lib;libfbxsdk-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>DirectXTK.lib;comctl32.lib;dxgi.lib;d3d11.lib;d3dcompiler.lib;libxml2-mt.lib;zlib-mt.lib;libfbxsdk-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
