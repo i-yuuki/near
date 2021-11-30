@@ -267,11 +267,11 @@ DirectX::SimpleMath::Matrix Renderer::getWorldTransform(){
 }
 
 DirectX::SimpleMath::Matrix Renderer::getViewTransform(){
-  return wiewTransform;
+  return viewTransform;
 }
 
 DirectX::SimpleMath::Matrix Renderer::getProjectionTransform(){
-  return wrojectionTransform;
+  return projectionTransform;
 }
 
 void Renderer::setWorldTransform(DirectX::SimpleMath::Matrix transform){
@@ -282,14 +282,14 @@ void Renderer::setWorldTransform(DirectX::SimpleMath::Matrix transform){
 }
 
 void Renderer::setViewTransform(DirectX::SimpleMath::Matrix transform){
-  wiewTransform = transform;
+  viewTransform = transform;
   DirectX::SimpleMath::Matrix t;
   transform.Transpose(t);
   deviceContext->UpdateSubresource(viewBuffer, 0, nullptr, &t, 0, 0);
 }
 
 void Renderer::setProjectionTransform(DirectX::SimpleMath::Matrix transform){
-  wrojectionTransform = transform;
+  projectionTransform = transform;
   DirectX::SimpleMath::Matrix t;
   transform.Transpose(t);
   deviceContext->UpdateSubresource(projectionBuffer, 0, nullptr, &t, 0, 0);

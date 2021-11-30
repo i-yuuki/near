@@ -79,8 +79,8 @@ private:
   ID3D11Buffer* viewBuffer = nullptr;
   ID3D11Buffer* projectionBuffer = nullptr;
   DirectX::SimpleMath::Matrix worldTransform;
-  DirectX::SimpleMath::Matrix wiewTransform;
-  DirectX::SimpleMath::Matrix wrojectionTransform;
+  DirectX::SimpleMath::Matrix viewTransform;
+  DirectX::SimpleMath::Matrix projectionTransform;
   std::vector<DirectX::SimpleMath::Matrix> worldTransforms;
 };
 
