@@ -2,7 +2,6 @@
 
 #include <NearLib/camera.h>
 #include <NearLib/utils.h>
-#include <NearLib/gui/flex-container.h>
 
 #include "game.h"
 #include "main.h"
@@ -20,6 +19,7 @@ void SceneGUITest::init(){
   gui = std::make_shared<Near::GUI::FlexContainer>(Near::GUI::FlexContainer::Direction::VERTICAL);
   gui->setWidthUnit(Near::GUI::SizeUnit::PARENT);
   gui->setHeightUnit(Near::GUI::SizeUnit::PARENT);
+  gui->setGap(16);
   gui->setBackground(NearGame::BACKGROUND_COLOR);
 
   auto text = std::make_shared<Near::GUI::Text>(u8"SETTINGS", font);
@@ -30,7 +30,8 @@ void SceneGUITest::init(){
   gui->add(text);
 
   auto tabs = std::make_shared<Near::GUI::FlexContainer>(Near::GUI::FlexContainer::Direction::HORIZONTAL);
-  tabs->setSize(Near::Math::Vector2(1, 64));
+  tabs->setSize(Near::Math::Vector2(1, 32));
+  tabs->setGap(32);
   tabs->setWidthUnit(Near::GUI::SizeUnit::PARENT);
   auto addTab = [&tabs, &font](const std::string& name){
     auto text = std::make_shared<Near::GUI::Text>(name, font);
@@ -45,6 +46,12 @@ void SceneGUITest::init(){
   addTab(u8"VIDEO");
   addTab(u8"CONTROLS");
   gui->add(tabs);
+
+  auto line = std::make_shared<Near::GUI::Component>();
+  line->setSize(Near::Math::Vector2(1, 2));
+  line->setWidthUnit(Near::GUI::SizeUnit::PARENT);
+  line->setBackground(Near::Math::Color(0.545f, 0.478f, 0.400f, 1.0f));
+  gui->add(line);
   
   // flex test
 

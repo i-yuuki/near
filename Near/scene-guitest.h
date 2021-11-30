@@ -1,7 +1,7 @@
 #pragma once
 
 #include <NearLib/scene.h>
-#include <NearLib/gui/container.h>
+#include <NearLib/gui/flex-container.h>
 #include <NearLib/gui/text.h>
 
 class SceneGUITest : public Near::Scene{
@@ -13,6 +13,6 @@ public:
   virtual void uninit() override;
 private:
   float time;
-  std::shared_ptr<Near::GUI::Container> gui;
+  std::shared_ptr<Near::GUI::FlexContainer> gui;
   std::shared_ptr<Near::GUI::Text> testText;
 };
