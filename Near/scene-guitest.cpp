@@ -27,6 +27,7 @@ void SceneGUITest::init(){
   text->setWidthUnit(Near::GUI::SizeUnit::PARENT);
   text->setFontSize(32);
   text->setTextAlign(Near::Math::Vector2(0.5f, 0.5f));
+  text->setForeground(Near::Math::Color(0.286f, 0.239f, 0.184f, 1.0f));
   gui->add(text);
 
   auto tabs = std::make_shared<Near::GUI::FlexContainer>(Near::GUI::FlexContainer::Direction::HORIZONTAL);
