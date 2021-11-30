@@ -29,10 +29,18 @@ void Text::setTextAlign(const Math::Vector2& textAlign){
   this->textAlign = textAlign;
 }
 
+const Math::Color& Text::getForeground() const{
+  return foreground;
+}
+
+void Text::setForeground(const Math::Color& foreground){
+  this->foreground = foreground;
+}
+
 void Text::draw(){
   Component::draw();
   if(font == nullptr) return;
-  font->drawText(text, layoutPosition + layoutSize * textAlign, textAlign, fontSize, Math::Color(1, 1, 1, 1));
+  font->drawText(text, layoutPosition + layoutSize * textAlign, textAlign, fontSize, foreground);
 }
 
 }
