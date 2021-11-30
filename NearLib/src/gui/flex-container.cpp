@@ -19,6 +19,15 @@ void FlexContainer::setDirection(Direction direction){
   }
 }
 
+float FlexContainer::getGap() const{
+  return gap;
+}
+
+void FlexContainer::setGap(float gap){
+  this->gap = gap;
+  sizeChanged();
+}
+
 void FlexContainer::layout(){
   Component::layout();
   layoutChildren();
@@ -47,11 +56,12 @@ void FlexContainer::layoutChildren(){
   // 子を配置 & fillの大きさを決める
   Math::Vector2 selfSizeAxis = getAxisSize(layoutSize);
   Math::Vector2 childPosAxis(0, 0);
+  float availableSpaceForFillChild = selfSizeAxis.x - mainAxisTotalFixedSize - (children.size() - 1) * gap;
   for(auto& child : children){
     auto childSizeAxis = getAxisSize(child->getSize());
     auto childLayoutSizeAxis = getAxisSize(child->getLayoutSize());
     if(getMainAxisUnit(child.get()) == SizeUnit::FILL_CONTAINER){
-      childLayoutSizeAxis.x = std::max(0.0f, (childSizeAxis.x / mainAxisTotalFillSize) * (selfSizeAxis.x - mainAxisTotalFixedSize));
+      childLayoutSizeAxis.x = std::max(0.0f, (childSizeAxis.x / mainAxisTotalFillSize) * availableSpaceForFillChild);
     }
     // xy→軸サイズの変換関数だけどたぶん逆もいける
     child->layoutPosition = getAxisSize(childPosAxis);
@@ -63,6 +73,7 @@ void FlexContainer::layoutChildren(){
     }
 
     childPosAxis.x += childLayoutSizeAxis.x;
+    childPosAxis.x += gap;
   }
 }
 
