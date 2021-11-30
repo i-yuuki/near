@@ -40,7 +40,7 @@ protected:
   Near::Math::Vector2 layoutPosition{0, 0};
   Near::Math::Vector2 size{1, 1};
   Near::Math::Vector2 layoutSize{1, 1};
-  Near::Math::Color background;
+  Near::Math::Color background{0, 0, 0, 0};
   SizeUnit widthUnit = SizeUnit::PX;
   SizeUnit heightUnit = SizeUnit::PX;
  void layoutParent();
