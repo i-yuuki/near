@@ -62,8 +62,10 @@ void Component::setBackground(const Near::Math::Color& background){
 }
 
 void Component::draw(){
-  Near::renderer2D()->setTexture(nullptr);
-  Near::renderer2D()->fillRect(layoutPosition, layoutSize, Math::Vector2::Zero, background);
+  if(background.A() > 0){
+    Near::renderer2D()->setTexture(nullptr);
+    Near::renderer2D()->fillRect(layoutPosition, layoutSize, Math::Vector2::Zero, background);
+  }
 }
 
 void Component::layout(){
