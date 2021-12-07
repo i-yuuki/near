@@ -2,6 +2,7 @@
 
 #include <NearLib/camera.h>
 #include <NearLib/utils.h>
+#include <NearLib/gui/flexible.h>
 
 #include "game.h"
 #include "main.h"
@@ -38,11 +39,11 @@ void SceneGUITest::init(){
   tabs->setGap(32);
   auto addTab = [&tabs, &font](const std::string& name){
     auto text = std::make_shared<Near::GUI::Text>(name, font);
-    text->setWidth(Length(100, Unit::PX));
-    text->setHeight(Length(32, Unit::PX));
-    text->setBackground(Near::Math::Color(0.286f, 0.239f, 0.184f, 1.0f));
     text->setTextAlign(Near::Math::Vector2(0.5f, 0.5f));
-    tabs->add(text);
+    auto tab = std::make_shared<Near::GUI::Flexible>(1, text);
+    tab->setHeight(Length(32, Unit::PX));
+    tab->setBackground(Near::Math::Color(0.286f, 0.239f, 0.184f, 1.0f));
+    tabs->add(tab);
   };
   addTab(u8"GAMEPLAY");
   addTab(u8"AUDIO");
@@ -58,82 +59,73 @@ void SceneGUITest::init(){
   
   // flex test
 
-  /*
   auto sizetest = std::make_shared<Near::GUI::FlexContainer>(Near::GUI::FlexContainer::Direction::HORIZONTAL);
-  sizetest->setSize(Near::Math::Vector2(500, 300));
+  sizetest->setWidth(Length(500, Unit::PX));
+  sizetest->setHeight(Length(300, Unit::PX));
   sizetest->setBackground(Near::Math::Color(1, 1, 1, 0.7f));
   testText = std::make_shared<Near::GUI::Text>(u8"幅変えてる", font);
-  testText->setSize(Near::Math::Vector2(100, 0.5f));
-  testText->setHeightUnit(Near::GUI::SizeUnit::PARENT);
+  testText->setWidth(Length(100, Unit::PX));
+  testText->setHeight(Length(50, Unit::PERCENT));
   testText->setBackground(Near::Math::Color(0, 0, 0, 0.5f));
   sizetest->add(testText);
 
   text = std::make_shared<Near::GUI::Text>(u8"幅固定", font);
-  text->setSize(Near::Math::Vector2(100, 50));
+  text->setWidth(Length(100, Unit::PX));
+  text->setHeight(Length(50, Unit::PX));
   text->setBackground(Near::Math::Color(1, 0, 0, 0.5f));
   sizetest->add(text);
 
   text = std::make_shared<Near::GUI::Text>(u8"幅固定", font);
-  text->setSize(Near::Math::Vector2(100, 50));
+  text->setWidth(Length(100, Unit::PX));
+  text->setHeight(Length(50, Unit::PX));
   text->setBackground(Near::Math::Color(1, 1, 0, 0.5f));
   sizetest->add(text);
 
   auto col = std::make_shared<Near::GUI::FlexContainer>(Near::GUI::FlexContainer::Direction::VERTICAL);
-  col->setWidthUnit(Near::GUI::SizeUnit::FILL_CONTAINER);
-  col->setHeightUnit(Near::GUI::SizeUnit::PARENT);
+  col->setHeight(Length(100, Unit::PERCENT));
   col->setBackground(Near::Math::Color(0, 0, 1, 0.5f));
   text = std::make_shared<Near::GUI::Text>(u8"残りの幅", font);
-  text->setSize(Near::Math::Vector2(1, 30));
-  text->setWidthUnit(Near::GUI::SizeUnit::PARENT);
+  text->setWidth(Length(100, Unit::PERCENT));
+  text->setHeight(Length(30, Unit::PX));
   col->add(text);
   text = std::make_shared<Near::GUI::Text>(u8"残りの高さ2", font);
-  text->setSize(Near::Math::Vector2(1, 2));
-  text->setWidthUnit(Near::GUI::SizeUnit::PARENT);
-  text->setHeightUnit(Near::GUI::SizeUnit::FILL_CONTAINER);
   text->setBackground(Near::Math::Color(0, 1, 0, 0.5f));
-  col->add(text);
+  col->add(std::make_shared<Near::GUI::Flexible>(2, text));
   text = std::make_shared<Near::GUI::Text>(u8"残りの高さ1", font);
-  text->setSize(Near::Math::Vector2(1, 1));
-  text->setWidthUnit(Near::GUI::SizeUnit::PARENT);
-  text->setHeightUnit(Near::GUI::SizeUnit::FILL_CONTAINER);
   text->setBackground(Near::Math::Color(0, 0.8f, 0, 0.5f));
-  col->add(text);
-  sizetest->add(col);
+  col->add(std::make_shared<Near::GUI::Flexible>(1, text));
+  sizetest->add(std::make_shared<Near::GUI::Flexible>(1, col));
 
   col = std::make_shared<Near::GUI::FlexContainer>(Near::GUI::FlexContainer::Direction::VERTICAL);
-  col->setWidthUnit(Near::GUI::SizeUnit::FILL_CONTAINER);
-  col->setHeightUnit(Near::GUI::SizeUnit::PARENT);
+  col->setHeight(Length(100, Unit::PERCENT));
   col->setBackground(Near::Math::Color(1, 0, 0, 0.5f));
 
   text = std::make_shared<Near::GUI::Text>(u8"残りの幅", font);
-  text->setSize(Near::Math::Vector2(1, 30));
-  text->setWidthUnit(Near::GUI::SizeUnit::PARENT);
+  text->setWidth(Length(100, Unit::PERCENT));
+  text->setHeight(Length(30, Unit::PX));
   col->add(text);
   text = std::make_shared<Near::GUI::Text>(u8"吾", font);
-  text->setSize(Near::Math::Vector2(1, 30));
-  text->setWidthUnit(Near::GUI::SizeUnit::PARENT);
+  text->setWidth(Length(100, Unit::PERCENT));
+  text->setHeight(Length(30, Unit::PX));
   text->setTextAlign(Near::Math::Vector2(0.5f, 0.0f));
   col->add(text);
   text = std::make_shared<Near::GUI::Text>(u8"輩", font);
-  text->setSize(Near::Math::Vector2(1, 30));
-  text->setWidthUnit(Near::GUI::SizeUnit::PARENT);
+  text->setWidth(Length(100, Unit::PERCENT));
+  text->setHeight(Length(30, Unit::PX));
   text->setTextAlign(Near::Math::Vector2(0.5f, 0.0f));
   col->add(text);
   text = std::make_shared<Near::GUI::Text>(u8"は", font);
-  text->setSize(Near::Math::Vector2(1, 30));
-  text->setWidthUnit(Near::GUI::SizeUnit::PARENT);
+  text->setWidth(Length(100, Unit::PERCENT));
+  text->setHeight(Length(30, Unit::PX));
   text->setTextAlign(Near::Math::Vector2(0.5f, 0.0f));
   col->add(text);
   text = std::make_shared<Near::GUI::Text>(u8"猫", font);
-  text->setSize(Near::Math::Vector2(1, 30));
-  text->setWidthUnit(Near::GUI::SizeUnit::PARENT);
+  text->setWidth(Length(100, Unit::PERCENT));
+  text->setHeight(Length(30, Unit::PX));
   text->setTextAlign(Near::Math::Vector2(0.5f, 0.0f));
   col->add(text);
-  sizetest->add(col);
+  sizetest->add(std::make_shared<Near::GUI::Flexible>(1, col));
   gui->add(sizetest);
-  */
-
-  gui->layout(Near::GUI::BoxConstraints(0, 0, 1280, 720));
 }
 
 void SceneGUITest::update(float deltaTime){
@@ -143,9 +135,10 @@ void SceneGUITest::update(float deltaTime){
     NearGame::Game::Instance->fadeToNextScene<SceneTitle>(NearGame::BACKGROUND_COLOR, 1000);
     return;
   }
-  // testText->setSize(Near::Math::Vector2(100 + std::sinf(time / 1500) * 100, std::abs(std::sinf(time / 1000))));
+  testText->setWidth(Near::GUI::Length(100 + std::sinf(time / 1500) * 100, Near::GUI::Unit::PX));
+  testText->setHeight(Near::GUI::Length(std::abs(std::sinf(time / 1000)) * 100, Near::GUI::Unit::PERCENT));
   // TODO setSizeでレイアウトもさせる
-  // gui->layout();
+  gui->layout(Near::GUI::BoxConstraints(0, 0, 1280, 720));
 }
 
 void SceneGUITest::draw(){
