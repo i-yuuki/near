@@ -62,15 +62,15 @@ void FlexContainer::layoutChildren(const BoxConstraints& constraints){
   Math::Vector2 selfSizeAxis = getAxisSize(layoutSize);
   Math::Vector2 childPosAxis(0, 0);
   float totalGap = (children.size() - 1) * gap;
-  float availableSpaceForFlex = mainAxisMaxSelfSize - mainAxisTotalFixedSize;
+  float availableSpaceForFlex = mainAxisMaxSelfSize - mainAxisTotalFixedSize - totalGap;
   for(auto& child : children){
     if(auto flexible = std::dynamic_pointer_cast<Flexible>(child)){
       BoxConstraints childConstraints;
       if(canFlex){
         float flexSize = (flexible->getFlex() / mainAxisTotalFlex) * availableSpaceForFlex;
         switch(direction){
-          case Direction::HORIZONTAL: childConstraints.setHeight(flexSize); break;
-          case Direction::VERTICAL:   childConstraints.setWidth(flexSize); break;
+          case Direction::HORIZONTAL: childConstraints.setWidth(flexSize); break;
+          case Direction::VERTICAL:   childConstraints.setHeight(flexSize); break;
           default: throw std::exception("Unknown FlexContainer direction! (missing implementation?)");
         }
       }

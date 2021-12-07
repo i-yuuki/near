@@ -11,33 +11,35 @@ SceneGUITest::SceneGUITest() : Near::Scene(){
 }
 
 void SceneGUITest::init(){
+  using Length = Near::GUI::Length;
+  using Unit = Near::GUI::Unit;
   Near::Scene::init();
   getLayer(Near::Scene::LAYER_MANAGERS)->createGameObject<Near::Camera>();
 
   auto font = NearGame::Game::Instance->font;
 
   gui = std::make_shared<Near::GUI::FlexContainer>(Near::GUI::FlexContainer::Direction::VERTICAL);
-  gui->setWidthUnit(Near::GUI::SizeUnit::PARENT);
-  gui->setHeightUnit(Near::GUI::SizeUnit::PARENT);
+  gui->setWidth(Length(100, Unit::PERCENT));
+  gui->setHeight(Length(100, Unit::PERCENT));
   gui->setGap(16);
   gui->setBackground(NearGame::BACKGROUND_COLOR);
 
   auto text = std::make_shared<Near::GUI::Text>(u8"SETTINGS", font);
-  text->setSize(Near::Math::Vector2(1, 48));
-  text->setWidthUnit(Near::GUI::SizeUnit::PARENT);
+  text->setWidth(Length(100, Unit::PERCENT));
+  text->setHeight(Length(48, Unit::PX));
   text->setFontSize(32);
   text->setTextAlign(Near::Math::Vector2(0.5f, 0.5f));
   text->setForeground(Near::Math::Color(0.286f, 0.239f, 0.184f, 1.0f));
   gui->add(text);
 
   auto tabs = std::make_shared<Near::GUI::FlexContainer>(Near::GUI::FlexContainer::Direction::HORIZONTAL);
-  tabs->setSize(Near::Math::Vector2(1, 32));
+  tabs->setWidth(Length(100, Unit::PERCENT));
+  tabs->setHeight(Length(32, Unit::PX));
   tabs->setGap(32);
-  tabs->setWidthUnit(Near::GUI::SizeUnit::PARENT);
   auto addTab = [&tabs, &font](const std::string& name){
     auto text = std::make_shared<Near::GUI::Text>(name, font);
-    text->setSize(Near::Math::Vector2(1, 32));
-    text->setWidthUnit(Near::GUI::SizeUnit::FILL_CONTAINER);
+    text->setWidth(Length(100, Unit::PX));
+    text->setHeight(Length(32, Unit::PX));
     text->setBackground(Near::Math::Color(0.286f, 0.239f, 0.184f, 1.0f));
     text->setTextAlign(Near::Math::Vector2(0.5f, 0.5f));
     tabs->add(text);
@@ -49,13 +51,14 @@ void SceneGUITest::init(){
   gui->add(tabs);
 
   auto line = std::make_shared<Near::GUI::Component>();
-  line->setSize(Near::Math::Vector2(1, 2));
-  line->setWidthUnit(Near::GUI::SizeUnit::PARENT);
+  line->setWidth(Length(100, Unit::PERCENT));
+  line->setHeight(Length(2, Unit::PX));
   line->setBackground(Near::Math::Color(0.545f, 0.478f, 0.400f, 1.0f));
   gui->add(line);
   
   // flex test
 
+  /*
   auto sizetest = std::make_shared<Near::GUI::FlexContainer>(Near::GUI::FlexContainer::Direction::HORIZONTAL);
   sizetest->setSize(Near::Math::Vector2(500, 300));
   sizetest->setBackground(Near::Math::Color(1, 1, 1, 0.7f));
@@ -127,9 +130,10 @@ void SceneGUITest::init(){
   text->setTextAlign(Near::Math::Vector2(0.5f, 0.0f));
   col->add(text);
   sizetest->add(col);
-
   gui->add(sizetest);
-  gui->layout();
+  */
+
+  gui->layout(Near::GUI::BoxConstraints(0, 0, 1280, 720));
 }
 
 void SceneGUITest::update(float deltaTime){
@@ -139,7 +143,7 @@ void SceneGUITest::update(float deltaTime){
     NearGame::Game::Instance->fadeToNextScene<SceneTitle>(NearGame::BACKGROUND_COLOR, 1000);
     return;
   }
-  testText->setSize(Near::Math::Vector2(100 + std::sinf(time / 1500) * 100, std::abs(std::sinf(time / 1000))));
+  // testText->setSize(Near::Math::Vector2(100 + std::sinf(time / 1500) * 100, std::abs(std::sinf(time / 1000))));
   // TODO setSizeでレイアウトもさせる
   // gui->layout();
 }

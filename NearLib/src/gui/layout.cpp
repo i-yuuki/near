@@ -20,7 +20,7 @@ BoxConstraints& BoxConstraints::setWidth(float width){
 
 BoxConstraints& BoxConstraints::setHeight(float height){
   minHeight = height;
-  maxWidth = height;
+  maxHeight = height;
   return *this;
 }
 

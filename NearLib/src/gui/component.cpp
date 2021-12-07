@@ -71,6 +71,8 @@ void Component::layout(const BoxConstraints& constraints){
     case Unit::PERCENT: layoutSize.y = (std::isfinite(constraints.maxHeight) ? constraints.maxHeight : constraints.minHeight) * height.value / 100; break;
     default:            layoutSize.y = height.value; break;
   }
+  layoutSize.x = std::max(layoutSize.x, constraints.minWidth);
+  layoutSize.y = std::max(layoutSize.y, constraints.minHeight);
 }
 
 }
