@@ -25,7 +25,7 @@ void Container::add(std::shared_ptr<Component> child){
 
 void Container::layout(const BoxConstraints& constraints){
   Component::layout(constraints);
-  layoutChildren(constraints);
+  layoutChildren(BoxConstraints(Math::Vector2::Zero, layoutSize));
 }
 
 void Container::layoutChildren(const BoxConstraints& constraints){

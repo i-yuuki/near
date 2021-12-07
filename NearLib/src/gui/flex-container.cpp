@@ -30,7 +30,7 @@ void FlexContainer::setGap(float gap){
 
 void FlexContainer::layout(const BoxConstraints& constraints){
   Component::layout(constraints);
-  layoutChildren(constraints);
+  layoutChildren(BoxConstraints(Math::Vector2::Zero, layoutSize));
 }
 
 void FlexContainer::layoutChildren(const BoxConstraints& constraints){
