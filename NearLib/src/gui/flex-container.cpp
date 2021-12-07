@@ -70,8 +70,8 @@ void FlexContainer::layoutChildren(const BoxConstraints& constraints){
       if(canFlex){
         float flexSize = (flexible->getFlex() / mainAxisTotalFlex) * availableSpaceForFlex;
         switch(direction){
-          case Direction::HORIZONTAL: childConstraints.setWidth(flexSize); break;
-          case Direction::VERTICAL:   childConstraints.setHeight(flexSize); break;
+          case Direction::HORIZONTAL: childConstraints.setWidth(flexSize).setHeight(layoutSize.y); break;
+          case Direction::VERTICAL:   childConstraints.setWidth(layoutSize.x).setHeight(flexSize); break;
           default: throw std::exception("Unknown FlexContainer direction! (missing implementation?)");
         }
       }
