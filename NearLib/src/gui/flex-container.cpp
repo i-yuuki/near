@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "gui/flex-container.h"
+#include "gui/flexible.h"
 
 #include "near.h"
 
@@ -93,17 +94,6 @@ Math::Vector2 FlexContainer::getAxisSize(const Math::Vector2 size) const{
     return Math::Vector2(size.y, size.x);
   }
   return size;
-}
-
-Flexible::Flexible(float flex, std::shared_ptr<Component> child) : flex(flex), child(child){
-}
-
-float Flexible::getFlex() const{
-  return flex;
-}
-
-void Flexible::setFlex(float flex){
-  this->flex = flex;
 }
 
 }

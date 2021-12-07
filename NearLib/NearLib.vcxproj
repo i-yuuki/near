@@ -33,6 +33,7 @@
     <ClCompile Include="src\gui\component.cpp" />
     <ClCompile Include="src\gui\container.cpp" />
     <ClCompile Include="src\gui\flex-container.cpp" />
+    <ClCompile Include="src\gui\flexible.cpp" />
     <ClCompile Include="src\gui\layout.cpp" />
     <ClCompile Include="src\gui\text.cpp" />
     <ClCompile Include="src\input.cpp" />
@@ -88,6 +89,7 @@
     <ClInclude Include="NearLib\gui\component.h" />
     <ClInclude Include="NearLib\gui\container.h" />
     <ClInclude Include="NearLib\gui\flex-container.h" />
+    <ClInclude Include="NearLib\gui\flexible.h" />
     <ClInclude Include="NearLib\gui\layout.h" />
     <ClInclude Include="NearLib\gui\text.h" />
     <ClInclude Include="NearLib\input.h" />
