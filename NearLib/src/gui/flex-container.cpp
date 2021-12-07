@@ -54,7 +54,7 @@ void FlexContainer::layoutChildren(const BoxConstraints& constraints){
         default: throw std::exception("Unknown FlexContainer direction! (missing implementation?)");
       }
       child->layout(childConstraints);
-      mainAxisTotalFixedSize += child->layoutSize.x;
+      mainAxisTotalFixedSize += getAxisSize(child->layoutSize).x;
     }
   }
 
