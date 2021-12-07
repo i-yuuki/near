@@ -16,15 +16,24 @@ public:
   float getGap() const;
   void setDirection(Direction direction);
   void setGap(float gap);
-  virtual void layout() override;
-  virtual void layoutChildren() override;
+  virtual void layout(const BoxConstraints& constraints) override;
+  virtual void layoutChildren(const BoxConstraints& constraints) override;
 protected:
   Direction direction;
   float gap = 0;
   // x/yサイズを主軸/交差軸サイズにします。
   Math::Vector2 getAxisSize(const Math::Vector2 size) const;
-  SizeUnit getMainAxisUnit(Component* comp) const;
-  SizeUnit getCrossAxisUnit(Component* comp) const;
+};
+
+// TODO Componentにする ワンチャンファイル分ける
+class Flexible{
+public:
+  Flexible(float flex, std::shared_ptr<Component> child);
+  float getFlex() const;
+  void setFlex(float flex);
+protected:
+  float flex;
+  std::shared_ptr<Component> child;
 };
 
 }

@@ -15,7 +15,7 @@ FlexContainer::Direction FlexContainer::getDirection() const{
 void FlexContainer::setDirection(Direction direction){
   if(direction != this->direction){
     this->direction = direction;
-    layout();
+    // layout();
   }
 }
 
@@ -25,52 +25,63 @@ float FlexContainer::getGap() const{
 
 void FlexContainer::setGap(float gap){
   this->gap = gap;
-  sizeChanged();
 }
 
-void FlexContainer::layout(){
-  Component::layout();
-  layoutChildren();
+void FlexContainer::layout(const BoxConstraints& constraints){
+  Component::layout(constraints);
+  layoutChildren(constraints);
 }
 
-void FlexContainer::layoutChildren(){
-  // 子の大きさを決める
-  // このとき主軸サイズfillと固定の合計、交差軸サイズ固定の最大をとっておく
-  float mainAxisTotalFillSize = 0;
+void FlexContainer::layoutChildren(const BoxConstraints& constraints){
+  // CSSの仕様とFlutterのソースを参考
+  // https://api.flutter.dev/flutter/widgets/Flex-class.html
+
+  // 1. 主軸サイズをflexと固定それぞれで合計しておく
+  //    flex値がない子はレイアウトもしちゃう
+  float mainAxisTotalFlex = 0;
   float mainAxisTotalFixedSize = 0;
-  float counterAxisMaxSize = 0;
+  float mainAxisMaxSelfSize = direction == Direction::HORIZONTAL ? constraints.maxWidth : constraints.maxHeight;
+  bool canFlex = std::isfinite(mainAxisMaxSelfSize);
   for(auto& child : children){
-    child->computeSize();
-    auto childSizeAxis = getAxisSize(child->getSize());
-    auto childLayoutSizeAxis = getAxisSize(child->getLayoutSize());
-    if(getMainAxisUnit(child.get()) == SizeUnit::FILL_CONTAINER){
-      mainAxisTotalFillSize += childSizeAxis.x;
+    if(auto flexible = std::dynamic_pointer_cast<Flexible>(child)){
+      mainAxisTotalFlex += flexible->getFlex();
     }else{
-      mainAxisTotalFixedSize += childLayoutSizeAxis.x;
-    }
-    if(getCrossAxisUnit(child.get()) != SizeUnit::FILL_CONTAINER){
-      counterAxisMaxSize = std::max(counterAxisMaxSize, childLayoutSizeAxis.y);
+      BoxConstraints childConstraints;
+      switch(direction){
+        case Direction::HORIZONTAL: childConstraints.setMaxHeight(constraints.maxHeight); break;
+        case Direction::VERTICAL:   childConstraints.setMaxWidth(constraints.maxWidth); break;
+        default: throw std::exception("Unknown FlexContainer direction! (missing implementation?)");
+      }
+      child->layout(childConstraints);
+      mainAxisTotalFixedSize += child->layoutSize.x;
     }
   }
 
-  // 子を配置 & fillの大きさを決める
+  // 2. 主軸サイズflexの子で残りの主軸スペースを分け合う
+  // 3. 子を配置
   Math::Vector2 selfSizeAxis = getAxisSize(layoutSize);
   Math::Vector2 childPosAxis(0, 0);
-  float availableSpaceForFillChild = selfSizeAxis.x - mainAxisTotalFixedSize - (children.size() - 1) * gap;
+  float totalGap = (children.size() - 1) * gap;
+  float availableSpaceForFlex = mainAxisMaxSelfSize - mainAxisTotalFixedSize;
   for(auto& child : children){
-    auto childSizeAxis = getAxisSize(child->getSize());
-    auto childLayoutSizeAxis = getAxisSize(child->getLayoutSize());
-    if(getMainAxisUnit(child.get()) == SizeUnit::FILL_CONTAINER){
-      childLayoutSizeAxis.x = std::max(0.0f, (childSizeAxis.x / mainAxisTotalFillSize) * availableSpaceForFillChild);
+    if(auto flexible = std::dynamic_pointer_cast<Flexible>(child)){
+      BoxConstraints childConstraints;
+      if(canFlex){
+        float flexSize = (flexible->getFlex() / mainAxisTotalFlex) * availableSpaceForFlex;
+        switch(direction){
+          case Direction::HORIZONTAL: childConstraints.setHeight(flexSize); break;
+          case Direction::VERTICAL:   childConstraints.setWidth(flexSize); break;
+          default: throw std::exception("Unknown FlexContainer direction! (missing implementation?)");
+        }
+      }
+      child->layout(childConstraints);
+    }else{
+      // 主軸サイズ固定はもうレイアウト済み、ここでやることは特にない？
     }
+    
+    auto childLayoutSizeAxis = getAxisSize(child->getLayoutSize());
     // xy→軸サイズの変換関数だけどたぶん逆もいける
     child->layoutPosition = getAxisSize(childPosAxis);
-    child->layoutSize = getAxisSize(childLayoutSizeAxis);
-
-    // 子の大きさが確定したので孫を配置
-    if(auto childAsContainer = std::dynamic_pointer_cast<Container>(child)){
-      childAsContainer->layoutChildren();
-    }
 
     childPosAxis.x += childLayoutSizeAxis.x;
     childPosAxis.x += gap;
@@ -84,12 +95,15 @@ Math::Vector2 FlexContainer::getAxisSize(const Math::Vector2 size) const{
   return size;
 }
 
-SizeUnit FlexContainer::getMainAxisUnit(Component* comp) const{
-  return direction == Direction::VERTICAL ? comp->getHeightUnit() : comp->getWidthUnit();
+Flexible::Flexible(float flex, std::shared_ptr<Component> child) : flex(flex), child(child){
 }
 
-SizeUnit FlexContainer::getCrossAxisUnit(Component* comp) const{
-  return direction == Direction::VERTICAL ? comp->getWidthUnit() : comp->getHeightUnit();
+float Flexible::getFlex() const{
+  return flex;
+}
+
+void Flexible::setFlex(float flex){
+  this->flex = flex;
 }
 
 }

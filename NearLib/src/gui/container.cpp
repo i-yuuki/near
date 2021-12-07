@@ -21,26 +21,17 @@ void Container::add(std::shared_ptr<Component> child){
   }
   children.push_back(child);
   child->parent = this->shared_from_this();
-  childAdded(child);
 }
 
-void Container::layout(){
-  Component::layout();
-  layoutChildren();
+void Container::layout(const BoxConstraints& constraints){
+  Component::layout(constraints);
+  layoutChildren(constraints);
 }
 
-void Container::layoutChildren(){
+void Container::layoutChildren(const BoxConstraints& constraints){
   for(auto child : children){
-    child->layout();
+    child->layout(constraints);
   }
-}
-
-void Container::sizeChanged(){
-  layout();
-}
-
-void Container::childAdded(std::shared_ptr<Component> child){
-  layout();
 }
 
 }
