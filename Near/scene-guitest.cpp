@@ -56,7 +56,46 @@ void SceneGUITest::init(){
   line->setHeight(Length(2, Unit::PX));
   line->setBackground(Near::Math::Color(0.545f, 0.478f, 0.400f, 1.0f));
   gui->add(line);
-  
+
+  // 設定リスト実験
+
+  text = std::make_shared<Near::GUI::Text>(u8"ビデオ設定", font);
+  text->setWidth(Length(100, Unit::PERCENT));
+  text->setHeight(Length(40, Unit::PX));
+  text->setFontSize(32);
+  text->setTextAlign(Near::Math::Vector2(0.0f, 0.5f));
+  text->setForeground(Near::Math::Color(0.286f, 0.239f, 0.184f, 1.0f));
+  gui->add(text);
+
+  auto list = std::make_shared<Near::GUI::FlexContainer>(Near::GUI::FlexContainer::Direction::VERTICAL);
+  list->setGap(16);
+  auto addListItem = [&list, &font](const std::string& name, const std::string& value){
+    auto item = std::make_shared<Near::GUI::Container>();
+    item->setWidth(Near::GUI::Length(400, Near::GUI::Unit::PX));
+    item->setHeight(Near::GUI::Length(32, Near::GUI::Unit::PX));
+    item->setBackground(Near::Math::Color(0.286f, 0.239f, 0.184f, 0.25f));
+    auto text = std::make_shared<Near::GUI::Text>(name, font);
+    text->setWidth(Near::GUI::Length(100, Near::GUI::Unit::PERCENT));
+    text->setHeight(Near::GUI::Length(100, Near::GUI::Unit::PERCENT));
+    text->setTextAlign(Near::Math::Vector2(0.0f, 0.5f));
+    text->setForeground(Near::Math::Color(0.286f, 0.239f, 0.184f, 1.0f));
+    item->add(text);
+    text = std::make_shared<Near::GUI::Text>(value, font);
+    text->setWidth(Near::GUI::Length(100, Near::GUI::Unit::PERCENT));
+    text->setHeight(Near::GUI::Length(100, Near::GUI::Unit::PERCENT));
+    text->setTextAlign(Near::Math::Vector2(1.0f, 0.5f));
+    text->setForeground(Near::Math::Color(0.286f, 0.239f, 0.184f, 1.0f));
+    item->add(text);
+    list->add(item);
+  };
+  addListItem(u8"■ 視野角", u8"90");
+  addListItem(u8"■ 解像度", u8"1920x1080");
+  addListItem(u8"■ 画面", u8"ボーダーレス");
+  addListItem(u8"■ 垂直同期", u8"ON");
+  addListItem(u8"■ アンチエイリアス", u8"ON");
+  addListItem(u8"■ GUIスケール", u8"1.00");
+  gui->add(list);
+
   // flex test
 
   auto sizetest = std::make_shared<Near::GUI::FlexContainer>(Near::GUI::FlexContainer::Direction::HORIZONTAL);
@@ -125,7 +164,7 @@ void SceneGUITest::init(){
   text->setTextAlign(Near::Math::Vector2(0.5f, 0.0f));
   col->add(text);
   sizetest->add(std::make_shared<Near::GUI::Flexible>(1, col));
-  gui->add(sizetest);
+  // gui->add(sizetest);
 }
 
 void SceneGUITest::update(float deltaTime){
