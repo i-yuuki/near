@@ -163,6 +163,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="activatable.cpp" />
+    <ClCompile Include="camera-path.cpp" />
     <ClCompile Include="cube.cpp" />
     <ClCompile Include="door.cpp" />
     <ClCompile Include="fade.cpp" />
@@ -194,6 +195,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="activatable.h" />
+    <ClInclude Include="camera-path.h" />
     <ClInclude Include="cube.h" />
     <ClInclude Include="door.h" />
     <ClInclude Include="fade.h" />

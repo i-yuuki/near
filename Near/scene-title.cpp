@@ -21,17 +21,22 @@ void SceneTitle::init(){
   level->load("assets/levels/title.txt");
   getLayer(Near::Scene::LAYER_OBJECTS)->createGameObject<LevelObject>(level);
   level->createGameObjects(*this);
-  camera = getLayer(Near::Scene::LAYER_MANAGERS)->createGameObject<Near::Camera>();
+  camera = getLayer(Near::Scene::LAYER_MANAGERS)->createGameObject<PortalCamera>();
   camera->transform.position = level->getSpawnPosition();
   camera->transform.rotation = Near::createEularRotation(level->getSpawnRotation());
   camera->setFar(8000);
   title = getLayer(Near::Scene::LAYER_OVERLAY)->createGameObject<Polygon2D>("assets/textures/title.png", Near::Math::Vector2::Zero, Near::Math::Vector2(r->getWidth(), r->getHeight()));
+  cameraPath.reset();
+  cameraPath.addPointRelative(Near::Math::Vector3(0, -100, 0), Near::Math::Vector3(0, 0, 300), Near::Math::Vector3(0, 100, 0), 5000);
+  cameraPath.addPointRelative(Near::Math::Vector3(0, -100, 0), Near::Math::Vector3(0, 0, -300), Near::Math::Vector3(0, 100, 0), 5000);
 }
 
 void SceneTitle::update(float deltaTime){
   PortalScene::update(deltaTime);
   time += deltaTime;
-  camera->transform.position.y = 64 + std::sin(time / 10000) * 32;
+  cameraPath.advance(deltaTime);
+  auto cameraMovement = cameraPath.getMovement();
+  camera->move(cameraMovement, 1);
   title->setColor(Near::Math::Color(1, 1, 1, std::clamp((time - 1000) / 1000, 0.0f, 1.0f)));
   if(Near::input()->isKeyPressedThisFrame(VK_ESCAPE)){
     Near::markClose();
