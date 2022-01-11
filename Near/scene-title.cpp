@@ -33,8 +33,18 @@ void SceneTitle::update(float deltaTime){
   PortalScene::update(deltaTime);
   time += deltaTime;
   cameraPath.advance(deltaTime);
-  auto cameraMovement = cameraPath.getMovement();
-  camera->move(cameraMovement, 1);
+  #ifdef _DEBUG
+  if(Near::input()->isKeyPressedThisFrame('P')){
+    camera->setDebugControlsEnabled(!camera->isDebugControlsEnabled());
+    if(!camera->isDebugControlsEnabled()){
+      camera->transform.position = cameraPath.getPosition();
+    }
+  }
+  #endif
+  if(!camera->isDebugControlsEnabled()){
+    auto cameraMovement = cameraPath.getMovement();
+    camera->move(cameraMovement, 1);
+  }
   title->setColor(Near::Math::Color(1, 1, 1, std::clamp((time - 1000) / 1000, 0.0f, 1.0f)));
   if(Near::input()->isKeyPressedThisFrame(VK_ESCAPE)){
     Near::markClose();
