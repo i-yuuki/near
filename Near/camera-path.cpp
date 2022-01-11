@@ -96,6 +96,10 @@ void CameraPath::advance(float deltaTime){
   printf("%.3f - %.3f / %.3f / %.3f\n", time, position.x, position.y, position.z);
 }
 
+const Near::Math::Vector3& CameraPath::getStartPosition(){
+  return points[0].p3;
+}
+
 const Near::Math::Vector3& CameraPath::getPosition(){
   return position;
 }

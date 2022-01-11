@@ -22,11 +22,11 @@ void SceneTitle::init(){
   getLayer(Near::Scene::LAYER_OBJECTS)->createGameObject<LevelObject>(level);
   level->createGameObjects(*this);
   camera = getLayer(Near::Scene::LAYER_MANAGERS)->createGameObject<PortalCamera>();
-  camera->transform.position = level->getSpawnPosition();
-  camera->transform.rotation = Near::createEularRotation(level->getSpawnRotation());
   camera->setFar(8000);
   title = getLayer(Near::Scene::LAYER_OVERLAY)->createGameObject<Polygon2D>("assets/textures/title.png", Near::Math::Vector2::Zero, Near::Math::Vector2(r->getWidth(), r->getHeight()));
   cameraPath.load("assets/levels/title-path.txt");
+  camera->transform.position = cameraPath.getStartPosition();
+  camera->transform.rotation = Near::createEularRotation(level->getSpawnRotation());
 }
 
 void SceneTitle::update(float deltaTime){

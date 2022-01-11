@@ -11,6 +11,7 @@ public:
   void addPoint(const Near::Math::Vector3& prevPointHandle, const Near::Math::Vector3& point, const Near::Math::Vector3& handle, float duration);
   void addPointRelative(const Near::Math::Vector3& prevPointHandle, const Near::Math::Vector3& pointRelative, const Near::Math::Vector3& handle, float duration);
   void advance(float deltaTime);
+  const Near::Math::Vector3& getStartPosition();
   const Near::Math::Vector3& getPosition();
   Near::Math::Vector3 getMovement();
 private:
