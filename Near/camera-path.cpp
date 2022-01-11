@@ -86,7 +86,6 @@ void CameraPath::advance(float deltaTime){
   float segmentDuration = it->time - segmentStartTime;
   float t = (time - segmentStartTime) / segmentDuration;
   position = Evaluate(t, prevPoint.p3, it->p1, it->p2, it->p3);
-  printf("%.3f - %.3f / %.3f / %.3f\n", time, position.x, position.y, position.z);
 }
 
 const Near::Math::Vector3& CameraPath::getStartPosition(){
