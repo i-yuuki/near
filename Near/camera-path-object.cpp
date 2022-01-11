@@ -48,7 +48,7 @@ void CameraPathObject::setVisible(bool visible){
 }
 
 void CameraPathObject::GenerateVertices(const CameraPath::BezierPoint& from, const CameraPath::BezierPoint& to, std::vector<Near::Vertex3D>& vertices, std::vector<uint32_t>& indices){
-  constexpr int verticesPerSegment = 10;
+  constexpr int verticesPerSegment = 100;
   std::random_device seed;
   std::mt19937 rand(seed());
   std::uniform_real_distribution<float> dist01(0, 1);
