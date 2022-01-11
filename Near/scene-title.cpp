@@ -27,6 +27,9 @@ void SceneTitle::init(){
   cameraPath.load("assets/levels/title-path.txt");
   camera->transform.position = cameraPath.getStartPosition();
   camera->transform.rotation = Near::createEularRotation(level->getSpawnRotation());
+  #ifdef _DEBUG
+  cameraPathObj = getLayer(Near::Scene::LAYER_OBJECTS)->createGameObject<CameraPathObject>(&cameraPath);
+  #endif
 }
 
 void SceneTitle::update(float deltaTime){
@@ -39,6 +42,7 @@ void SceneTitle::update(float deltaTime){
     if(!camera->isDebugControlsEnabled()){
       camera->transform.position = cameraPath.getPosition();
     }
+    cameraPathObj->setVisible(camera->isDebugControlsEnabled());
   }
   #endif
   if(!camera->isDebugControlsEnabled()){
