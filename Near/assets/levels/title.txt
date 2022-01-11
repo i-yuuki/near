@@ -10,7 +10,7 @@ block { position 20640  -8    0 size 640  16 320 faces 0 0 0 0 3 0 }
 block { position 21120  64  112 size 320 128  96 faces 1 1 1 1 1 0 }
 block { position 21120  64 -112 size 320 128  96 faces 1 1 1 1 1 0 }
 block { position 21120  -8    0 size 320  16 128 faces 0 0 0 0 1 0 }
-block { position 21120 136    0 size 320  16 128 faces 0 0 0 0 0 1 }
+block { position 21120 126    0 size 320   4 128 faces 0 0 0 0 1 1 }
 block { position 21288  64    0 size  16 128 128 faces 0 0 1 0 0 0 }
 
 # Gate
