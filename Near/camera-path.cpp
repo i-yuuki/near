@@ -3,19 +3,26 @@
 #include <algorithm>
 #include <iostream>
 #include <fstream>
+#include <NearLib/utils.h>
 
 CameraPath::CameraPath(){
 }
 
-void CameraPath::reset(const Near::Math::Vector3& startPoint){
+void CameraPath::reset(const Near::Math::Vector3& startPoint, const Near::Math::Quaternion& startRotation){
   points.clear();
   BezierPoint point{};
   point.p3 = startPoint;
   points.push_back(point);
   points.shrink_to_fit();
+  rotations.clear();
+  RotationPoint rotPoint{};
+  rotPoint.rotation = startRotation;
+  rotations.push_back(rotPoint);
+  rotations.shrink_to_fit();
   time = 0;
   position = startPoint;
   lastPosition = startPoint;
+  rotation = startRotation;
 }
 
 void CameraPath::load(const std::string& filePath){
@@ -23,8 +30,10 @@ void CameraPath::load(const std::string& filePath){
   if(!f) throw std::exception("File open failed");
 
   Near::Math::Vector3 startPoint;
+  Near::Math::Vector3 startRotation;
   f >> startPoint.x >> startPoint.y >> startPoint.z;
-  reset(startPoint);
+  f >> startRotation.x >> startRotation.y >> startRotation.z;
+  reset(startPoint, Near::createEularRotation(startRotation));
 
   while(true){
     std::string word;
@@ -44,6 +53,13 @@ void CameraPath::load(const std::string& filePath){
       }else{
         addPoint(prevPointHandle, point, handle, duration);
       }
+    }else if(word == u8"rot"){
+      f >> word;
+      float duration;
+      Near::Math::Vector3 rotation;
+      f >> duration;
+      f >> rotation.x >> rotation.y >> rotation.z;
+      addRotation(Near::createEularRotation(rotation), duration);
     }
   }
 }
@@ -62,12 +78,22 @@ void CameraPath::addPointRelative(const Near::Math::Vector3& prevPointHandle, co
   addPoint(prevPointHandle, prevPoint->p3 + pointRelative, handle, duration);
 }
 
+void CameraPath::addRotation(const Near::Math::Quaternion& rotation, float duration){
+  auto prevPoint = rotations.rbegin();
+  rotations.push_back({rotation, prevPoint->time + duration});
+}
+
 void CameraPath::advance(float deltaTime){
   if(points.empty()) return;
 
   lastPosition = position;
   time = std::fmod(time + deltaTime, points.rbegin()->time);
 
+  updatePosition();
+  updateRotation();
+}
+
+void CameraPath::updatePosition(){
   BezierPoint pointToFind{};
   // timeだけ比較、他の値はなんでもいいので設定しない
   pointToFind.time = time;
@@ -88,6 +114,25 @@ void CameraPath::advance(float deltaTime){
   position = Evaluate(t, prevPoint.p3, it->p1, it->p2, it->p3);
 }
 
+void CameraPath::updateRotation(){
+  RotationPoint pointToFind{};
+  pointToFind.time = time;
+  auto it = std::lower_bound(rotations.begin(), rotations.end(), pointToFind, [](const RotationPoint& a, const RotationPoint& b){
+    return a.time < b.time;
+  });
+
+  RotationPoint pointZero{};
+  bool isFirstSegment = it == rotations.begin();
+  const auto& prevPoint = isFirstSegment ? pointZero : *(it - 1);
+
+  float segmentStartTime = prevPoint.time;
+  float segmentDuration = it->time - segmentStartTime;
+  float t = (time - segmentStartTime) / segmentDuration;
+  // 仮置きeaseInOutQuad
+  t = t < 0.5f ? 2 * t * t : 1 - std::pow(-2 * t + 2, 2) / 2;
+  rotation = Near::Math::Quaternion::Lerp(prevPoint.rotation, it->rotation, t);
+}
+
 const Near::Math::Vector3& CameraPath::getStartPosition(){
   return points[0].p3;
 }
@@ -98,6 +143,10 @@ const Near::Math::Vector3& CameraPath::getPosition(){
 
 Near::Math::Vector3 CameraPath::getMovement(){
   return position - lastPosition;
+}
+
+const Near::Math::Quaternion& CameraPath::getRotation(){
+  return rotation;
 }
 
 Near::Math::Vector3 CameraPath::Evaluate(float t, const Near::Math::Vector3& p0, const Near::Math::Vector3& p1, const Near::Math::Vector3& p2, const Near::Math::Vector3& p3){

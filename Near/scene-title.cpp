@@ -55,6 +55,7 @@ void SceneTitle::update(float deltaTime){
   if(!camera->isDebugControlsEnabled()){
     auto cameraMovement = cameraPath.getMovement();
     camera->move(cameraMovement, 1);
+    camera->transform.rotation = cameraPath.getRotation();
   }
   title->setColor(Near::Math::Color(1, 1, 1, std::clamp((time - 1000) / 1000, 0.0f, 1.0f)));
   if(Near::input()->isKeyPressedThisFrame(VK_ESCAPE)){
