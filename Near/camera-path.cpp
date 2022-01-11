@@ -1,6 +1,8 @@
 #include "camera-path.h"
 
 #include <algorithm>
+#include <iostream>
+#include <fstream>
 
 CameraPath::CameraPath(){
 }
@@ -14,6 +16,36 @@ void CameraPath::reset(const Near::Math::Vector3& startPoint){
   time = 0;
   position = startPoint;
   lastPosition = startPoint;
+}
+
+void CameraPath::load(const std::string& filePath){
+  std::ifstream f(filePath);
+  if(!f) throw std::exception("File open failed");
+
+  Near::Math::Vector3 startPoint;
+  f >> startPoint.x >> startPoint.y >> startPoint.z;
+  reset(startPoint);
+
+  while(true){
+    std::string word;
+    f >> word;
+    if(!f) break;
+    if(word == u8"pos"){
+      f >> word;
+      bool isRelative = word == u8"rel";
+      float duration;
+      Near::Math::Vector3 prevPointHandle, point, handle;
+      f >> duration;
+      f >> prevPointHandle.x >> prevPointHandle.y >> prevPointHandle.z;
+      f >> point.x >> point.y >> point.z;
+      f >> handle.x >> handle.y >> handle.z;
+      if(isRelative){
+        addPointRelative(prevPointHandle, point, handle, duration);
+      }else{
+        addPoint(prevPointHandle, point, handle, duration);
+      }
+    }
+  }
 }
 
 void CameraPath::addPoint(const Near::Math::Vector3& prevPointHandle, const Near::Math::Vector3& point, const Near::Math::Vector3& handle, float duration){

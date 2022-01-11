@@ -26,9 +26,7 @@ void SceneTitle::init(){
   camera->transform.rotation = Near::createEularRotation(level->getSpawnRotation());
   camera->setFar(8000);
   title = getLayer(Near::Scene::LAYER_OVERLAY)->createGameObject<Polygon2D>("assets/textures/title.png", Near::Math::Vector2::Zero, Near::Math::Vector2(r->getWidth(), r->getHeight()));
-  cameraPath.reset();
-  cameraPath.addPointRelative(Near::Math::Vector3(0, -100, 0), Near::Math::Vector3(0, 0, 300), Near::Math::Vector3(0, 100, 0), 5000);
-  cameraPath.addPointRelative(Near::Math::Vector3(0, -100, 0), Near::Math::Vector3(0, 0, -300), Near::Math::Vector3(0, 100, 0), 5000);
+  cameraPath.load("assets/levels/title-path.txt");
 }
 
 void SceneTitle::update(float deltaTime){
