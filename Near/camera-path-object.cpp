@@ -6,14 +6,7 @@ CameraPathObject::CameraPathObject(CameraPath* path) : Near::GameObject(), path(
 }
 
 void CameraPathObject::init(Near::Layer* layer){
-  auto& points = path->getPoints();
-  std::vector<Near::Vertex3D> vertices;
-  std::vector<uint32_t> indices;
-  for(size_t i = 1;i < points.size();i ++){
-    GenerateVertices(points[i - 1], points[i], vertices, indices);
-  }
-  vertexBuffer.init(false, static_cast<unsigned int>(vertices.size()), vertices.data());
-  indexBuffer.init(false, static_cast<unsigned int>(indices.size()), indices.data());
+  generatePath();
   vertexShader = Near::Assets::vertexShaders()->getOrLoad("assets/nearlib/shaders/vs.hlsl");
   pixelShader = Near::Assets::pixelShaders()->getOrLoad("assets/shaders/ps-notex.hlsl");
 }
@@ -29,6 +22,25 @@ void CameraPathObject::draw(){
 void CameraPathObject::uninit(){
   vertexBuffer.uninit();
   indexBuffer.uninit();
+}
+
+void CameraPathObject::generatePath(){
+  auto& points = path->getPoints();
+  std::vector<Near::Vertex3D> vertices;
+  std::vector<uint32_t> indices;
+  for(size_t i = 1;i < points.size();i ++){
+    GenerateVertices(points[i - 1], points[i], vertices, indices);
+  }
+  // バッファ作り直し
+  // 新しいパスで頂点数が増えてるかもなのでsetはやめとくよ
+  vertexBuffer.uninit();
+  indexBuffer.uninit();
+  vertexBuffer.init(false, static_cast<unsigned int>(vertices.size()), vertices.data());
+  indexBuffer.init(false, static_cast<unsigned int>(indices.size()), indices.data());
+}
+
+bool CameraPathObject::isVisible(){
+  return visible;
 }
 
 void CameraPathObject::setVisible(bool visible){

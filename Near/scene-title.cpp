@@ -44,6 +44,13 @@ void SceneTitle::update(float deltaTime){
     }
     cameraPathObj->setVisible(camera->isDebugControlsEnabled());
   }
+  if(Near::input()->isKeyPressedThisFrame('R')){
+    cameraPath.load("assets/levels/title-path.txt");
+    cameraPathObj->generatePath();
+    if(!camera->isDebugControlsEnabled()){
+      camera->transform.position = cameraPath.getStartPosition();
+    }
+  }
   #endif
   if(!camera->isDebugControlsEnabled()){
     auto cameraMovement = cameraPath.getMovement();

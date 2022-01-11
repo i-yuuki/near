@@ -11,6 +11,8 @@ public:
   virtual void init(Near::Layer* layer) override;
   virtual void draw() override;
   virtual void uninit() override;
+  void generatePath();
+  bool isVisible();
   void setVisible(bool visible);
 private:
   CameraPath* path;
