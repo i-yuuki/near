@@ -19,41 +19,41 @@ void PortalCamera::update(float deltaTime){
 
   Near::Math::Vector3 movement;
   
-  if(GetAsyncKeyState('W')){
+  if(Near::input()->isKeyDown('W')){
     movement.z += speed;
   }
-  if(GetAsyncKeyState('S')){
+  if(Near::input()->isKeyDown('S')){
     movement.z -= speed;
   }
-  if(GetAsyncKeyState('D')){
+  if(Near::input()->isKeyDown('D')){
     movement.x += speed;
   }
-  if(GetAsyncKeyState('A')){
+  if(Near::input()->isKeyDown('A')){
     movement.x -= speed;
   }
-  if(GetAsyncKeyState('E')){
+  if(Near::input()->isKeyDown('E')){
     movement.y += speed;
   }
-  if(GetAsyncKeyState('Q')){
+  if(Near::input()->isKeyDown('Q')){
     movement.y -= speed;
   }
   
-  float speedMultiplier = (GetAsyncKeyState(VK_SHIFT) ? 0.25f : GetAsyncKeyState(VK_CONTROL) ? 4.0f : 1.0f);
+  float speedMultiplier = (Near::input()->isKeyDown(VK_SHIFT) ? 0.25f : Near::input()->isKeyDown(VK_CONTROL) ? 4.0f : 1.0f);
   movement = (movement.x * right + movement.y * Near::Math::Vector3::Up + movement.z * forward) * speedMultiplier;
   move(movement, deltaSeconds);
   
   Near::Math::Vector2 rotation;
 
-  if(GetAsyncKeyState(VK_RIGHT)){
+  if(Near::input()->isKeyDown(VK_RIGHT)){
     rotation.x += rotationSpeed;
   }
-  if(GetAsyncKeyState(VK_LEFT)){
+  if(Near::input()->isKeyDown(VK_LEFT)){
     rotation.x -= rotationSpeed;
   }
-  if(GetAsyncKeyState(VK_DOWN)){
+  if(Near::input()->isKeyDown(VK_DOWN)){
     rotation.y += rotationSpeed;
   }
-  if(GetAsyncKeyState(VK_UP)){
+  if(Near::input()->isKeyDown(VK_UP)){
     rotation.y -= rotationSpeed;
   }
   rotation *= deltaSeconds;
