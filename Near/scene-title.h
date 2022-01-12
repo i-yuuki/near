@@ -1,10 +1,11 @@
 #pragma once
 
-#include <NearLib/camera.h>
-
 #include "level.h"
 #include "polygon-2d.h"
 #include "portal-scene.h"
+#include "portal-camera.h"
+#include "camera-path.h"
+#include "camera-path-object.h"
 
 class SceneTitle : public PortalScene{
 public:
@@ -15,7 +16,9 @@ public:
   virtual void uninit() override;
 private:
   std::shared_ptr<Level> level;
-  std::shared_ptr<Near::Camera> camera;
+  std::shared_ptr<PortalCamera> camera;
+  std::shared_ptr<CameraPathObject> cameraPathObj;
   std::shared_ptr<Polygon2D> title;
   float time;
+  CameraPath cameraPath;
 };

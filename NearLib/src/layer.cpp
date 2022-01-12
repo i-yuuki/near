@@ -26,8 +26,13 @@ void Layer::update(float deltaTime){
   }
 
   {
-    auto result = std::remove_if(objects.begin(), objects.end(), [](std::shared_ptr<GameObject>& obj){ return obj->isRemoveMarked(); });
-    std::for_each(result, objects.end(), [](std::shared_ptr<GameObject>& obj){ obj->uninit(); });
+    auto result = std::remove_if(objects.begin(), objects.end(), [](std::shared_ptr<GameObject>& obj){
+      if(obj->isRemoveMarked()){
+        obj->uninit();
+        return true;
+      }
+      return false;
+    });
     objects.erase(result, objects.end());
   }
 
