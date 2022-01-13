@@ -275,6 +275,9 @@
     <ClInclude Include="NearLib\gui-object.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="NearLib\named-asset-manager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="NearLib\DirectXTK\SimpleMath.inl">

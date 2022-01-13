@@ -97,6 +97,7 @@
     <ClInclude Include="NearLib\input.h" />
     <ClInclude Include="NearLib\math.h" />
     <ClInclude Include="NearLib\model-object.h" />
+    <ClInclude Include="NearLib\named-asset-manager.h" />
     <ClInclude Include="NearLib\near.h" />
     <ClInclude Include="NearLib\asset.h" />
     <ClInclude Include="NearLib\asset-manager.h" />
