@@ -37,6 +37,12 @@ void Text::setForeground(const Math::Color& foreground){
   this->foreground = foreground;
 }
 
+void Text::layout(const BoxConstraints& constraints){
+  auto textSize = font->measureText(text, fontSize);
+  layoutSize.x = std::max(textSize.x, constraints.minWidth);
+  layoutSize.y = std::max(textSize.y, constraints.minHeight);
+}
+
 void Text::draw(){
   Component::draw();
   if(font == nullptr) return;

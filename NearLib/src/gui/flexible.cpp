@@ -19,8 +19,6 @@ void Flexible::setFlex(float flex){
 void Flexible::layout(const BoxConstraints& constraints){
   Component::layout(constraints);
   if(!child) return;
-  child->setWidth(Length(100, Unit::PERCENT));
-  child->setHeight(Length(100, Unit::PERCENT));
   child->layout(BoxConstraints(layoutSize, layoutSize));
   layoutSize = child->getLayoutSize();
 }

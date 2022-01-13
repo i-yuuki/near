@@ -30,12 +30,14 @@ void FlexContainer::setGap(float gap){
 
 void FlexContainer::layout(const BoxConstraints& constraints){
   Component::layout(constraints);
-  layoutChildren(BoxConstraints(Math::Vector2::Zero, layoutSize));
+  layoutChildren(constraints);
 }
 
 void FlexContainer::layoutChildren(const BoxConstraints& constraints){
   // CSSの仕様とFlutterのソースを参考
   // https://api.flutter.dev/flutter/widgets/Flex-class.html
+
+  Near::Math::Vector2 totalSizeAxis;
 
   // 1. 主軸サイズをflexと固定それぞれで合計しておく
   //    flex値がない子はレイアウトもしちゃう
@@ -60,7 +62,6 @@ void FlexContainer::layoutChildren(const BoxConstraints& constraints){
 
   // 2. 主軸サイズflexの子で残りの主軸スペースを分け合う
   // 3. 子を配置
-  Math::Vector2 selfSizeAxis = getAxisSize(layoutSize);
   Math::Vector2 childPosAxis(0, 0);
   float totalGap = (children.size() - 1) * gap;
   float availableSpaceForFlex = mainAxisMaxSelfSize - mainAxisTotalFixedSize - totalGap;
@@ -86,7 +87,13 @@ void FlexContainer::layoutChildren(const BoxConstraints& constraints){
 
     childPosAxis.x += childLayoutSizeAxis.x;
     childPosAxis.x += gap;
+
+    totalSizeAxis.x += childLayoutSizeAxis.x;
+    totalSizeAxis.y = std::max(totalSizeAxis.y, childLayoutSizeAxis.y);
   }
+
+  totalSizeAxis.x += std::max(size_t{0}, children.size() - 1) * gap;
+  layoutSize = getAxisSize(totalSizeAxis);
 }
 
 Math::Vector2 FlexContainer::getAxisSize(const Math::Vector2 size) const{

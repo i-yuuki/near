@@ -15,6 +15,7 @@ public:
   void setTextAlign(const Math::Vector2& textAlign);
   const Math::Color& getForeground() const;
   void setForeground(const Math::Color& foreground);
+  virtual void layout(const BoxConstraints& constraints) override;
   virtual void draw() override;
 private:
   std::string text;

@@ -29,8 +29,11 @@ void Container::layout(const BoxConstraints& constraints){
 }
 
 void Container::layoutChildren(const BoxConstraints& constraints){
+  layoutSize = Near::Math::Vector2(constraints.minWidth, constraints.minHeight);
   for(auto child : children){
     child->layout(constraints);
+    layoutSize.x = std::max(layoutSize.x, child->layoutSize.x);
+    layoutSize.y = std::max(layoutSize.y, child->layoutSize.y);
   }
 }
 

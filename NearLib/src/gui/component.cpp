@@ -13,18 +13,6 @@ std::weak_ptr<Container> Component::getParent() const{
   return parent;
 }
 
-const Near::Math::Vector2& Component::getPosition() const{
-  return position;
-}
-
-const Length& Component::getWidth() const{
-  return width;
-}
-
-const Length& Component::getHeight() const{
-  return height;
-}
-
 const Near::Math::Vector2& Component::getLayoutPosition() const{
   return layoutPosition;
 }
@@ -37,18 +25,6 @@ const Near::Math::Color& Component::getBackground() const{
   return background;
 }
 
-void Component::setPosition(const Near::Math::Vector2& position){
-  this->position = position;
-}
-
-void Component::setWidth(const Length& width){
-  this->width = width;
-}
-
-void Component::setHeight(const Length& height){
-  this->height = height;
-}
-
 void Component::setBackground(const Near::Math::Color& background){
   this->background = background;
 }
@@ -58,21 +34,15 @@ void Component::draw(){
     Near::renderer2D()->setTexture(nullptr);
     Near::renderer2D()->fillRect(layoutPosition, layoutSize, Math::Vector2::Zero, background);
   }
+  // else {
+	//   background = Near::Math::Color((float)rand() / RAND_MAX, (float)rand() / RAND_MAX, (float)rand() / RAND_MAX, 0.5f);
+
+  // }
 }
 
 void Component::layout(const BoxConstraints& constraints){
-  switch(width.unit){
-    case Unit::PX:      layoutSize.x = width.value; break;
-    case Unit::PERCENT: layoutSize.x = (std::isfinite(constraints.maxWidth) ? constraints.maxWidth : constraints.minWidth) * width.value / 100; break;
-    default:            layoutSize.x = width.value; break;
-  }
-  switch(height.unit){
-    case Unit::PX:      layoutSize.y = height.value; break;
-    case Unit::PERCENT: layoutSize.y = (std::isfinite(constraints.maxHeight) ? constraints.maxHeight : constraints.minHeight) * height.value / 100; break;
-    default:            layoutSize.y = height.value; break;
-  }
-  layoutSize.x = std::max(layoutSize.x, constraints.minWidth);
-  layoutSize.y = std::max(layoutSize.y, constraints.minHeight);
+  layoutSize.x = std::max(1.0f, constraints.minWidth);
+  layoutSize.y = std::max(1.0f, constraints.minHeight);
 }
 
 }
