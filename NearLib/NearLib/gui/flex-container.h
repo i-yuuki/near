@@ -1,10 +1,10 @@
 #pragma once
 
-#include "container.h"
+#include "has-child.h"
 
 namespace Near::GUI{
 
-class FlexContainer : public Container{
+class FlexContainer : public HasChildren{
 public:
   enum class Direction{
     HORIZONTAL,
@@ -16,7 +16,6 @@ public:
   void setDirection(Direction direction);
   void setGap(float gap);
   virtual void layout(const BoxConstraints& constraints) override;
-  virtual void layoutChildren(const BoxConstraints& constraints) override;
 protected:
   Direction direction;
   float gap = 0;

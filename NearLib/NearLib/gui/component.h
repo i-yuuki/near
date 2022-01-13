@@ -25,13 +25,17 @@ struct Length{
 };
 
 class Container;
+class HasChild;
+class HasChildren;
 class FlexContainer;
 
 class Component{
 public:
   friend Container;
+  friend HasChild;
+  friend HasChildren;
   friend FlexContainer;
-  std::weak_ptr<Container> getParent() const;
+  std::weak_ptr<Component> getParent() const;
   const Near::Math::Vector2& getLayoutPosition() const;
   const Near::Math::Vector2& getLayoutSize() const;
   const Near::Math::Color& getBackground() const;
@@ -39,7 +43,7 @@ public:
   virtual void layout(const BoxConstraints& constraints);
   virtual void draw();
 protected:
-  std::weak_ptr<Container> parent;
+  std::weak_ptr<Component> parent;
   Near::Math::Vector2 layoutPosition{0, 0};
   Near::Math::Vector2 layoutSize{1, 1};
   Near::Math::Color background{0, 0, 0, 0};

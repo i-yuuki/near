@@ -9,7 +9,7 @@ namespace Near::GUI{
 Length::Length(float value, Unit unit) : value(value), unit(unit){
 }
 
-std::weak_ptr<Container> Component::getParent() const{
+std::weak_ptr<Component> Component::getParent() const{
   return parent;
 }
 

@@ -29,11 +29,6 @@ void FlexContainer::setGap(float gap){
 }
 
 void FlexContainer::layout(const BoxConstraints& constraints){
-  Component::layout(constraints);
-  layoutChildren(constraints);
-}
-
-void FlexContainer::layoutChildren(const BoxConstraints& constraints){
   // CSSの仕様とFlutterのソースを参考
   // https://api.flutter.dev/flutter/widgets/Flex-class.html
 
