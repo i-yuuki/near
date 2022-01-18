@@ -41,7 +41,7 @@ std::shared_ptr<T> NamedAssetManager<T>::add(const std::string& name, const std:
   }catch(...){
     printf_s("%s failed to load asset! Unknown reason (%s)\n", typeid(*this).name(), path.c_str());
   }
-  assets.insert({path, asset});
+  assets.insert({name, asset});
   return asset;
 }
 
