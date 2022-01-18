@@ -2,6 +2,7 @@
 
 #include <NearLib/camera.h>
 #include <NearLib/utils.h>
+#include <NearLib/gui/container.h>
 #include <NearLib/gui/flexible.h>
 
 #include "game.h"
@@ -21,7 +22,6 @@ void SceneGUITest::init(){
 
   gui = std::make_shared<Near::GUI::FlexContainer>(Near::GUI::FlexContainer::Direction::VERTICAL);
   gui->setGap(16);
-  gui->setBackground(NearGame::BACKGROUND_COLOR);
 
   auto text = std::make_shared<Near::GUI::Text>(u8"SETTINGS", font);
   text->setFontSize(32);
@@ -44,8 +44,8 @@ void SceneGUITest::init(){
   addTab(u8"CONTROLS");
   gui->add(tabs);
 
-  auto line = std::make_shared<Near::GUI::Component>();
-  // line->setHeight(Length(2, Unit::PX));
+  auto line = std::make_shared<Near::GUI::Container>();
+  line->setHeight(Length(2, Unit::PX));
   line->setBackground(Near::Math::Color(0.545f, 0.478f, 0.400f, 1.0f));
   gui->add(line);
 
