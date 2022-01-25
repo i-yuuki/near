@@ -42,11 +42,11 @@ void Renderer2D::init(){
     vertices[i] = {Math::Vector3::Zero, Math::Vector3::Forward, Math::Vector4::One, Math::Vector2::Zero};
   }
 
-  pixelShader = Assets::pixelShaders()->getOrLoad("assets/nearlib/shaders/ps-sprite.hlsl");
+  defaultPixelShader = Assets::pixelShaders()->getOrLoad("assets/nearlib/shaders/ps-sprite.hlsl");
 }
 
 void Renderer2D::uninit(){
-  pixelShader.reset();
+  defaultPixelShader.reset();
   safeRelease(indexBuffer);
   safeRelease(vertexBuffer);
 }
@@ -61,12 +61,12 @@ void Renderer2D::begin(){
   indexIdx = 0;
   texture = nullptr;
   auto* r = renderer();
-  r->setPixelShader(pixelShader.get());
   r->getDeviceContext()->PSSetConstantBuffers(0, 1, &constantBuffer);
   r->setViewTransform(Near::Math::Matrix::Identity);
   r->setProjectionTransform(Near::Math::Matrix::CreateOrthographicOffCenter(0, r->getWidth(), r->getHeight(), 0, 0, 1));
   transforms.clear();
   setTransform(Math::Matrix::Identity);
+  resetShader();
 }
 
 void Renderer2D::end(){
@@ -92,6 +92,7 @@ void Renderer2D::flush(){
   std::memcpy(resource.pData, indices, sizeof(int32_t) * indexIdx);
   ctx->Unmap(indexBuffer, 0);
 
+  r->setPixelShader(pixelShader);
   r->setTexture(texture);
   UINT stride = sizeof(Vertex3D);
   UINT offset = 0;
@@ -142,6 +143,15 @@ void Renderer2D::scale(float x, float y){
 
 void Renderer2D::scale(float xy){
   applyTransform(Math::Matrix::CreateScale(xy, xy, 1));
+}
+
+void Renderer2D::setShader(Near::PixelShader* shader){
+  flush();
+  pixelShader = shader;
+}
+
+void Renderer2D::resetShader(){
+  setShader(defaultPixelShader.get());
 }
 
 void Renderer2D::fillRect(const Math::Vector2& pos, const Math::Vector2& size, const Math::Vector2& origin, const Math::Color& color){

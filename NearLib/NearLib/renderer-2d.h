@@ -34,6 +34,8 @@ public:
   void translate(float x, float y);
   void scale(float x, float y);
   void scale(float xy);
+  void setShader(Near::PixelShader* shader);
+  void resetShader();
 
   void fillRect(const Math::Vector2& pos, const Math::Vector2& size, const Math::Vector2& origin = Math::Vector2(0, 0), const Math::Color& color = Math::Color(1, 1, 1, 1));
   void fillRectUV(const Math::Vector2& pos, const Math::Vector2& size, const Math::Vector2& uv, const Math::Vector2& uvSize, const Math::Vector2& origin = Math::Vector2(0, 0), const Math::Color& color = Math::Color(1, 1, 1, 1));
@@ -62,7 +64,8 @@ private:
   Texture* texture;
   Math::Matrix transform;
   std::vector<Math::Matrix> transforms;
-  std::shared_ptr<PixelShader> pixelShader;
+  PixelShader* pixelShader;
+  std::shared_ptr<PixelShader> defaultPixelShader;
 
   void addVertex(const Vertex2D& v);
   void addIndex(uint32_t idx);
