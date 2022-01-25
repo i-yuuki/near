@@ -36,6 +36,11 @@ public:
   friend HasChildren;
   friend FlexContainer;
   std::weak_ptr<Component> getParent() const;
+  // このコンポーネントに点が含まれているか調べます。
+  bool contains(const Math::Vector2& point);
+  // このコンポーネントまたは子に点が含まれているか探します。
+  // @returns 点を含む最後の最も深いコンポーネント、なければnullptr
+  virtual Component* getDeepComponentAt(const Math::Vector2& point);
   const Near::Math::Vector2& getLayoutPosition() const;
   const Near::Math::Vector2& getLayoutSize() const;
   const Near::Math::Color& getBackground() const;

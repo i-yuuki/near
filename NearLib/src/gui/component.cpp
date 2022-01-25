@@ -13,6 +13,14 @@ std::weak_ptr<Component> Component::getParent() const{
   return parent;
 }
 
+bool Component::contains(const Math::Vector2& point){
+  return point.x >= layoutPosition.x && point.x < layoutPosition.x + layoutSize.x && point.y >= layoutPosition.y && point.y < layoutPosition.y + layoutSize.y;
+}
+
+Component* Component::getDeepComponentAt(const Math::Vector2& point){
+  return contains(point) ? this : nullptr;
+}
+
 const Near::Math::Vector2& Component::getLayoutPosition() const{
   return layoutPosition;
 }

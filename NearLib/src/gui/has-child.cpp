@@ -19,6 +19,12 @@ void HasChild::setChild(std::shared_ptr<Component> child){
   this->child = child;
 }
 
+Component* HasChild::getDeepComponentAt(const Math::Vector2& point){
+  if(!contains(point)) return nullptr;
+  auto* c = child ? child->getDeepComponentAt(point - layoutPosition) : nullptr;
+  return c ? c : this;
+}
+
 void HasChild::draw(){
   Component::draw();
   renderer2D()->pushTransform();
@@ -38,6 +44,15 @@ void HasChildren::add(std::shared_ptr<Component> child){
     child->parent = this->shared_from_this();
   }
   children.push_back(child);
+}
+
+Component* HasChildren::getDeepComponentAt(const Math::Vector2& point){
+  if(!contains(point)) return nullptr;
+  auto relativePosition = point - layoutPosition;
+  for(auto it = children.rbegin();it != children.rend();it ++){
+    if(auto* c = (*it)->getDeepComponentAt(relativePosition)) return c;
+  }
+  return this;
 }
 
 void HasChildren::draw(){
