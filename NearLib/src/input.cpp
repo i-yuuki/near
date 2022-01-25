@@ -148,6 +148,25 @@ bool InputManager::processMessage(UINT message, WPARAM wParam, LPARAM lParam){
         mouseMovementX += input.data.mouse.lLastX;
         mouseMovementY += input.data.mouse.lLastY;
       }
+      // 適当にVK_XBUTTON対応
+      if(input.data.mouse.usButtonFlags & RI_MOUSE_BUTTON_1_DOWN){
+        buttons[VK_LBUTTON] = ButtonState::PRESSED;
+      }
+      if(input.data.mouse.usButtonFlags & RI_MOUSE_BUTTON_1_UP){
+        buttons[VK_LBUTTON] = ButtonState::RELEASED;
+      }
+      if(input.data.mouse.usButtonFlags & RI_MOUSE_BUTTON_2_DOWN){
+        buttons[VK_RBUTTON] = ButtonState::PRESSED;
+      }
+      if(input.data.mouse.usButtonFlags & RI_MOUSE_BUTTON_2_UP){
+        buttons[VK_RBUTTON] = ButtonState::RELEASED;
+      }
+      if(input.data.mouse.usButtonFlags & RI_MOUSE_BUTTON_3_DOWN){
+        buttons[VK_MBUTTON] = ButtonState::PRESSED;
+      }
+      if(input.data.mouse.usButtonFlags & RI_MOUSE_BUTTON_3_UP){
+        buttons[VK_MBUTTON] = ButtonState::RELEASED;
+      }
       printf_s("Received mouse input! x: %ld, y: %ld\n", input.data.mouse.lLastX, input.data.mouse.lLastY);
     }
     return true;
