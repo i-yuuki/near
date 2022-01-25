@@ -13,7 +13,7 @@ Game::Game(){
 void Game::init(){
   levels.init("assets/levels.txt");
   font.reset(new Near::Font::Font());
-  font->load("assets/fonts/inter.fnt");
+  font->load("assets/fonts/inter-sdf.fnt");
   fade.init();
   fadeToNextScene<SceneTitle>(Near::Math::Color(0, 0, 0, 1), 0);
 }

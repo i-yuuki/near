@@ -100,7 +100,15 @@ void Font::load(const std::string& path){
     }
   }
 
-  pixelShader = Assets::pixelShaders()->getOrLoad("assets/nearlib/shaders/ps.hlsl");
+  pixelShader = Assets::pixelShaders()->getOrLoad("assets/nearlib/shaders/ps-sdf.hlsl");
+
+  D3D11_BUFFER_DESC bufferDesc = {};
+  bufferDesc.Usage = D3D11_USAGE_DEFAULT;
+  bufferDesc.ByteWidth = sizeof(constantBufferData) / 16 * 16;
+  bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+  bufferDesc.CPUAccessFlags = 0;
+  auto res = Near::renderer()->getDevice()->CreateBuffer(&bufferDesc, nullptr, &constantBuffer);
+  if(FAILED(res)) throwResult("CreateBuffer failed", res);
 }
 
 Math::Vector2 Font::measureText(const std::string_view text, float size){
@@ -138,6 +146,10 @@ void Font::drawText(const std::string_view text, const Math::Vector2& position, 
   if(!r2dActive) r2d->begin();
   r2d->pushTransform();
   r2d->applyTransform(Math::Matrix::CreateScale(size / fontSize) * Math::Matrix::CreateTranslation(position.x, position.y, 0));
+  r2d->setShader(pixelShader.get());
+  constantBufferData.fontScale = size / fontSize;
+  Near::renderer()->getDeviceContext()->PSSetConstantBuffers(1, 1, &constantBuffer);
+  Near::renderer()->getDeviceContext()->UpdateSubresource(constantBuffer, 0, nullptr, &constantBufferData, 0, 0);
   Math::Vector2 drawPos(0, lines.size() * lineHeight * -origin.y);
   for(auto& line : lines){
     auto it = line.text.data();
@@ -161,6 +173,7 @@ void Font::drawText(const std::string_view text, const Math::Vector2& position, 
     drawPos.y += lineHeight;
   }
   r2d->popTransform();
+  r2d->resetShader();
   if(!r2dActive) r2d->end();
 }
 

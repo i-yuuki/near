@@ -33,6 +33,10 @@ public:
   Math::Vector2 measureText(const std::string_view text, float size);
   void drawText(const std::string_view text, const Math::Vector2& position, const Math::Vector2& origin, float size, const Math::Color& color);
 private:
+  struct ConstantBufferData{
+    float fontScale;
+    bool _pad[16];
+  };
   int fontSize;
   int lineHeight;
   int baseline;
@@ -41,6 +45,8 @@ private:
   std::unordered_map<uint32_t, FontChar> characters;
   std::vector<std::shared_ptr<Texture>> textures;
   std::shared_ptr<PixelShader> pixelShader;
+  ID3D11Buffer* constantBuffer;
+  ConstantBufferData constantBufferData;
   FontChar* findChar(uint32_t codepoint);
   void calcLineWidths(const std::string_view text, std::vector<LineMetrics>& out);
 };
