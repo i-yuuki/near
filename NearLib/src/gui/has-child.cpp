@@ -46,6 +46,13 @@ void HasChildren::add(std::shared_ptr<Component> child){
   children.push_back(child);
 }
 
+void HasChildren::remove(std::shared_ptr<Component> child){
+  auto it = std::find(children.begin(), children.end(), child);
+  if(it != children.end()){
+    children.erase(it);
+  }
+}
+
 Component* HasChildren::getDeepComponentAt(const Math::Vector2& point){
   if(!contains(point)) return nullptr;
   auto relativePosition = point - layoutPosition;
