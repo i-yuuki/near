@@ -107,7 +107,7 @@ void Player::draw(){
 }
 
 void Player::uninit(){
-  keyListener.reset();
+  keyListener->disconnect();
 }
 
 void Player::addColliders(std::function<void(const Near::Collision::BoundingBox3D&)> out){
