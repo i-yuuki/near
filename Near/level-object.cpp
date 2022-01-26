@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "level-object.h"
 
 #include <NearLib/scene.h>

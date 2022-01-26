@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "scene-guitest.h"
 
 #include <NearLib/camera.h>

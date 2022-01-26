@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "fade.h"
 
 #include <algorithm>

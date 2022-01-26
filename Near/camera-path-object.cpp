@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "camera-path-object.h"
 
 #include <random>

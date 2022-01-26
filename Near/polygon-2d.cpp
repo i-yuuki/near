@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "polygon-2d.h"
 
 #include <NearLib/scene.h>

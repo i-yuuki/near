@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "cube.h"
 
 #include <NearLib/scene.h>

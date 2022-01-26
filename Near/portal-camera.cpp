@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "portal-camera.h"
 
 void PortalCamera::update(float deltaTime){

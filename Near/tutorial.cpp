@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "tutorial.h"
 
 #include <NearLib/scene.h>
