@@ -31,6 +31,7 @@
     <ClCompile Include="src\fps-counter.cpp" />
     <ClCompile Include="src\game-object.cpp" />
     <ClCompile Include="src\gui-object.cpp" />
+    <ClCompile Include="src\gui\align.cpp" />
     <ClCompile Include="src\gui\component.cpp" />
     <ClCompile Include="src\gui\container.cpp" />
     <ClCompile Include="src\gui\event.cpp" />
@@ -91,6 +92,7 @@
     <ClInclude Include="NearLib\fbx-model.h" />
     <ClInclude Include="NearLib\font.h" />
     <ClInclude Include="NearLib\gui-object.h" />
+    <ClInclude Include="NearLib\gui\align.h" />
     <ClInclude Include="NearLib\gui\component.h" />
     <ClInclude Include="NearLib\gui\container.h" />
     <ClInclude Include="NearLib\gui\flex-container.h" />

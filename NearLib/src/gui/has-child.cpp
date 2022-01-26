@@ -5,10 +5,6 @@
 
 namespace Near::GUI{
 
-HasChild::HasChild(std::shared_ptr<Component> child){
-  setChild(child);
-}
-
 void HasChild::setChild(std::shared_ptr<Component> child){
   if(child != nullptr){
     if(!child->getParent().expired()){

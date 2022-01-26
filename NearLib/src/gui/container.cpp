@@ -48,7 +48,6 @@ void Container::layout(const BoxConstraints& constraints){
   Near::Math::Vector2 largestChildSize;
   for(auto& child : children){
     child->layout(childConstraints);
-    child->layoutPosition = Near::Math::Vector2::Zero;
     largestChildSize = Near::Math::Vector2::Max(largestChildSize, child->layoutSize);
   }
   

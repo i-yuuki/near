@@ -10,7 +10,6 @@ public:
   virtual Component* getDeepComponentAt(const Math::Vector2& point) override;
   virtual void draw() override;
 protected:
-  HasChild(std::shared_ptr<Component> child);
   std::shared_ptr<Component> child;
 };
 
