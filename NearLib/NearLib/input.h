@@ -23,6 +23,13 @@ public:
     int vkey;
     bool isRepeat;
   };
+  struct MouseEvent{
+    // ボタン番号
+    // (0 = 左クリック, 1 = 右クリック, etc)
+    int button;
+    int x;
+    int y;
+  };
   void init(HWND window);
   void uninit();
   // キーが押されているかを返します。
@@ -50,6 +57,8 @@ public:
   bool processMessage(UINT message, WPARAM wParam, LPARAM lParam);
   Event::Signal<KeyEvent> onKeyDown;
   Event::Signal<KeyEvent> onKeyUp;
+  Event::Signal<MouseEvent> onMouseDown;
+  Event::Signal<MouseEvent> onMouseUp;
 private:
   HWND window;
   

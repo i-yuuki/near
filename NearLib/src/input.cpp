@@ -114,24 +114,29 @@ bool InputManager::processMessage(UINT message, WPARAM wParam, LPARAM lParam){
         mouseMovementY += input.data.mouse.lLastY;
       }
       // 適当にVK_XBUTTON対応
-      // TODO イベント発火
       if(input.data.mouse.usButtonFlags & RI_MOUSE_BUTTON_1_DOWN){
         buttons[VK_LBUTTON] = ButtonState::PRESSED;
+        onMouseDown.fire({0, mouseX, mouseY});
       }
       if(input.data.mouse.usButtonFlags & RI_MOUSE_BUTTON_1_UP){
         buttons[VK_LBUTTON] = ButtonState::RELEASED;
+        onMouseDown.fire({0, mouseX, mouseY});
       }
       if(input.data.mouse.usButtonFlags & RI_MOUSE_BUTTON_2_DOWN){
         buttons[VK_RBUTTON] = ButtonState::PRESSED;
+        onMouseDown.fire({1, mouseX, mouseY});
       }
       if(input.data.mouse.usButtonFlags & RI_MOUSE_BUTTON_2_UP){
         buttons[VK_RBUTTON] = ButtonState::RELEASED;
+        onMouseDown.fire({1, mouseX, mouseY});
       }
       if(input.data.mouse.usButtonFlags & RI_MOUSE_BUTTON_3_DOWN){
         buttons[VK_MBUTTON] = ButtonState::PRESSED;
+        onMouseDown.fire({2, mouseX, mouseY});
       }
       if(input.data.mouse.usButtonFlags & RI_MOUSE_BUTTON_3_UP){
         buttons[VK_MBUTTON] = ButtonState::RELEASED;
+        onMouseDown.fire({2, mouseX, mouseY});
       }
       printf_s("Received mouse input! x: %ld, y: %ld\n", input.data.mouse.lLastX, input.data.mouse.lLastY);
     }
