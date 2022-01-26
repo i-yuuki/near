@@ -13,19 +13,14 @@ private:
 public:
   using Callback = std::function<void(CallbackArgs...)>;
   // `Event`と追加されたコールバックをつなぐオブジェクトです。
-  // コールバックが呼ばれてほしい間、変数にとっておいてください。
-  // `disconnect()`またはデストラクターが呼ばれると呼ばれなくなります。
-  class Listener{
+  class Listener : public std::enable_shared_from_this<Listener>{
   public:
     Listener(std::weak_ptr<Handle> handle, Callback callback) : handle(handle), callback(callback){
-    }
-    ~Listener(){
-      disconnect();
     }
     // リスナーをイベントから削除します。
     void disconnect(){
       if(auto e = handle.lock()){
-        e->listeners.erase(std::find(e->listeners.begin(), e->listeners.end(), this));
+        e->listeners.erase(std::find(e->listeners.begin(), e->listeners.end(), this->shared_from_this()));
       }
       handle.reset();
     }
@@ -40,25 +35,25 @@ public:
   Signal& operator=(const Signal&) = delete;
   Signal& operator=(Signal&& moveFrom) = delete;
   // リスナーを追加します。
-  std::unique_ptr<Listener> addListener(Callback callback){
-    auto listener = std::make_unique<Listener>(handle, callback);
-    handle->listeners.push_back(listener.get());
+  std::shared_ptr<Listener> addListener(Callback callback){
+    auto listener = std::make_shared<Listener>(handle, callback);
+    handle->listeners.push_back(listener);
     return listener;
   }
   // 追加されたリスナーをすべて呼びます。
-  void fire(CallbackArgs&&... args){
-    for(Listener* listener : handle->listeners){
+  void fire(CallbackArgs... args){
+    for(auto listener : handle->listeners){
       listener->callback(args...);
     }
   }
 private:
   struct Handle{
-    std::vector<Listener*> listeners;
+    std::vector<std::shared_ptr<Listener>> listeners;
   };
   std::shared_ptr<Handle> handle;
 };
 
 template<typename... CallbackArgs>
-using ListenerPtr = std::unique_ptr<typename Signal<CallbackArgs...>::Listener>;
+using ListenerPtr = std::shared_ptr<typename Signal<CallbackArgs...>::Listener>;
 
 }
