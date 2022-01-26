@@ -33,6 +33,7 @@
     <ClCompile Include="src\gui-object.cpp" />
     <ClCompile Include="src\gui\component.cpp" />
     <ClCompile Include="src\gui\container.cpp" />
+    <ClCompile Include="src\gui\event.cpp" />
     <ClCompile Include="src\gui\flex-container.cpp" />
     <ClCompile Include="src\gui\flexible.cpp" />
     <ClCompile Include="src\gui\has-child.cpp" />

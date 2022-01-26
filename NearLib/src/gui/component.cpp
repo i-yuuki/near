@@ -37,6 +37,13 @@ void Component::setBackground(const Near::Math::Color& background){
   this->background = background;
 }
 
+void Component::propagateMouseDownEvent(MouseEvent e){
+  onMouseDown.fire(e);
+  if(auto p = parent.lock()){
+    p->propagateMouseDownEvent(e);
+  }
+}
+
 void Component::draw(){
   if(background.A() > 0){
     Near::renderer2D()->setTexture(nullptr);

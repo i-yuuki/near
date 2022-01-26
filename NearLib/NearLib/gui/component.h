@@ -2,7 +2,9 @@
 
 #include <memory>
 
+#include "../event.h"
 #include "../math.h"
+#include "event.h"
 #include "layout.h"
 
 namespace Near::GUI{
@@ -45,8 +47,10 @@ public:
   const Near::Math::Vector2& getLayoutSize() const;
   const Near::Math::Color& getBackground() const;
   void setBackground(const Near::Math::Color& background);
+  void propagateMouseDownEvent(MouseEvent e);
   virtual void layout(const BoxConstraints& constraints);
   virtual void draw();
+  Near::Event::Signal<MouseEvent> onMouseDown;
 protected:
   std::weak_ptr<Component> parent;
   Near::Math::Vector2 layoutPosition{0, 0};
