@@ -3,6 +3,7 @@
 
 #include <NearLib/camera.h>
 #include <NearLib/utils.h>
+#include <NearLib/gui/align.h>
 #include <NearLib/gui/container.h>
 #include <NearLib/gui/flexible.h>
 
@@ -29,11 +30,11 @@ void SettingsPage::addItem(const std::string& name, const std::string& value){
   auto text = std::make_shared<Near::GUI::Text>(name, font);
   text->setTextAlign(Near::Math::Vector2(0.0f, 0.5f));
   text->setForeground(Near::Math::Color(0.286f, 0.239f, 0.184f, 1.0f));
-  item->add(text);
+  item->add(Near::GUI::Align::Create(text, Near::Math::Vector2(0, 0)));
   text = std::make_shared<Near::GUI::Text>(value, font);
   text->setTextAlign(Near::Math::Vector2(1.0f, 0.5f));
   text->setForeground(Near::Math::Color(0.286f, 0.239f, 0.184f, 1.0f));
-  item->add(text);
+  item->add(Near::GUI::Align::Create(text, Near::Math::Vector2(1, 0)));
   root->add(item);
 }
 
@@ -98,12 +99,24 @@ void SceneGUITest::init(){
   pageVideo.page = std::make_shared<SettingsPage>(u8"ビデオ設定");
   pageControls.page = std::make_shared<SettingsPage>(u8"操作設定");
 
-  pageGameplay.page->addItem(u8"■ 視野角",           u8"90");
-  pageGameplay.page->addItem(u8"■ 解像度",           u8"1920x1080");
-  pageGameplay.page->addItem(u8"■ 画面",             u8"ボーダーレス");
-  pageGameplay.page->addItem(u8"■ 垂直同期",         u8"ON");
-  pageGameplay.page->addItem(u8"■ アンチエイリアス", u8"ON");
-  pageGameplay.page->addItem(u8"■ GUIスケール",      u8"1.00");
+  pageGameplay.page->addItem(u8"■ 照準を表示", u8"OFF");
+  pageGameplay.page->addItem(u8"■ 画面の揺れ", u8"OFF");
+  pageGameplay.page->addItem(u8"■ Language",   u8"日本語");
+
+  pageVideo.page->addItem(u8"■ 視野角",           u8"90");
+  pageVideo.page->addItem(u8"■ 解像度",           u8"1920x1080");
+  pageVideo.page->addItem(u8"■ 画面",             u8"ボーダーレス");
+  pageVideo.page->addItem(u8"■ 垂直同期",         u8"ON");
+  pageVideo.page->addItem(u8"■ アンチエイリアス", u8"ON");
+  pageVideo.page->addItem(u8"■ GUIスケール",      u8"1.00");
+
+  pageAudio.page->addItem(u8"■ マスター音量", u8"20%");
+  pageAudio.page->addItem(u8"■ 音楽",         u8"100%");
+  pageAudio.page->addItem(u8"■ 効果音",       u8"100%");
+
+  pageControls.page->addItem(u8"■ マウスの上下を反転", u8"OFF");
+  pageControls.page->addItem(u8"■ マウスの左右を反転", u8"OFF");
+  pageControls.page->addItem(u8"■ キー設定...",        u8"");
 
   gui->add(pageContainer);
 
