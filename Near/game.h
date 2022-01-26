@@ -31,7 +31,6 @@ public:
   }
   LevelManager levels;
   Near::FPSCounter timer;
-  std::shared_ptr<Near::Font::Font> font;
 private:
   Near::Scene* scene = nullptr;
   Near::Scene* nextScene = nullptr;

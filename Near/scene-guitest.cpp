@@ -9,6 +9,33 @@
 #include "main.h"
 #include "scene-title.h"
 
+SettingsPage::SettingsPage(const std::string& title){
+  root = std::make_shared<Near::GUI::FlexContainer>(Near::GUI::FlexContainer::Direction::VERTICAL);
+  root->setGap(16);
+  auto font = Near::Assets::fonts()->get("Inter");
+  auto text = std::make_shared<Near::GUI::Text>(title, font);
+  text->setFontSize(32);
+  text->setTextAlign(Near::Math::Vector2(0.0f, 0.5f));
+  text->setForeground(Near::Math::Color(0.286f, 0.239f, 0.184f, 1.0f));
+  root->add(text);
+}
+
+void SettingsPage::addItem(const std::string& name, const std::string& value){
+  auto font = Near::Assets::fonts()->get("Inter");
+  auto item = std::make_shared<Near::GUI::Container>();
+  item->setWidth(Near::GUI::Length(400, Near::GUI::Unit::PX));
+  item->setBackground(Near::Math::Color(0.286f, 0.239f, 0.184f, 0.25f));
+  auto text = std::make_shared<Near::GUI::Text>(name, font);
+  text->setTextAlign(Near::Math::Vector2(0.0f, 0.5f));
+  text->setForeground(Near::Math::Color(0.286f, 0.239f, 0.184f, 1.0f));
+  item->add(text);
+  text = std::make_shared<Near::GUI::Text>(value, font);
+  text->setTextAlign(Near::Math::Vector2(1.0f, 0.5f));
+  text->setForeground(Near::Math::Color(0.286f, 0.239f, 0.184f, 1.0f));
+  item->add(text);
+  root->add(item);
+}
+
 SceneGUITest::SceneGUITest() : Near::Scene(){
 }
 
@@ -18,7 +45,7 @@ void SceneGUITest::init(){
   Near::Scene::init();
   getLayer(Near::Scene::LAYER_MANAGERS)->createGameObject<Near::Camera>();
 
-  auto font = NearGame::Game::Instance->font;
+  auto font = Near::Assets::fonts()->get("Inter");
 
   gui = std::make_shared<Near::GUI::FlexContainer>(Near::GUI::FlexContainer::Direction::VERTICAL);
   gui->setGap(16);
@@ -31,17 +58,18 @@ void SceneGUITest::init(){
 
   auto tabs = std::make_shared<Near::GUI::FlexContainer>(Near::GUI::FlexContainer::Direction::HORIZONTAL);
   tabs->setGap(32);
-  auto addTab = [&tabs, &font](const std::string& name){
+  auto addTab = [this, &tabs, &font](const std::string& name){
     auto text = std::make_shared<Near::GUI::Text>(name, font);
     text->setTextAlign(Near::Math::Vector2(0.5f, 0.5f));
     auto tab = std::make_shared<Near::GUI::Flexible>(1, text);
     tab->setBackground(Near::Math::Color(0.286f, 0.239f, 0.184f, 1.0f));
     tabs->add(tab);
+    return tab;
   };
-  addTab(u8"GAMEPLAY");
-  addTab(u8"AUDIO");
-  addTab(u8"VIDEO");
-  addTab(u8"CONTROLS");
+  pageGameplay.tab = addTab(u8"GAMEPLAY");
+  pageAudio.tab = addTab(u8"AUDIO");
+  pageVideo.tab = addTab(u8"VIDEO");
+  pageControls.tab = addTab(u8"CONTROLS");
   gui->add(tabs);
 
   auto line = std::make_shared<Near::GUI::Container>();
@@ -51,35 +79,45 @@ void SceneGUITest::init(){
 
   // 設定リスト実験
 
-  text = std::make_shared<Near::GUI::Text>(u8"ビデオ設定", font);
-  text->setFontSize(32);
-  text->setTextAlign(Near::Math::Vector2(0.0f, 0.5f));
-  text->setForeground(Near::Math::Color(0.286f, 0.239f, 0.184f, 1.0f));
-  gui->add(text);
+  pageContainer = std::make_shared<Near::GUI::Container>();
 
-  auto list = std::make_shared<Near::GUI::FlexContainer>(Near::GUI::FlexContainer::Direction::VERTICAL);
-  list->setGap(16);
-  auto addListItem = [&list, &font](const std::string& name, const std::string& value){
-    auto item = std::make_shared<Near::GUI::Container>();
-    // item->setWidth(Near::GUI::Length(400, Near::GUI::Unit::PX));
-    item->setBackground(Near::Math::Color(0.286f, 0.239f, 0.184f, 0.25f));
+  auto addScreen = [this, &font](const std::string& name){
+    auto screen = std::make_shared<Near::GUI::FlexContainer>(Near::GUI::FlexContainer::Direction::VERTICAL);
+    screen->setGap(16);
     auto text = std::make_shared<Near::GUI::Text>(name, font);
+    text->setFontSize(32);
     text->setTextAlign(Near::Math::Vector2(0.0f, 0.5f));
     text->setForeground(Near::Math::Color(0.286f, 0.239f, 0.184f, 1.0f));
-    item->add(text);
-    text = std::make_shared<Near::GUI::Text>(value, font);
-    text->setTextAlign(Near::Math::Vector2(1.0f, 0.5f));
-    text->setForeground(Near::Math::Color(0.286f, 0.239f, 0.184f, 1.0f));
-    item->add(text);
-    list->add(item);
+    screen->add(text);
+    return screen;
   };
-  addListItem(u8"■ 視野角", u8"90");
-  addListItem(u8"■ 解像度", u8"1920x1080");
-  addListItem(u8"■ 画面", u8"ボーダーレス");
-  addListItem(u8"■ 垂直同期", u8"ON");
-  addListItem(u8"■ アンチエイリアス", u8"ON");
-  addListItem(u8"■ GUIスケール", u8"1.00");
-  gui->add(list);
+
+  pageGameplay.page = std::make_shared<SettingsPage>(u8"ゲームプレイ設定");
+  pageAudio.page = std::make_shared<SettingsPage>(u8"オーディオ設定");
+  pageVideo.page = std::make_shared<SettingsPage>(u8"ビデオ設定");
+  pageControls.page = std::make_shared<SettingsPage>(u8"操作設定");
+
+  pageGameplay.page->addItem(u8"■ 視野角",           u8"90");
+  pageGameplay.page->addItem(u8"■ 解像度",           u8"1920x1080");
+  pageGameplay.page->addItem(u8"■ 画面",             u8"ボーダーレス");
+  pageGameplay.page->addItem(u8"■ 垂直同期",         u8"ON");
+  pageGameplay.page->addItem(u8"■ アンチエイリアス", u8"ON");
+  pageGameplay.page->addItem(u8"■ GUIスケール",      u8"1.00");
+
+  gui->add(pageContainer);
+
+  pageGameplay.tab->onMouseDown.addListener([this](Near::GUI::MouseEvent e){ setPage(pageGameplay); });
+  pageAudio.tab->onMouseDown.addListener([this](Near::GUI::MouseEvent e){ setPage(pageAudio); });
+  pageVideo.tab->onMouseDown.addListener([this](Near::GUI::MouseEvent e){ setPage(pageVideo); });
+  pageControls.tab->onMouseDown.addListener([this](Near::GUI::MouseEvent e){ setPage(pageControls); });
+  setPage(pageGameplay);
+
+  Near::input()->onMouseDown.addListener([this](Near::InputManager::MouseEvent e){
+    Near::Math::Vector2 mousePos(e.x, e.y);
+    if(auto c = gui->getDeepComponentAt(mousePos)){
+      c->propagateMouseDownEvent(Near::GUI::MouseEvent(c, mousePos, e.button));
+    }
+  });
 
   // flex test
 
@@ -171,4 +209,12 @@ void SceneGUITest::draw(){
 void SceneGUITest::uninit(){
   gui.reset();
   Near::Scene::uninit();
+}
+
+void SceneGUITest::setPage(PageInfo& page){
+  if(currentPage.page){
+    pageContainer->remove(currentPage.page->root);
+  }
+  currentPage = page;
+  pageContainer->add(currentPage.page->root);
 }
