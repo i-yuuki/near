@@ -18,7 +18,20 @@ void Player::init(Near::Layer* layer){
   size = Near::Math::Vector3(32, 72, 32);
   onGround = false;
   thirdPerson = false;
-  keyListener = Near::input()->addKeyListener(this);
+  keyListener = Near::input()->onKeyDown.addListener([this](Near::InputManager::KeyEvent e){
+    printf_s("Player received keyDown: %d\n", e.vkey);
+    if(e.vkey == VK_SPACE){
+      if(!e.isRepeat && onGround){
+        velocity.y = 200;
+      }
+    }else if(e.vkey == 'E'){
+      interact();
+    #ifdef _DEBUG
+    }else if(e.vkey == 'F'){
+      thirdPerson = !thirdPerson;
+    #endif
+    }
+  });
 }
 
 void Player::update(float deltaTime){
@@ -94,26 +107,11 @@ void Player::draw(){
 }
 
 void Player::uninit(){
-  keyListener.disconnect();
+  keyListener.reset();
 }
 
 void Player::addColliders(std::function<void(const Near::Collision::BoundingBox3D&)> out){
   out(Near::Collision::BoundingBox3D(transform.position, size / 2));
-}
-
-void Player::onKeyDown(int vkey, bool isRepeat){
-  printf_s("Player received keyDown: %d\n", vkey);
-  if(vkey == VK_SPACE){
-    if(!isRepeat && onGround){
-      velocity.y = 200;
-    }
-  }else if(vkey == 'E'){
-    interact();
-#ifdef _DEBUG
-  }else if(vkey == 'F'){
-    thirdPerson = !thirdPerson;
-#endif
-  }
 }
 
 bool Player::isThirdPerson() const{

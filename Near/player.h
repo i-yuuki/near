@@ -7,18 +7,17 @@
 #include "portal-traveler.h"
 #include "level.h"
 
-class Player : public virtual PortalTraveler, public Near::ICollidable, public Near::KeyListener{
+class Player : public virtual PortalTraveler, public Near::ICollidable{
 public:
   virtual void init(Near::Layer* layer) override;
   virtual void update(float deltaTime) override;
   virtual void draw() override;
   virtual void uninit() override;
   virtual void addColliders(std::function<void(const Near::Collision::BoundingBox3D&)> out) override;
-  virtual void onKeyDown(int vkey, bool isRepeat) override;
   bool isThirdPerson() const;
   void interact();
 private:
-  Near::InputConnection keyListener;
+  Near::Event::ListenerPtr<Near::InputManager::KeyEvent> keyListener;
   Near::Math::Vector2 movement;
   Near::Math::Vector3 velocity;
   bool thirdPerson;
