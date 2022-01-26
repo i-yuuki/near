@@ -176,6 +176,10 @@ void Font::calcLineWidths(const std::string_view text, std::vector<LineMetrics>&
   auto itLineStart = it;
   auto itEnd = it + text.size();
   while(true){
+    if(it == itEnd){
+      out.push_back({width, std::string_view(itLineStart, it - itLineStart)});
+      break;
+    }
     auto codepoint = utf8::next(it, itEnd);
     if(codepoint == u8'\n'){
       out.push_back({width, std::string_view(itLineStart, it - itLineStart)});
@@ -187,10 +191,6 @@ void Font::calcLineWidths(const std::string_view text, std::vector<LineMetrics>&
     if(auto* charInfo = findChar(codepoint)){
       x += charInfo->xAdvance;
       width = std::max(x, width);
-    }
-    if(it == itEnd){
-      out.push_back({width, std::string_view(itLineStart, it - itLineStart)});
-      break;
     }
   }
 }
