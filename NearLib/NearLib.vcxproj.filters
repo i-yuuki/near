@@ -284,6 +284,9 @@
     <ClInclude Include="NearLib\gui\has-child.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="NearLib\event.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="NearLib\DirectXTK\SimpleMath.inl">

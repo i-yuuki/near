@@ -86,6 +86,7 @@
     <ClInclude Include="NearLib\DirectXTK\VertexTypes.h" />
     <ClInclude Include="NearLib\DirectXTK\WICTextureLoader.h" />
     <ClInclude Include="NearLib\DirectXTK\XboxDDSTextureLoader.h" />
+    <ClInclude Include="NearLib\event.h" />
     <ClInclude Include="NearLib\fbx-model.h" />
     <ClInclude Include="NearLib\font.h" />
     <ClInclude Include="NearLib\gui-object.h" />

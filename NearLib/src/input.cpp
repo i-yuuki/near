@@ -6,31 +6,6 @@
 
 namespace Near{
 
-InputConnection::InputConnection(void* signal, void* listener)
-: signal(signal), listener(listener){
-}
-
-InputConnection& InputConnection::operator=(InputConnection&& moveFrom) noexcept{
-  disconnect();
-  signal = moveFrom.signal;
-  listener = moveFrom.listener;
-  moveFrom.signal = nullptr;
-  moveFrom.listener = nullptr;
-  return *this;
-}
-
-InputConnection::~InputConnection(){
-  disconnect();
-}
-
-// InputManager::addListenerがshared_ptr返す+listenersにweak_ptr入れて
-// if(weakPtr.expired()) erase(weakPtr) みたいなのも考えたけど
-// 気づいたらデストラクターでダイレクトにeraseするワイルドオブジェクトできてた
-void InputConnection::disconnect(){
-  if(!signal || !listener) return;
-  static_cast<std::unordered_set<AInputListener*>*>(signal)->erase(static_cast<AInputListener*>(listener));
-}
-
 void InputManager::init(HWND window){
   this->window = window;
   RAWINPUTDEVICE devices[2] = {};
@@ -82,11 +57,6 @@ void InputManager::lockMouse(bool lock){
   SetCursor(mouseLocked ? NULL : (HCURSOR)GetClassLongW(window, GCL_HCURSOR));
 }
 
-InputConnection InputManager::addKeyListener(KeyListener* listener){
-  keyListeners.insert(listener);
-  return InputConnection(&keyListeners, listener);
-}
-
 void InputManager::beforePollEvents(){
   for(int i = 0;i < BUTTON_COUNT;i ++){
     if(buttons[i] == ButtonState::PRESSED){
@@ -106,11 +76,6 @@ void InputManager::beforePollEvents(){
   }
 }
 
-#define FIRE_EVENT(listeners, funcName, ...) \
-  for(auto listener : listeners){\
-    listener->funcName(__VA_ARGS__);\
-  }
-
 bool InputManager::processMessage(UINT message, WPARAM wParam, LPARAM lParam){
   if(message == WM_INPUT){
     HRAWINPUT rawInput = reinterpret_cast<HRAWINPUT>(lParam);
@@ -123,11 +88,11 @@ bool InputManager::processMessage(UINT message, WPARAM wParam, LPARAM lParam){
       int vkey = input.data.keyboard.VKey;
       if(input.data.keyboard.Flags & 1){ // LSB 1 = 離した, 0 = 押した
         buttons[vkey] = ButtonState::RELEASED;
-        FIRE_EVENT(keyListeners, onKeyUp, vkey);
+        onKeyUp.fire({vkey, false});
       }else{
         bool repeat = isKeyDown(vkey); // 既にこのキーが押されていたらキー長押しで連射されている
         buttons[vkey] = ButtonState::PRESSED;
-        FIRE_EVENT(keyListeners, onKeyDown, vkey, repeat);
+        onKeyDown.fire({vkey, repeat});
       }
     }else if(input.header.dwType == RIM_TYPEMOUSE){
       if(input.data.mouse.usFlags & MOUSE_MOVE_ABSOLUTE){
@@ -149,6 +114,7 @@ bool InputManager::processMessage(UINT message, WPARAM wParam, LPARAM lParam){
         mouseMovementY += input.data.mouse.lLastY;
       }
       // 適当にVK_XBUTTON対応
+      // TODO イベント発火
       if(input.data.mouse.usButtonFlags & RI_MOUSE_BUTTON_1_DOWN){
         buttons[VK_LBUTTON] = ButtonState::PRESSED;
       }
@@ -182,7 +148,5 @@ bool InputManager::processMessage(UINT message, WPARAM wParam, LPARAM lParam){
   }
   return false;
 }
-
-#undef FIRE_EVENT
 
 }
