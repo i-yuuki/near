@@ -4,8 +4,8 @@ GM31就職作品群
 
 ## Near
 
-本命作品
+ポータルを作りたかったやつ
 
-## PortalTest
+## NearLib
 
-Portalを作りたい実験場
+DirectX 11 グラフィックライブラリ
