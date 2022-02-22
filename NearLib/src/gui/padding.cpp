@@ -12,12 +12,13 @@ Padding::Padding(float top, float right, float bottom, float left)
 
 void Padding::layout(const BoxConstraints& constraints){
   if(!child) return;
-  BoxConstraints childConstraints = constraints;
+  BoxConstraints childConstraints;
   if(std::isfinite(constraints.maxWidth)){
-    childConstraints.maxWidth = std::max(childConstraints.minWidth, constraints.maxWidth - left - right);
+    // minWidth/minHeight 必要かも？
+    childConstraints.maxWidth = std::max(childConstraints.minWidth, constraints.maxWidth) - left - right;
   }
   if(std::isfinite(constraints.maxHeight)){
-    childConstraints.maxHeight = std::max(childConstraints.minHeight, constraints.maxHeight - top - bottom);
+    childConstraints.maxHeight = std::max(childConstraints.minHeight, constraints.maxHeight) - top - bottom;
   }
   child->layout(childConstraints);
   child->layoutPosition = Math::Vector2(left, top);
