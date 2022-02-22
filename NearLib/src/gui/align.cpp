@@ -12,7 +12,11 @@ void Align::layout(const BoxConstraints& constraints){
   if(auto p = parent.lock()){
     layoutPosition = (p->getLayoutSize() - child->getLayoutSize()) * align;
   }else{
-    layoutPosition = Math::Vector2::Zero;
+    Math::Vector2 space(
+      std::isfinite(constraints.maxWidth) ? constraints.maxWidth : constraints.minWidth,
+      std::isfinite(constraints.maxHeight) ? constraints.maxHeight : constraints.minHeight
+    );
+    layoutPosition = (space - child->getLayoutSize()) * align;
   }
   layoutSize = child->getLayoutSize();
 }
