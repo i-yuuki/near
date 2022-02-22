@@ -52,6 +52,7 @@ void SceneGUITest::init(){
   auto font = Near::Assets::fonts()->get("Inter");
 
   auto list = std::make_shared<Near::GUI::FlexContainer>(Near::GUI::FlexContainer::Direction::VERTICAL);
+  list->setCrossAxisAlign(Near::GUI::FlexContainer::CrossAxisAlign::STRETCH);
   list->setGap(16);
 
   auto text = std::make_shared<Near::GUI::Text>(u8"SETTINGS", font);
