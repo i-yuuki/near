@@ -120,7 +120,7 @@ bool InputManager::processMessage(UINT message, WPARAM wParam, LPARAM lParam){
       }
       if(input.data.mouse.usButtonFlags & RI_MOUSE_BUTTON_1_UP){
         buttons[VK_LBUTTON] = ButtonState::RELEASED;
-        onMouseDown.fire({0, mouseX, mouseY});
+        onMouseUp.fire({0, mouseX, mouseY});
       }
       if(input.data.mouse.usButtonFlags & RI_MOUSE_BUTTON_2_DOWN){
         buttons[VK_RBUTTON] = ButtonState::PRESSED;
@@ -128,7 +128,7 @@ bool InputManager::processMessage(UINT message, WPARAM wParam, LPARAM lParam){
       }
       if(input.data.mouse.usButtonFlags & RI_MOUSE_BUTTON_2_UP){
         buttons[VK_RBUTTON] = ButtonState::RELEASED;
-        onMouseDown.fire({1, mouseX, mouseY});
+        onMouseUp.fire({1, mouseX, mouseY});
       }
       if(input.data.mouse.usButtonFlags & RI_MOUSE_BUTTON_3_DOWN){
         buttons[VK_MBUTTON] = ButtonState::PRESSED;
@@ -136,7 +136,7 @@ bool InputManager::processMessage(UINT message, WPARAM wParam, LPARAM lParam){
       }
       if(input.data.mouse.usButtonFlags & RI_MOUSE_BUTTON_3_UP){
         buttons[VK_MBUTTON] = ButtonState::RELEASED;
-        onMouseDown.fire({2, mouseX, mouseY});
+        onMouseUp.fire({2, mouseX, mouseY});
       }
       printf_s("Received mouse input! x: %ld, y: %ld\n", input.data.mouse.lLastX, input.data.mouse.lLastY);
     }
