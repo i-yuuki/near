@@ -25,39 +25,15 @@ void SceneTitle::init(){
   camera = getLayer(Near::Scene::LAYER_MANAGERS)->createGameObject<PortalCamera>();
   camera->setFar(8000);
   title = getLayer(Near::Scene::LAYER_OVERLAY)->createGameObject<Polygon2D>("assets/textures/title.png", Near::Math::Vector2::Zero, Near::Math::Vector2(r->getWidth(), r->getHeight()));
-  cameraPath.load("assets/levels/title-path.txt");
-  camera->transform.position = cameraPath.getStartPosition();
+  camera->transform.position = level->getSpawnPosition();
   camera->transform.rotation = Near::createEularRotation(level->getSpawnRotation());
-  #ifdef _DEBUG
-  cameraPathObj = getLayer(Near::Scene::LAYER_OBJECTS)->createGameObject<CameraPathObject>(&cameraPath);
-  #endif
+  camera->setFar(8000);
 }
 
 void SceneTitle::update(float deltaTime){
   PortalScene::update(deltaTime);
   time += deltaTime;
-  cameraPath.advance(deltaTime);
-  #ifdef _DEBUG
-  if(Near::input()->isKeyPressedThisFrame('P')){
-    camera->setDebugControlsEnabled(!camera->isDebugControlsEnabled());
-    if(!camera->isDebugControlsEnabled()){
-      camera->transform.position = cameraPath.getPosition();
-    }
-    cameraPathObj->setVisible(camera->isDebugControlsEnabled());
-  }
-  if(Near::input()->isKeyPressedThisFrame('R')){
-    cameraPath.load("assets/levels/title-path.txt");
-    cameraPathObj->generatePath();
-    if(!camera->isDebugControlsEnabled()){
-      camera->transform.position = cameraPath.getStartPosition();
-    }
-  }
-  #endif
-  if(!camera->isDebugControlsEnabled()){
-    auto cameraMovement = cameraPath.getMovement();
-    camera->move(cameraMovement, 1);
-    camera->transform.rotation = cameraPath.getRotation();
-  }
+  camera->transform.position.y = 64 + std::sin(time / 10000) * 32;
   title->setColor(Near::Math::Color(1, 1, 1, std::clamp((time - 1000) / 1000, 0.0f, 1.0f)));
   if(Near::input()->isKeyPressedThisFrame(VK_ESCAPE)){
     Near::markClose();

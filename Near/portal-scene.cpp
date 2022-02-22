@@ -173,7 +173,7 @@ void PortalScene::drawRecurse(int level){
   portalLevel = level;
   renderer->setBlendMode(Near::BlendMode::NONE);
   layers[LAYER_OBJECTS].draw();
-  if(level < 2){
+  if(level < 1){
     int i = 0;
     for(auto portal : portals){
       std::shared_ptr<Portal> otherPortal = portal->otherPortal.lock();

@@ -17,8 +17,6 @@ public:
 private:
   std::shared_ptr<Level> level;
   std::shared_ptr<PortalCamera> camera;
-  std::shared_ptr<CameraPathObject> cameraPathObj;
   std::shared_ptr<Polygon2D> title;
   float time;
-  CameraPath cameraPath;
 };
