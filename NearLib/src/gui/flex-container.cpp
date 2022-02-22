@@ -13,6 +13,14 @@ FlexContainer::Direction FlexContainer::getDirection() const{
   return direction;
 }
 
+FlexContainer::CrossAxisAlign FlexContainer::getCrossAxisAlign() const{
+  return crossAxisAlign;
+}
+
+float FlexContainer::getGap() const{
+  return gap;
+}
+
 void FlexContainer::setDirection(Direction direction){
   if(direction != this->direction){
     this->direction = direction;
@@ -20,8 +28,8 @@ void FlexContainer::setDirection(Direction direction){
   }
 }
 
-float FlexContainer::getGap() const{
-  return gap;
+void FlexContainer::setCrossAxisAlign(CrossAxisAlign align){
+  this->crossAxisAlign = align;
 }
 
 void FlexContainer::setGap(float gap){
@@ -45,10 +53,18 @@ void FlexContainer::layout(const BoxConstraints& constraints){
       mainAxisTotalFlex += flexible->getFlex();
     }else{
       BoxConstraints childConstraints;
-      switch(direction){
-        case Direction::HORIZONTAL: childConstraints.setMaxHeight(constraints.maxHeight); break;
-        case Direction::VERTICAL:   childConstraints.setMaxWidth(constraints.maxWidth); break;
-        default: throw std::exception("Unknown FlexContainer direction! (missing implementation?)");
+      if(crossAxisAlign == CrossAxisAlign::STRETCH){
+        switch(direction){
+          case Direction::HORIZONTAL: childConstraints.setHeight(constraints.maxHeight); break;
+          case Direction::VERTICAL:   childConstraints.setWidth(constraints.maxWidth); break;
+          default: throw std::exception("Unknown FlexContainer direction! (missing implementation?)");
+        }
+      }else{
+        switch(direction){
+          case Direction::HORIZONTAL: childConstraints.setMaxHeight(constraints.maxHeight); break;
+          case Direction::VERTICAL:   childConstraints.setMaxWidth(constraints.maxWidth); break;
+          default: throw std::exception("Unknown FlexContainer direction! (missing implementation?)");
+        }
       }
       child->layout(childConstraints);
       mainAxisTotalFixedSize += getAxisSize(child->layoutSize).x;
@@ -85,6 +101,22 @@ void FlexContainer::layout(const BoxConstraints& constraints){
 
     totalSizeAxis.x += childLayoutSizeAxis.x;
     totalSizeAxis.y = std::max(totalSizeAxis.y, childLayoutSizeAxis.y);
+  }
+  
+  // 交差軸配置
+  float crossAxisAlignVal = 0;
+  switch(crossAxisAlign){
+    case CrossAxisAlign::START:   crossAxisAlignVal = 0; break;
+    case CrossAxisAlign::CENTER:  crossAxisAlignVal = 0.5f; break;
+    case CrossAxisAlign::END:     crossAxisAlignVal = 1; break;
+    case CrossAxisAlign::STRETCH: crossAxisAlignVal = 0; break;
+    default: throw std::exception("Unknown FlexContainer crossAxisAlign! (missing implementation?)");
+  }
+  for(auto& child : children){
+    auto childLayoutPosAxis = getAxisSize(child->layoutPosition);
+    auto childLayoutSizeAxis = getAxisSize(child->getLayoutSize());
+    childLayoutPosAxis.y += (totalSizeAxis.y - childLayoutSizeAxis.y) * crossAxisAlignVal;
+    child->layoutPosition = getAxisSize(childLayoutPosAxis);
   }
 
   totalSizeAxis.x += std::max(size_t{0}, children.size() - 1) * gap;
