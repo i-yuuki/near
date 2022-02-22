@@ -29,6 +29,7 @@ struct Length{
 class Container;
 class HasChild;
 class HasChildren;
+class Padding;
 class FlexContainer;
 
 class Component{
@@ -36,6 +37,7 @@ public:
   friend Container;
   friend HasChild;
   friend HasChildren;
+  friend Padding;
   friend FlexContainer;
   std::weak_ptr<Component> getParent() const;
   // このコンポーネントに点が含まれているか調べます。

@@ -39,6 +39,7 @@
     <ClCompile Include="src\gui\flexible.cpp" />
     <ClCompile Include="src\gui\has-child.cpp" />
     <ClCompile Include="src\gui\layout.cpp" />
+    <ClCompile Include="src\gui\padding.cpp" />
     <ClCompile Include="src\gui\text.cpp" />
     <ClCompile Include="src\input.cpp" />
     <ClCompile Include="src\layer.cpp" />
@@ -99,6 +100,7 @@
     <ClInclude Include="NearLib\gui\flexible.h" />
     <ClInclude Include="NearLib\gui\has-child.h" />
     <ClInclude Include="NearLib\gui\layout.h" />
+    <ClInclude Include="NearLib\gui\padding.h" />
     <ClInclude Include="NearLib\gui\text.h" />
     <ClInclude Include="NearLib\input.h" />
     <ClInclude Include="NearLib\math.h" />
