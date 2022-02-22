@@ -7,6 +7,7 @@
 #include <NearLib/gui/align.h>
 #include <NearLib/gui/container.h>
 #include <NearLib/gui/flexible.h>
+#include <NearLib/gui/padding.h>
 
 #include "game.h"
 #include "main.h"
@@ -50,14 +51,14 @@ void SceneGUITest::init(){
 
   auto font = Near::Assets::fonts()->get("Inter");
 
-  gui = std::make_shared<Near::GUI::FlexContainer>(Near::GUI::FlexContainer::Direction::VERTICAL);
-  gui->setGap(16);
+  auto list = std::make_shared<Near::GUI::FlexContainer>(Near::GUI::FlexContainer::Direction::VERTICAL);
+  list->setGap(16);
 
   auto text = std::make_shared<Near::GUI::Text>(u8"SETTINGS", font);
   text->setFontSize(32);
   text->setTextAlign(Near::Math::Vector2(0.5f, 0.5f));
   text->setForeground(Near::Math::Color(0.286f, 0.239f, 0.184f, 1.0f));
-  gui->add(text);
+  list->add(text);
 
   auto tabs = std::make_shared<Near::GUI::FlexContainer>(Near::GUI::FlexContainer::Direction::HORIZONTAL);
   tabs->setGap(32);
@@ -73,12 +74,12 @@ void SceneGUITest::init(){
   pageAudio.tab = addTab(u8"AUDIO");
   pageVideo.tab = addTab(u8"VIDEO");
   pageControls.tab = addTab(u8"CONTROLS");
-  gui->add(tabs);
+  list->add(Near::GUI::Padding::Create(tabs, 0, 32));
 
   auto line = std::make_shared<Near::GUI::Container>();
   line->setHeight(Length(2, Unit::PX));
   line->setBackground(Near::Math::Color(0.545f, 0.478f, 0.400f, 1.0f));
-  gui->add(line);
+  list->add(line);
 
   // 設定リスト実験
 
@@ -119,7 +120,7 @@ void SceneGUITest::init(){
   pageControls.page->addItem(u8"■ マウスの左右を反転", u8"OFF");
   pageControls.page->addItem(u8"■ キー設定...",        u8"");
 
-  gui->add(pageContainer);
+  list->add(Near::GUI::Padding::Create(pageContainer, 0, 32));
 
   pageGameplay.tab->onMouseDown.addListener([this](Near::GUI::MouseEvent e){ setPage(pageGameplay); });
   pageAudio.tab->onMouseDown.addListener([this](Near::GUI::MouseEvent e){ setPage(pageAudio); });
@@ -192,6 +193,8 @@ void SceneGUITest::init(){
   sizetest->add(std::make_shared<Near::GUI::Flexible>(1, col));
   // gui->add(sizetest);
   */
+
+  gui = Near::GUI::Padding::Create(list, 32, 0);
   getLayer(Near::Scene::LAYER_OVERLAY)->createGameObject<Near::GUIObject>(gui);
 }
 

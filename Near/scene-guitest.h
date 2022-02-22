@@ -25,7 +25,7 @@ private:
   };
   void setPage(PageInfo& page);
   float time;
-  std::shared_ptr<Near::GUI::FlexContainer> gui;
+  std::shared_ptr<Near::GUI::Component> gui;
   std::shared_ptr<Near::GUI::Container> pageContainer;
   PageInfo currentPage{};
   PageInfo pageGameplay;
