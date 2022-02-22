@@ -3,6 +3,7 @@
 
 #include <NearLib/camera.h>
 #include <NearLib/utils.h>
+#include <NearLib/gui-object.h>
 #include <NearLib/gui/align.h>
 #include <NearLib/gui/container.h>
 #include <NearLib/gui/flexible.h>
@@ -126,13 +127,6 @@ void SceneGUITest::init(){
   pageControls.tab->onMouseDown.addListener([this](Near::GUI::MouseEvent e){ setPage(pageControls); });
   setPage(pageGameplay);
 
-  Near::input()->onMouseDown.addListener([this](Near::InputManager::MouseEvent e){
-    Near::Math::Vector2 mousePos(e.x, e.y);
-    if(auto c = gui->getDeepComponentAt(mousePos)){
-      c->propagateMouseDownEvent(Near::GUI::MouseEvent(c, mousePos, e.button));
-    }
-  });
-
   // flex test
 
   /*
@@ -198,6 +192,7 @@ void SceneGUITest::init(){
   sizetest->add(std::make_shared<Near::GUI::Flexible>(1, col));
   // gui->add(sizetest);
   */
+  getLayer(Near::Scene::LAYER_OVERLAY)->createGameObject<Near::GUIObject>(gui);
 }
 
 void SceneGUITest::update(float deltaTime){
@@ -215,14 +210,11 @@ void SceneGUITest::update(float deltaTime){
 
 void SceneGUITest::draw(){
   Near::Scene::draw();
-  Near::renderer2D()->begin();
-  gui->draw();
-  Near::renderer2D()->end();
 }
 
 void SceneGUITest::uninit(){
-  gui.reset();
   Near::Scene::uninit();
+  gui.reset();
 }
 
 void SceneGUITest::setPage(PageInfo& page){
